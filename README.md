@@ -1,1 +1,1 @@
-# à faire
+Présentation du projet
