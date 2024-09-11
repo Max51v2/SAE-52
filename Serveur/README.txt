@@ -24,7 +24,7 @@ Version : 0.3
 |    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
 |    |
 |    |   Cloner un répertoire Github :
-|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" (il faut être contributeur dans le projet)
+|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau (il faut être contributeur dans le projet tq rep privé)
 |    |
 |    +---------------------------------------------------------
 |
@@ -52,6 +52,7 @@ Version : 0.3
 |    |
 |    |   sudo apt update
 |    |   sudo apt upgrade
+|    |   sudo apt-get install git
 |    |
 |    |   *Script de demarrage des daemons
 |    |   mv [chemin_relatif]/Start.sh /home/sae-52/Bureau/
@@ -63,6 +64,7 @@ Version : 0.3
 |    +-------------------------VSCode-------------------------  
 |    |   
 |    |   sudo snap install code --classic
+|    |   *installer le module Github pull requests (instructions d'utilisation dans VM > VSCode)
 |    |
 |    +--------------------------------------------------------
 |
