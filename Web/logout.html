@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Déconnexion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .message {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <h1>Déconnexion</h1>
+        <p>Vous avez été déconnecté avec succès.</p>
+        <a href="login.html">Retour à la connexion</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>
