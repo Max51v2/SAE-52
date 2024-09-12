@@ -40,10 +40,10 @@ Version : 0.4
 |    |   \?
 |    |
 |    |   *Script construction BD
-|    |   \i [chemin_relatif]/postgreSQL_config.sql
+|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/postgreSQL_config.sql
 |    |
-|    |   *Script suppression BD
-|    |   \i [chemin_relatif]/postgreSQL_del_config.sql
+|    |   *Script reconstruction BD
+|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/postgreSQL_act_config.sql
 |    |
 |    +---------------------------------------------------------
 |
@@ -112,7 +112,7 @@ Version : 0.4
 |    |   create role Technicien WITH LOGIN PASSWORD 'Technicien';
 |    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
-|    |   \i [chemin_relatif]/postgreSQL_config.sql
+|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/postgreSQL_config.sql
 |    |
 |    +---------------------------------------------------------
 |
