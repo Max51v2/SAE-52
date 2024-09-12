@@ -1,0 +1,2 @@
+-- INACHEVE
+DROP TABLE Password_Hash_SHA512;

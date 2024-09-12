@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 0.3
+Version : 0.4
 
 
 +--------------------------VM-----------------------------
@@ -25,6 +25,10 @@ Version : 0.3
 |    |   Cloner un répertoire Github :
 |    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau (il faut être contributeur dans le projet tq rep privé)
 |    |
+|    |   *Modifier le nom et l'@ mail
+|    |   git config --global user.name "[Prenom Nom]"
+|    |   git config --global user.email "[@ Mail]"
+|    |
 |    +---------------------------------------------------------
 |
 |    +-----------------------PostgreSQL-----------------------  
@@ -37,6 +41,9 @@ Version : 0.3
 |    |
 |    |   *Script construction BD
 |    |   \i [chemin_relatif]/postgreSQL_config.sql
+|    |
+|    |   *Script suppression BD
+|    |   \i [chemin_relatif]/postgreSQL_del_config.sql
 |    |
 |    +---------------------------------------------------------
 |
@@ -63,7 +70,7 @@ Version : 0.3
 |    +-------------------------VSCode-------------------------  
 |    |   
 |    |   sudo snap install code --classic
-|    |   *installer le module Github pull requests (instructions d'utilisation dans VM > VSCode)
+|    |   *installer le module Github pull requests et modifier le nom ainsi que l'@ mail (instructions d'utilisation dans VM > VSCode)
 |    |
 |    +--------------------------------------------------------
 |
@@ -101,20 +108,9 @@ Version : 0.3
 |    |
 |    |   sudo -u postgres psql template1
 |    |   
-|    |   create role Administrateur;
-|    |
-|    |   \password Administrateur
-|    |   *Rentrer le MDP admin : "Administrateur"
-|    |
-|    |   create role Technicien;
-|    |
-|    |   \password Technicien
-|    |   *Rentrer le MDP tech : "Technicien"
-|    |
-|    |   create role Utilisateur;
-|    |
-|    |   \password Utilisateur
-|    |   *Rentrer le MDP utilisateur : "Utilisateur"
+|    |   create role Administrateur WITH LOGIN PASSWORD 'Administrateur';
+|    |   create role Technicien WITH LOGIN PASSWORD 'Technicien';
+|    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
 |    |   \i [chemin_relatif]/postgreSQL_config.sql
 |    |
