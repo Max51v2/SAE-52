@@ -1,4 +1,8 @@
 -- INACHEVE
+
+--Auteur : Maxime VALLET
+--Version : 0.2
+
 CREATE TABLE Password_Hash_SHA512 (
     id uuid PRIMARY KEY DEFAULT UUID_GENERATE_V4(),
     nom String,
