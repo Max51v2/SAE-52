@@ -29,6 +29,8 @@ Version : 0.5
 |    |   git config --global user.name "[Prenom Nom]"
 |    |   git config --global user.email "[@ Mail]"
 |    |
+|    |   * !!! Pour actualiser le code dans le dossier Web sur le serveur, il faut tourner Start.sh !!!
+|    |
 |    +---------------------------------------------------------
 |
 |    +-----------------------PostgreSQL-----------------------  
@@ -127,15 +129,13 @@ Version : 0.5
 |    |   sudo apt install apache2
 |    |   sudo ufw allow 'Apache'
 |    |   sudo mkdir /var/www/gmao
-|    |   cd /var/www/gmao
-|    |   sudo ln -s /home/$USER/Bureau/SAE-52/Web/sae52.html index.html
-|    |   Autres pages
+|    |   *(Start.sh déplacera automatiquement les fichiers dans le rep)
 |    |
 |    |   cd /etc/apache2/sites-available/
 |    |   sudo cp 000-default.conf gmao.conf
 |    |   sudo nano gmao.conf
 |    |
-|    |   *Remplacer la ligne commencant par "DocumentRoot" par "DocumentRoot /var/www/GMAO"
+|    |   *Remplacer la ligne commencant par "DocumentRoot" par "DocumentRoot /var/www/gmao"
 |    |
 |    |   sudo a2ensite gmao.conf
 |    |   sudo a2dissite 000-default.conf

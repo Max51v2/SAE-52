@@ -18,6 +18,14 @@ then
     echo "Status PostgreSQL : "$PostgreSQL
 fi
 
+#Copie des fichiers (HTML+CSS+JS)
+GitRep="/home/"$USER"/Bureau/SAE-52/Web/"
+ApacheRep="/var/www/gmao"
+sudo cp $GitRep"login.html" $ApacheRep"/login.html"
+sudo cp $GitRep"logout.html" $ApacheRep"/logout.html"
+sudo cp $GitRep"manageuser.html" $ApacheRep"/manageuser.html"
+sudo cp $GitRep"sae52.html" $ApacheRep"/sae52.html"
+
 #Récupération du status du daemon apache2
 apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
 echo "Status apache2 : "$apache2
@@ -33,3 +41,6 @@ then
     apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
     echo "Status apache2 : "$apache2
 fi
+
+#On recharge apache2 car le contenu du rep a changé
+systemctl reload apache2
