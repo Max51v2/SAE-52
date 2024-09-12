@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 0.4
+Version : 0.5
 
 
 +--------------------------VM-----------------------------
@@ -10,7 +10,7 @@ Version : 0.4
 |    |  MDP : leffe
 |    |
 |    |  *Demarrer les daemons
-|    |  cd /home/sae-52/Bureau/
+|    |  cd /home/sae-52/Bureau/SAE-52/Serveur
 |    |  ./Start
 |    |
 |    +---------------------------------------------------------
@@ -40,10 +40,10 @@ Version : 0.4
 |    |   \?
 |    |
 |    |   *Script construction BD
-|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/postgreSQL_config.sql
+|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/PostgreSQL_config.sql
 |    |
 |    |   *Script reconstruction BD
-|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/postgreSQL_act_config.sql
+|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/PostgreSQL_act_config.sql
 |    |
 |    +---------------------------------------------------------
 |
@@ -61,10 +61,10 @@ Version : 0.4
 |    |   sudo apt-get install git
 |    |
 |    |   *Script de demarrage des daemons
-|    |   mv [chemin_relatif]/Start.sh /home/sae-52/Bureau/
-|    |   chmod u+x /home/sae-52/Bureau/Start.sh
-|    |   chmod u+x ./Start.sh
+|    |   chmod u+x /home/sae-52/Bureau/SAE-52/Serveur/Start.sh
 |    |   
+|    |   *Demarrage deamons (une fois installation terminée): voir section VM > Général
+|    |
 |    +--------------------------------------------------------
 |
 |    +-------------------------VSCode-------------------------  
@@ -124,7 +124,18 @@ Version : 0.4
 |
 |    +-------------------------Apache--------------------------  
 |    |   
-|    |   
+|    |   sudo apt install apache2
+|    |   mkdir /var/www/gci
+|    |
+|    |   sudo ln -s /home/sae-52/Bureau/SAE-52/Web/sae52.html index.html
+|    |   Autres pages
+|    |
+|    |   cd /etc/apache2/sites-available/
+|    |   sudo cp 000-default.conf gci.conf
+|    |
+|    |   *Remplacer la ligne commencant par "DocumentRoot" par "DocumentRoot /var/www/GMAO"
+|    |   *Ajouter à la ligne suivante : "gci.sae52.com"
+|    |
 |    +---------------------------------------------------------
 |
 |    +-------------------------Tomcat--------------------------  

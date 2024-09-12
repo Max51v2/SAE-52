@@ -1,21 +1,35 @@
 -- INACHEVE
 
 --Auteur : Maxime VALLET
---Version : 0.2
+--Version : 0.4
 
 --Base de données du projet
 CREATE DATABASE sae_52;
 \c sae_52
 
 --Table contenant les MDP hashés des utilisateurs
-CREATE TABLE Password_Hash_SHA512 (
-    id in UNIQUE,
+CREATE TABLE password_Hash_MD5 (
+    id SERIAL PRIMARY KEY,
     nom text,
     prenom text,
     hash text
 );
 
 --Compte admin par défaut (MDP "leffe")
-INSERT INTO Password_Hash_SHA512 (1 ,"Admin", "Originel", 
-"4f8152e4b53af9906822eb92e4a6c1a6651c2fcfc690847a3e76cb27d4b3e0659ecc72bbc3ed22aa561a4f95edf39046d0e1933bea44e185feab12ec8cf4ed03"
-);
+INSERT INTO password_Hash_MD5 (nom, prenom, hash) VALUES ('Admin', 'Originel', '0ed4549b7fa20522eb4a81a86e334ec6');
+
+--Droits table contenant les MDP hashés des utilisateurs
+GRANT ALL ON password_hash_md5 TO administrateur;
+GRANT USAGE, SELECT ON SEQUENCE password_hash_md5_id_seq TO administrateur;
+--potentiel retrait selon le servlet
+GRANT SELECT ON password_hash_md5 TO technicien;
+GRANT SELECT ON password_hash_md5 TO utilisateur;
+--
+
+--Autres tables à faire
+
+
+--Msg fin
+\echo
+\echo
+\echo Fait

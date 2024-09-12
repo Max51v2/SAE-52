@@ -1,5 +1,3 @@
--- INACHEVE
-
 --Auteur : Maxime VALLET
 --Version : 1.0
 

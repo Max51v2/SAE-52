@@ -17,3 +17,19 @@ then
     PostgreSQL=`systemctl status postgresql | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
     echo "Status PostgreSQL : "$PostgreSQL
 fi
+
+#Récupération du status du daemon apache2
+apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+echo "Status apache2 : "$apache2
+
+#Demarrage de apache2 si il est éteint
+if [ "$apache2" = "inactive" ]
+then
+    #demarrage
+    echo "demarrage de apache2"
+    systemctl start apache2
+
+    #Récupération du status du daemon apache2
+    apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+    echo "Status apache2 : "$apache2
+fi
