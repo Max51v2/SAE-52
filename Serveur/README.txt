@@ -12,7 +12,6 @@ Version : 0.3
 |    |  *Demarrer les daemons
 |    |  cd /home/sae-52/Bureau/
 |    |  ./Start
-|    |  *Sinon double clique sur le script Start.sh situé sur le Bureau
 |    |
 |    +---------------------------------------------------------
 |
@@ -70,7 +69,7 @@ Version : 0.3
 |
 |    +-----------------------PostgreSQL-----------------------  
 |    |
-|    |   !!! En cas d'utilisation en dehors du cadre de ce projet, remplacez les MDP (tous "leffe" ici) !!!
+|    |   !!! En cas d'utilisation en dehors du cadre de ce projet, remplacez les MDP !!!
 |    |
 |    |   Installation (ubuntu):
 |    |   sudo apt install postgresql
@@ -102,6 +101,21 @@ Version : 0.3
 |    |
 |    |   sudo -u postgres psql template1
 |    |   
+|    |   create role Administrateur;
+|    |
+|    |   \password Administrateur
+|    |   *Rentrer le MDP admin : "Administrateur"
+|    |
+|    |   create role Technicien;
+|    |
+|    |   \password Technicien
+|    |   *Rentrer le MDP tech : "Technicien"
+|    |
+|    |   create role Utilisateur;
+|    |
+|    |   \password Utilisateur
+|    |   *Rentrer le MDP utilisateur : "Utilisateur"
+|    |
 |    |   \i [chemin_relatif]/postgreSQL_config.sql
 |    |
 |    +---------------------------------------------------------
