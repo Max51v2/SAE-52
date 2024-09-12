@@ -1,6 +1,6 @@
 #!/bin//bash
 # Auteur : Maxime VALLET
-# Version : 0.1
+# Version : 0.2
 
 #Récupération du status du daemon postgresql
 PostgreSQL=`systemctl status postgresql | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`

@@ -10,7 +10,7 @@ Version : 0.5
 |    |  MDP : leffe
 |    |
 |    |  *Demarrer les daemons
-|    |  cd /home/sae-52/Bureau/SAE-52/Serveur
+|    |  cd /home/$USER/Bureau/SAE-52/Serveur
 |    |  ./Start
 |    |
 |    +---------------------------------------------------------
@@ -40,10 +40,10 @@ Version : 0.5
 |    |   \?
 |    |
 |    |   *Script construction BD
-|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/PostgreSQL_config.sql
+|    |   \i /home/$USER/Bureau/SAE-52/Serveur/PostgreSQL_config.sql
 |    |
 |    |   *Script reconstruction BD
-|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/PostgreSQL_act_config.sql
+|    |   \i /home/$USER/Bureau/SAE-52/Serveur/PostgreSQL_act_config.sql
 |    |
 |    +---------------------------------------------------------
 |
@@ -61,7 +61,7 @@ Version : 0.5
 |    |   sudo apt-get install git
 |    |
 |    |   *Script de demarrage des daemons
-|    |   chmod u+x /home/sae-52/Bureau/SAE-52/Serveur/Start.sh
+|    |   chmod u+x /home/$USER/Bureau/SAE-52/Serveur/Start.sh
 |    |   
 |    |   *Demarrage deamons (une fois installation terminée): voir section VM > Général
 |    |
@@ -112,7 +112,7 @@ Version : 0.5
 |    |   create role Technicien WITH LOGIN PASSWORD 'Technicien';
 |    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
-|    |   \i /home/sae-52/Bureau/SAE-52/Serveur/postgreSQL_config.sql
+|    |   \i /home/$USER/Bureau/SAE-52/Serveur/postgreSQL_config.sql
 |    |
 |    +---------------------------------------------------------
 |
@@ -125,16 +125,21 @@ Version : 0.5
 |    +-------------------------Apache--------------------------  
 |    |   
 |    |   sudo apt install apache2
-|    |   mkdir /var/www/gci
-|    |
-|    |   sudo ln -s /home/sae-52/Bureau/SAE-52/Web/sae52.html index.html
+|    |   sudo ufw allow 'Apache'
+|    |   sudo mkdir /var/www/gmao
+|    |   cd /var/www/gmao
+|    |   sudo ln -s /home/$USER/Bureau/SAE-52/Web/sae52.html index.html
 |    |   Autres pages
 |    |
 |    |   cd /etc/apache2/sites-available/
-|    |   sudo cp 000-default.conf gci.conf
+|    |   sudo cp 000-default.conf gmao.conf
+|    |   sudo nano gmao.conf
 |    |
 |    |   *Remplacer la ligne commencant par "DocumentRoot" par "DocumentRoot /var/www/GMAO"
-|    |   *Ajouter à la ligne suivante : "gci.sae52.com"
+|    |
+|    |   sudo a2ensite gmao.conf
+|    |   sudo a2dissite 000-default.conf
+|    |   sudo systemctl reload apache2
 |    |
 |    +---------------------------------------------------------
 |
