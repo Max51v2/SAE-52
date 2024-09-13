@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 0.7
+Version : 0.8
 Status : en cours
 
 à faire : 
@@ -18,8 +18,7 @@ Status : en cours
 |    |  MDP : leffe
 |    |
 |    |  *Demarrer les daemons
-|    |  cd /home/$USER/Bureau/SAE-52/Serveur
-|    |  ./Start
+|    |  /home/$USER/Bureau/SAE-52/Serveur/Start.sh
 |    |
 |    +---------------------------------------------------------
 |
@@ -172,21 +171,24 @@ Status : en cours
 |    |   cd /opt/tomcat
 |    |   sudo tar xzvf /tmp/apache-tomcat-10.1.29.tar.gz -C /opt/tomcat --strip-components=1
 |    |
-|    |   *Ajouter "export JAVA_HOME=/usr/java/jdk-22.0.2" en ligne 2
-|    |   => sudo nano ./bin/catalina.sh
-|    |
-|    |   sudo chgrp -R tomcat /opt/tomcat
-|    |   sudo chmod 771 ./*
+|    |   cd /opt
+|    |   sudo chown -R tomcat: tomcat
+|    |   cd ./Tomcat
 |    |   sudo chown -R tomcat webapps/ work/ temp/ logs/
+|    |   sudo chmod o+x /opt/tomcat/bin/
 |    |
-|    |   *Le contenu de tomcat.service est disponible dans le dossier serveur (source)
-|    |   => sudo nano /etc/systemd/system/tomcat.service
+|    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/tomcat.service /etc/systemd/system/tomcat.service
+|    |   sudo nano /etc/systemd/system/tomcat.service
+|    |   *Modifier cette ligne "Environment=JAVA_HOME=/usr/java[VERSION JDK]" en changeant "[VERSION JDK]"
+|    |   => vous pouvez trouver la version en tapant les commandes suivantes :
+|    |   ==> cd /usr/java
+|    |   ==> ls                                                               (prendre le nom du dossier)
 |    |
 |    |   sudo ufw allow 8080
 |    |
 |    |   sudo systemctl daemon-reload
 |    |
-|    |   sudo /opt/tomcat/bin/startup.sh run
+|    |   sudo systemctl start tomcat
 |    |
 |    +---------------------------------------------------------
 |

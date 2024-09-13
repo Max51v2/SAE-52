@@ -1,6 +1,6 @@
-#!/bin//bash
+#!/bin/bash
 # Auteur : Maxime VALLET
-# Version : 0.4
+# Version : 0.6
 
 clear
 
@@ -94,7 +94,7 @@ echo
 #echo "Status apache2 : "$apache2
 echo "Status apache2 : fontion désactivée"
 
-#echo
+echo
 
 #Récupération du status du daemon tomcat
 tomcat=`systemctl status tomcat | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
