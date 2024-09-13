@@ -17,7 +17,7 @@ Status : en cours
 |    |  Lien VM : TBD
 |    |  MDP : leffe
 |    |
-|    |  *Demarrer les daemons
+|    |  *Demarrer les daemons + actualiser BD + Web
 |    |  /home/$USER/Bureau/SAE-52/Serveur/Start.sh
 |    |
 |    +---------------------------------------------------------
@@ -30,7 +30,7 @@ Status : en cours
 |    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
 |    |
 |    |   Cloner un répertoire Github :
-|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau (il faut être contributeur dans le projet tq rep privé)
+|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau
 |    |
 |    |   *Modifier le nom et l'@ mail
 |    |   git config --global user.name "[Prenom Nom]"
@@ -176,7 +176,7 @@ Status : en cours
 |    |   cd /opt
 |    |   sudo chown -R tomcat: tomcat
 |    |   cd ./Tomcat
-|    |   sudo chown -R tomcat webapps/ work/ temp/ logs/
+|    |   sudo chown -R tomcat webapps/ work/ temp/ logs/ conf/
 |    |   sudo chmod o+x /opt/tomcat/bin/
 |    |
 |    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/tomcat.service /etc/systemd/system/tomcat.service
@@ -195,7 +195,7 @@ Status : en cours
 |    |
 |    |   sudo nano /opt/tomcat/conf/tomcat-users.xml
 |    |
-|    |   *Ajouter "<role rolename="admin-gui"/><role rolename="manager-gui"/><user username="admin" password="leffe" roles="admin-gui,manager-gui"/>"
+|    |   *Ajouter "<role rolename="admin-gui"/><role rolename="manager-gui"/><user username="admin" password="leffe" roles="admin-gui,manager-gui,manager-script"/>"
 |    |   => entre les deux balises "<tomcat-users>"
 |    |
 |    |   *Il est nécéssaire de passer par "localhost:8080" afin d'accéder à l'interface admin
@@ -203,8 +203,17 @@ Status : en cours
 |    +---------------------------------------------------------
 |
 |    +------------------------NetBEANS------------------------- 
-|    |   
-|    |   
+|    |
+|    |   sudo snap install netbeans --classic
+|    |
+|    |   sudo netbeans --jdkhome /usr/java/[version jdk]   
+|    |
+|    |   *Ajout serveur Tomcat
+|    |   Tools > Server > Apache Tomcat or TomEE > Server location : "/opt/tomcat/" | username : "admin | login : "leffe"
+|    |
+|    |   *!!! Ajouter en premier si l'onglet Tools est inaccessible !!!
+|    |   => open project > /home/$USER/Bureau/SAE-52/NetBEANS
+|    |
 |    +---------------------------------------------------------
 |
 +---------------------------------------------------------
