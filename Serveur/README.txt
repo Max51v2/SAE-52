@@ -1,6 +1,14 @@
 Auteur : Maxime VALLET
 Version : 0.7
+Status : en cours
 
+à faire : 
+    - configurer Tomcat afin d'ajouter le contenu du dossier "Web"
+    - installer et configurer NetBEANS + intégration Tomcat + JDBC (driver...)
+    - installer et configurer Tomcat + NetBEANS sur la VM (Maxime)
+    - envoyer la VM (Maxime)
+    - Servlets + BD
+    - Web
 
 +--------------------------VM-----------------------------
 |
