@@ -49,11 +49,9 @@ Status : en cours
 |    |   *Aide commandes 
 |    |   \?
 |    |
-|    |   *Script construction BD
-|    |   \i /home/$USER/Bureau/SAE-52/Serveur/PostgreSQL_config.sql
-|    |
 |    |   *Script reconstruction BD
-|    |   \i /home/$USER/Bureau/SAE-52/Serveur/PostgreSQL_act_config.sql
+|    |   ./Start.sh a une option pour reconstruire la base à partir du script "PostgreSQL_config.sql"
+|    |   => !!! toute modification de la BD doit se faire dans ce script sql (il faut refaire tourner Start.sh) !!!
 |    |
 |    +---------------------------------------------------------
 |
@@ -90,7 +88,9 @@ Status : en cours
 |    |
 |    |   Installation (ubuntu):
 |    |   sudo apt install postgresql
+|    |
 |    |   cd /etc/postgresql/[Version PostgreSQL]/main/
+|    |
 |    |   sudo nano postgresql.conf
 |    |
 |    |   *remplacer " #listen_addresses = 'localhost' " par " listen_addresses = 'localhost' "
@@ -122,7 +122,7 @@ Status : en cours
 |    |   create role Technicien WITH LOGIN PASSWORD 'Technicien';
 |    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
-|    |   \i /home/$USER/Bureau/SAE-52/Serveur/postgreSQL_config.sql
+|    |   \i /home/[nom session]/Bureau/SAE-52/Serveur/PostgreSQL_config.sql
 |    |
 |    +---------------------------------------------------------
 |
