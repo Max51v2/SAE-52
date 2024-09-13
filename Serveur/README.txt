@@ -37,6 +37,7 @@ Status : en cours
 |    |   git config --global user.email "[@ Mail]"
 |    |
 |    |   *Pour actualiser le code dans le dossier Web sur le serveur apache, il faut tourner Start.sh
+|    |   => en cas d'ajout de fichiers (HTML/CSS/JS), il faut ajouter les fichiers (cf. ligne 23 > Start.sh)
 |    |
 |    +---------------------------------------------------------
 |
@@ -141,17 +142,18 @@ Status : en cours
 |    |
 |    +---------------------------------------------------------
 |
-|    +-------------------Apache (inutilisé)--------------------  
+|    +-------------------------Apache--------------------------  
 |    |   
 |    |   sudo apt install apache2
 |    |   sudo ufw allow 'Apache'
 |    |   sudo mkdir /var/www/gmao
+|    |
 |    |   *(Start.sh déplacera automatiquement les fichiers dans le rep)
 |    |
 |    |   cd /etc/apache2/sites-available/
 |    |   sudo cp 000-default.conf gmao.conf
+|    | 
 |    |   sudo nano gmao.conf
-|    |
 |    |   *Remplacer la ligne commencant par "DocumentRoot" par "DocumentRoot /var/www/gmao"
 |    |
 |    |   sudo a2ensite gmao.conf
@@ -189,6 +191,14 @@ Status : en cours
 |    |   sudo systemctl daemon-reload
 |    |
 |    |   sudo systemctl start tomcat
+|    |   *Test fonctionnement "localhost:8080"
+|    |
+|    |   sudo nano /opt/tomcat/conf/tomcat-users.xml
+|    |
+|    |   *Ajouter "<role rolename="admin-gui"/><role rolename="manager-gui"/><user username="admin" password="leffe" roles="admin-gui,manager-gui"/>"
+|    |   => entre les deux balises "<tomcat-users>"
+|    |
+|    |   *Il est nécéssaire de passer par "localhost:8080" afin d'accéder à l'interface admin
 |    |
 |    +---------------------------------------------------------
 |

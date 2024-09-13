@@ -20,28 +20,30 @@ echo
 
 
 
-#Copie des fichiers dans le répertoire d'Apache2 (inutilisé)
-#GitRep="/home/"$USER"/Bureau/SAE-52/Web/"
-#ApacheRep="/var/www/gmao"
-#sudo cp $GitRep"login.html" $ApacheRep"/login.html"
-#sudo cp $GitRep"logout.html" $ApacheRep"/logout.html"
-#sudo cp $GitRep"manageuser.html" $ApacheRep"/manageuser.html"
-#sudo cp $GitRep"sae52.html" $ApacheRep"/sae52.html"
+#Copie des fichiers dans le répertoire d'Apache2 (à modifier si nouveaux fichiers)
+GitRep="/home/"$USER"/Bureau/SAE-52/Web/"
+ApacheRep="/var/www/gmao"
+sudo cp $GitRep"login.html" $ApacheRep"/login.html"
+sudo cp $GitRep"logout.html" $ApacheRep"/logout.html"
+sudo cp $GitRep"manageuser.html" $ApacheRep"/manageuser.html"
+sudo cp $GitRep"sae52.html" $ApacheRep"/sae52.html"
 
 #Récupération du status du daemon apache2
-#apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-#echo "Status apache2 : "$apache2
+apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+echo "Status apache2 : "$apache2
 
 #Demarrage de apache2 si il est éteint
-#if [ "$apache2" = "inactive" ]
-#then
+if [ "$apache2" = "inactive" ]
+then
     #demarrage
-    #echo "demarrage de apache2"
-    #systemctl start apache2
-#fi
+    echo "demarrage de apache2"
+    sudo systemctl start apache2
+fi
 
 #On recharge apache2 car le contenu du rep a changé
-#systemctl reload apache2
+sudo systemctl reload apache2
+
+echo
 
 
 
@@ -54,7 +56,7 @@ if [ "$tomcat" = "inactive" ]
 then
     #demarrage
     echo "demarrage de tomcat"
-    systemctl start tomcat
+    sudo systemctl start tomcat
 fi
 
 echo
@@ -90,9 +92,8 @@ echo "Status PostgreSQL : "$PostgreSQL
 echo
 
 #Récupération du status du daemon apache2
-#apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-#echo "Status apache2 : "$apache2
-echo "Status apache2 : fontion désactivée"
+apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+echo "Status apache2 : "$apache2
 
 echo
 
