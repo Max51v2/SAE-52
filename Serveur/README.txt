@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 0.5
+Version : 0.7
 
 
 +--------------------------VM-----------------------------
@@ -29,7 +29,7 @@ Version : 0.5
 |    |   git config --global user.name "[Prenom Nom]"
 |    |   git config --global user.email "[@ Mail]"
 |    |
-|    |   * !!! Pour actualiser le code dans le dossier Web sur le serveur, il faut tourner Start.sh !!!
+|    |   *Pour actualiser le code dans le dossier Web sur le serveur apache, il faut tourner Start.sh
 |    |
 |    +---------------------------------------------------------
 |
@@ -121,10 +121,20 @@ Version : 0.5
 |    +--------------------------JDK----------------------------  
 |    |   
 |    |   sudo snap install openjdk
-|    |   
+|    |
+|    |   cd /usr/java
+|    |   *Récuppérer le numéro de version avec "ls"
+|    |
+|    |   sudo nano /etc/profile
+|    |   => JAVA_HOME=/usr/java/[version JDK]
+|    |   => PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
+|    |   => export JAVA_HOME
+|    |   => export JRE_HOME
+|    |   => export PATH
+|    |
 |    +---------------------------------------------------------
 |
-|    +-------------------------Apache--------------------------  
+|    +-------------------Apache (inutilisé)--------------------  
 |    |   
 |    |   sudo apt install apache2
 |    |   sudo ufw allow 'Apache'
@@ -144,8 +154,32 @@ Version : 0.5
 |    +---------------------------------------------------------
 |
 |    +-------------------------Tomcat--------------------------  
-|    |   
-|    |   
+|    |
+|    |   sudo groupadd tomcat
+|    |   sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
+|    |   cd /tmp
+|    |   wget -c https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.29/bin/apache-tomcat-10.1.29.tar.gz
+|    |
+|    |   sudo mkdir /opt/tomcat
+|    |   cd /opt/tomcat
+|    |   sudo tar xzvf /tmp/apache-tomcat-10.1.29.tar.gz -C /opt/tomcat --strip-components=1
+|    |
+|    |   *Ajouter "export JAVA_HOME=/usr/java/jdk-22.0.2" en ligne 2
+|    |   => sudo nano ./bin/catalina.sh
+|    |
+|    |   sudo chgrp -R tomcat /opt/tomcat
+|    |   sudo chmod 771 ./*
+|    |   sudo chown -R tomcat webapps/ work/ temp/ logs/
+|    |
+|    |   *Le contenu de tomcat.service est disponible dans le dossier serveur (source)
+|    |   => sudo nano /etc/systemd/system/tomcat.service
+|    |
+|    |   sudo ufw allow 8080
+|    |
+|    |   sudo systemctl daemon-reload
+|    |
+|    |   sudo /opt/tomcat/bin/startup.sh run
+|    |
 |    +---------------------------------------------------------
 |
 |    +------------------------NetBEANS------------------------- 
