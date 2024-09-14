@@ -1,6 +1,5 @@
 Auteur : Maxime VALLET
-Version : 0.8
-Status : en cours
+Version : 0.9
 
 à faire : 
     - configurer Tomcat afin d'ajouter le contenu du dossier "Web"
@@ -255,10 +254,6 @@ Status : en cours
 |    |
 |    |   *Lancer NetBEANS (obligatoire)
 |    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
-|    |
-|    |   *Création d'un projet ou utilisation en dehors de la VM
-|    |   => importer Jakarta EE 10 et Spring 6.1.3 (https://repo1.maven.org/maven2/org/springframework/spring-core/6.1.13/spring-core-6.1.13.jar)
-|    |   ==> tools > libraries > New library > remplir nom > ok > cliquer sur la lib ajoutée > add jar/folder
 |    |
 |    +---------------------------------------------------------
 |
