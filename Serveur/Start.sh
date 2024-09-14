@@ -48,18 +48,18 @@ echo
 
 
 #Récupération du status du daemon tomcat
-tomcat=`systemctl status tomcat | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-echo "Status tomcat : "$tomcat
+#tomcat=`systemctl status tomcat | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+#echo "Status tomcat : "$tomcat
 
 #Demarrage de tomcat si il est éteint
-if [ "$tomcat" = "inactive" ]
-then
+#if [ "$tomcat" = "active" ]
+#then
     #demarrage
-    echo "demarrage de tomcat"
-    sudo systemctl start tomcat
-fi
+    #echo "demarrage de tomcat"
+    #sudo systemctl start tomcat
+#fi
 
-echo
+#echo
 
 
 
@@ -98,10 +98,10 @@ echo "Status apache2 : "$apache2
 echo
 
 #Récupération du status du daemon tomcat
-tomcat=`systemctl status tomcat | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-echo "Status tomcat : "$tomcat
+#tomcat=`systemctl status tomcat | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
+#echo "Status tomcat : "$tomcat
 
-echo
+#echo
 
 if [ "$option" = "o" ] || [ "$option" = "O" ]
 then

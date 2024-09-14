@@ -29,9 +29,6 @@ Status : en cours
 |    |   Se connecter à GitHub dans VSCode :
 |    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
 |    |
-|    |   Cloner un répertoire Github :
-|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau
-|    |
 |    |   *Modifier le nom et l'@ mail
 |    |   git config --global user.name "[Prenom Nom]"
 |    |   git config --global user.email "[@ Mail]"
@@ -53,6 +50,40 @@ Status : en cours
 |    |   ./Start.sh a une option pour reconstruire la base à partir du script "PostgreSQL_config.sql"
 |    |   => !!! toute modification de la BD doit se faire dans ce script sql (il faut refaire tourner Start.sh) !!!
 |    |
+|    +---------------------------------------------------------
+|
+|    +------------------------NetBEANS------------------------- 
+|    |
+|    |   Tomcat se lance lorsqu'on lance le projet dans NetBEANS (ne JAMAIS le lancer manuellement sinon le serveur Tomcat ne fonctonnera PAS)
+|    |
+|    +---------------------------------------------------------
+|
+|    +------------------------NetBEANS------------------------- 
+|    |
+|    |   *Lancer NetBEANS (obligatoire)
+|    |   => sudo netbeans --jdkhome /usr/java/jdk-22.0.2
+|    |
+|    +---------------------------------------------------------
+|
+|    +-------------------CONCLUSION A LIRE--------------------- 
+|    |
+|    |   Pour lancer les daemons, actualiser les fichiers Web et reconstruire la DB, lancez Start.sh (cf. section VM > Général)
+|    |
+|    |   Pour sauvegarder le projet > VSCode
+|    |   => icon source control (branche à gauche) > survoler menu déroulant "Changes" > cliquer sur le + pour ajouter tous les fichiers (tt dans être dans "staged changes")
+|    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
+|    |
+|    |   Cloner un répertoire Github :
+|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau
+|    |
+|    |   Remplacer le répertoire Github local par celui en ligne
+|    |   => icon source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
+|    |
+|    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
+|    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
+|    |   => Web et Serveur > VSCode | Servlets (dossier NetBEANS) > NetBEANS
+|    |   => Il n'y a besoin du terminal que pour lancer Start.sh et NetBEANS
+|    | 
 |    +---------------------------------------------------------
 |
 +---------------------------------------------------------
@@ -164,18 +195,20 @@ Status : en cours
 |
 |    +-------------------------Tomcat--------------------------  
 |    |
+|    |   !!! Ne pas utiliser une version de tomcat supérieure à 9 car Spring 5 ne supporte pas Jakarta
+|    |
 |    |   sudo groupadd tomcat
 |    |   sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 |    |   cd /tmp
-|    |   wget -c https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.29/bin/apache-tomcat-10.1.29.tar.gz
+|    |   wget -c https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.94/bin/apache-tomcat-9.0.94.tar.gz
 |    |
 |    |   sudo mkdir /opt/tomcat
 |    |   cd /opt/tomcat
-|    |   sudo tar xzvf /tmp/apache-tomcat-10.1.29.tar.gz -C /opt/tomcat --strip-components=1
+|    |   sudo tar xzvf /tmp/apache-tomcat-9.0.94.tar.gz -C /opt/tomcat --strip-components=1
 |    |
 |    |   cd /opt
 |    |   sudo chown -R tomcat: tomcat
-|    |   cd ./Tomcat
+|    |   cd ./tomcat
 |    |   sudo chown -R tomcat webapps/ work/ temp/ logs/ conf/
 |    |   sudo chmod o+x /opt/tomcat/bin/
 |    |
@@ -198,6 +231,9 @@ Status : en cours
 |    |   *Ajouter "<role rolename="admin-gui"/><role rolename="manager-gui"/><user username="admin" password="leffe" roles="admin-gui,manager-gui,manager-script"/>"
 |    |   => entre les deux balises "<tomcat-users>"
 |    |
+|    |   sudo systemctl disable tomcat 
+|    |   sudo systemctl stop tomcat                                                     (une fois les test terminés)
+|    |   
 |    |   *Il est nécéssaire de passer par "localhost:8080" afin d'accéder à l'interface admin
 |    |
 |    +---------------------------------------------------------
@@ -213,6 +249,16 @@ Status : en cours
 |    |
 |    |   *!!! Ajouter en premier si l'onglet Tools est inaccessible !!!
 |    |   => open project > /home/$USER/Bureau/SAE-52/NetBEANS
+|    |
+|    |   *Dans le cadre d'un nouveau projet netbeans, il faut utiliser JAKARTA !!!!!
+|    |   => importer Jakarta EE 10 file > projet properties > libraries > add library > Jakarta EE 10
+|    |
+|    |   *Lancer NetBEANS (obligatoire)
+|    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
+|    |
+|    |   *Création d'un projet ou utilisation en dehors de la VM
+|    |   => importer Jakarta EE 10 et Spring 6.1.3 (https://repo1.maven.org/maven2/org/springframework/spring-core/6.1.13/spring-core-6.1.13.jar)
+|    |   ==> tools > libraries > New library > remplir nom > ok > cliquer sur la lib ajoutée > add jar/folder
 |    |
 |    +---------------------------------------------------------
 |
