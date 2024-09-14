@@ -1,6 +1,6 @@
 #!/bin/bash
 # Auteur : Maxime VALLET
-# Version : 0.6
+# Version : 0.9
 
 clear
 
