@@ -2,7 +2,6 @@ Auteur : Maxime VALLET
 Version : 0.9
 
 à faire : 
-    - configurer Tomcat afin d'ajouter le contenu du dossier "Web"
     - installer et configurer NetBEANS + intégration Tomcat + JDBC (driver...)
     - installer et configurer Tomcat + NetBEANS sur la VM (Maxime)
     - envoyer la VM (Maxime)
@@ -61,6 +60,8 @@ Version : 0.9
 |    |
 |    |   *Lancer NetBEANS (obligatoire)
 |    |   => sudo netbeans --jdkhome /usr/java/jdk-22.0.2
+|    |   
+|    |   *Au lancement du projet, si la fenêtre requesting keyreing apparait mais que NetBEANS ne demande pas de MDP, il faut redémarrer NetBEANS
 |    |
 |    +---------------------------------------------------------
 |
@@ -249,8 +250,8 @@ Version : 0.9
 |    |   *!!! Ajouter en premier si l'onglet Tools est inaccessible !!!
 |    |   => open project > /home/$USER/Bureau/SAE-52/NetBEANS
 |    |
-|    |   *Dans le cadre d'un nouveau projet netbeans, il faut utiliser JAKARTA !!!!!
-|    |   => importer Jakarta EE 10 file > projet properties > libraries > add library > Jakarta EE 10
+|    |   *Importer driver JDBC PostgreSQL
+|    |   => File > projet properties > libraries > add library > PostgreSQL JDBC library
 |    |
 |    |   *Lancer NetBEANS (obligatoire)
 |    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
@@ -273,7 +274,19 @@ Version : 0.9
 |    |   ==> SSLCertificateKeyFile /certs/SAE52.key
 |    |
 |    |   *Tomcat (à finir)
-|    |   sudo openssl pkcs12 -export -in SAE52.crt -inkey SAE52.key -out SAE52.p12 -name tomcat -CAfile SAE52.crt -caname root -chain
+|    |   sudo nano /opt/tomcat/conf/Catalina/localhost/SAE52.xml
+|    |   
+|    |   *Copier le texte ci-dessous dans le fichier SAE52.xml (non fonctionnel)
+|    |   <!-- SSL -->
+|    |   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+|    |   <Connector port="8443" protocol="org.apache.coyote.http11.Http11AprProtocol" maxThreads="150" SSLEnabled="true" >
+|    |      <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+|    |      <SSLHostConfig>
+|    |          <Certificate certificateKeyFile="/certs/SAE52.key" certificateFile="/certs/SAE52.crt" type="RSA" />
+|    |      </SSLHostConfig>
+|    |   </Connector>
+|    |
+|    |
 |    |
 |    +---------------------------------------------------------
 |
