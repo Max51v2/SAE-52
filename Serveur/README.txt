@@ -257,4 +257,24 @@ Version : 0.9
 |    |
 |    +---------------------------------------------------------
 |
+|    +---------------------Certificat SSL---------------------- 
+|    |
+|    |   sudo mkdir /certs
+|    |   cd /certs
+|    |
+|    |   *Entrer un MDP (ici leffe) et les informations demandées (peu importe le contenu)
+|    |   sudo openssl req -x509 -nodes -days 10000 -newkey rsa:4096 -keyout /certs/SAE52.key -out /certs/SEA52.crt
+|    |
+|    |   *Apache
+|    |   sudo nano /etc/apache2/sites-available/gmao.conf
+|    |   => 1ère ligne : remplacer le port 80 par 443
+|    |   *Ajouter les lignes suivantes :
+|    |   ==> SSLCertificateFile /certs/SAE52.crt
+|    |   ==> SSLCertificateKeyFile /certs/SAE52.key
+|    |
+|    |   *Tomcat (à finir)
+|    |   sudo openssl pkcs12 -export -in SAE52.crt -inkey SAE52.key -out SAE52.p12 -name tomcat -CAfile SAE52.crt -caname root -chain
+|    |
+|    +---------------------------------------------------------
+|
 +---------------------------------------------------------

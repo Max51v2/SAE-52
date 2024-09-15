@@ -107,3 +107,12 @@ if [ "$option" = "o" ] || [ "$option" = "O" ]
 then
     echo "Base de données SQL reconstruite"
 fi
+
+echo
+
+#cmd NetBEANS
+cd /usr/java
+Java_version=`ls | head -n 1`
+
+echo "Commande pour démarrer NetBEANS (ne pas fermer le terminal une fois NetBEANS ouvert):"
+echo "sudo netbeans --jdkhome /usr/java/"$Java_version
