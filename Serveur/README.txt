@@ -227,6 +227,7 @@ Version : 1.0
 |    |   ==> ls                                                               (prendre le nom du dossier)
 |    |
 |    |   sudo ufw allow 8080
+|    |   sudo ufw allow 8443
 |    |
 |    |   sudo systemctl daemon-reload
 |    |
@@ -293,6 +294,7 @@ Version : 1.0
 |    |   => MDP keytool "administrateur"
 |    |
 |    |   sudo cp /home/sae-52/Bureau/SAE-52/Serveur/server.xml /opt/tomcat/conf/server.xml
+|    |
 |    +---------------------------------------------------------
 |
 |    +---------------------Ajout Certificat-------------------- 

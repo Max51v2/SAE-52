@@ -1,1 +1,1 @@
-TestServlet=javax.servlet.annotation.WebServlet
+Servlets.PasswordCheck=javax.servlet.annotation.WebServlet
