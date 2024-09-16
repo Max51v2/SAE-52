@@ -1,8 +1,7 @@
 Auteur : Maxime VALLET
-Version : 0.9
+Version : 1.0
 
 à faire : 
-    - installer et configurer NetBEANS + intégration Tomcat + JDBC (driver...)
     - installer et configurer Tomcat + NetBEANS sur la VM (Maxime)
     - envoyer la VM (Maxime)
     - Servlets + BD
@@ -58,8 +57,8 @@ Version : 0.9
 |
 |    +------------------------NetBEANS------------------------- 
 |    |
-|    |   *Lancer NetBEANS (obligatoire)
-|    |   => sudo netbeans --jdkhome /usr/java/jdk-22.0.2
+|    |   *Lancer NetBEANS (obligatoire / commande donnée par Start.sh)
+|    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
 |    |   
 |    |   *Au lancement du projet, si la fenêtre requesting keyreing apparait mais que NetBEANS ne demande pas de MDP, il faut redémarrer NetBEANS
 |    |
@@ -73,8 +72,9 @@ Version : 0.9
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Changes" > cliquer sur le + pour ajouter tous les fichiers (tt dans être dans "staged changes")
 |    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
 |    |
-|    |   Cloner un répertoire Github :
+|    |   Cloner un répertoire Github sur le BUREAU(obligatoire avant de commencer):
 |    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau
+|    |   => clarification : le projet est déjà sur la VM mais il faut se connecter au copmpte github pour le cloner et le synchro (celui présent était juste la pour configurer NetBEANS)
 |    |
 |    |   Remplacer le répertoire Github local par celui en ligne
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
@@ -83,6 +83,11 @@ Version : 0.9
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
 |    |   => Web et Serveur > VSCode | Servlets (dossier NetBEANS) > NetBEANS
 |    |   => Il n'y a besoin du terminal que pour lancer Start.sh et NetBEANS
+|    |
+|    |   Adresses serveurs :
+|    |   => Apache : https://gmao.[@IP VM]/[NomPage]
+|    |   => Tomcat (administration) : http://[@IP VM]:8080
+|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/[NomServlet]
 |    | 
 |    +---------------------------------------------------------
 |
@@ -159,10 +164,12 @@ Version : 0.9
 |
 |    +--------------------------JDK----------------------------  
 |    |   
-|    |   sudo snap install openjdk
-|    |
+|    |   sudo mkdir /usr/java
 |    |   cd /usr/java
-|    |   *Récuppérer le numéro de version avec "ls"
+|    |   sudo mkdir ./openjdk-22.0.2
+|    |
+|    |   sudo wget -c https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_linux-x64_bin.tar.gz
+|    |   sudo tar xzvf ./openjdk-22.0.2_linux-x64_bin.tar.gz -C ./openjdk-22.0.2 --strip-components=1
 |    |
 |    |   sudo nano /etc/profile
 |    |   => JAVA_HOME=/usr/java/[version JDK]
@@ -242,13 +249,12 @@ Version : 0.9
 |    |
 |    |   sudo snap install netbeans --classic
 |    |
-|    |   sudo netbeans --jdkhome /usr/java/[version jdk]   
+|    |   sudo netbeans --jdkhome /usr/java/[version jdk]
+|    |
+|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/sae-52/Bureau/SAE-52/NetBEANS/SAE52  
 |    |
 |    |   *Ajout serveur Tomcat
 |    |   Tools > Server > Apache Tomcat or TomEE > Server location : "/opt/tomcat/" | username : "admin | login : "leffe"
-|    |
-|    |   *!!! Ajouter en premier si l'onglet Tools est inaccessible !!!
-|    |   => open project > /home/$USER/Bureau/SAE-52/NetBEANS
 |    |
 |    |   *Importer driver JDBC PostgreSQL
 |    |   => File > projet properties > libraries > add library > PostgreSQL JDBC library
@@ -264,27 +270,36 @@ Version : 0.9
 |    |   cd /certs
 |    |
 |    |   *Entrer un MDP (ici leffe) et les informations demandées (peu importe le contenu)
-|    |   sudo openssl req -x509 -nodes -days 10000 -newkey rsa:4096 -keyout /certs/SAE52.key -out /certs/SEA52.crt
+|    |   sudo openssl req -x509 -nodes -days 10000 -newkey rsa:4096 -keyout /certs/SAE52.key -out /certs/SAE52.crt
 |    |
 |    |   *Apache
 |    |   sudo nano /etc/apache2/sites-available/gmao.conf
 |    |   => 1ère ligne : remplacer le port 80 par 443
 |    |   *Ajouter les lignes suivantes :
+|    |   ==> SSLEngine on
 |    |   ==> SSLCertificateFile /certs/SAE52.crt
 |    |   ==> SSLCertificateKeyFile /certs/SAE52.key
 |    |
+|    |   sudo a2enmod ssl
+|    |   sudo systemctl daemon-reload
+|    |   sudo systemctl restart apache2
+|    |
 |    |   *Tomcat (à finir)
-|    |   sudo nano /opt/tomcat/conf/Catalina/localhost/SAE52.xml
+|    |   cd /certs
+|    |   sudo openssl pkcs12 -export -in SAE52.crt -inkey SAE52.key -out SAE52.p12 -name tomcat
+|    |   => MDP : leffe
 |    |   
-|    |   *Copier le texte ci-dessous dans le fichier SAE52.xml (non fonctionnel)
-|    |   <!-- SSL -->
-|    |   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
-|    |   <Connector port="8443" protocol="org.apache.coyote.http11.Http11AprProtocol" maxThreads="150" SSLEnabled="true" >
-|    |      <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
-|    |      <SSLHostConfig>
-|    |          <Certificate certificateKeyFile="/certs/SAE52.key" certificateFile="/certs/SAE52.crt" type="RSA" />
-|    |      </SSLHostConfig>
-|    |   </Connector>
+|    |   sudo /usr/java/[version JDK] bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
+|    |   => MDP keytool "administrateur"
+|    |
+|    |   sudo cp /home/sae-52/Bureau/SAE-52/Serveur/server.xml /opt/tomcat/conf/server.xml
+|    +---------------------------------------------------------
+|
+|    +---------------------Ajout Certificat-------------------- 
+|    |
+|    |   
+|    |
+|    |   
 |    |
 |    |
 |    |
