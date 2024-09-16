@@ -2,7 +2,6 @@ Auteur : Maxime VALLET
 Version : 1.0
 
 à faire : 
-    - installer et configurer Tomcat + NetBEANS sur la VM (Maxime)
     - envoyer la VM (Maxime)
     - Servlets + BD
     - Web
@@ -49,7 +48,7 @@ Version : 1.0
 |    |
 |    +---------------------------------------------------------
 |
-|    +------------------------NetBEANS------------------------- 
+|    +-------------------------Tomcat-------------------------- 
 |    |
 |    |   Tomcat se lance lorsqu'on lance le projet dans NetBEANS (ne JAMAIS le lancer manuellement sinon le serveur Tomcat ne fonctonnera PAS)
 |    |
