@@ -2,6 +2,10 @@ Auteur : Maxime VALLET
 Version : 1.0
 
 à faire : 
+<<<<<<< HEAD
+=======
+    - envoyer la VM (Maxime)
+>>>>>>> origin/main
     - Servlets + BD
     - Web
 
@@ -49,7 +53,11 @@ Version : 1.0
 |    |
 |    +---------------------------------------------------------
 |
+<<<<<<< HEAD
 |    +------------------------Tomcat------------------------- 
+=======
+|    +-------------------------Tomcat-------------------------- 
+>>>>>>> origin/main
 |    |
 |    |   Tomcat se lance lorsqu'on lance le projet dans NetBEANS (ne JAMAIS le lancer manuellement sinon le serveur Tomcat ne fonctonnera PAS)
 |    |
