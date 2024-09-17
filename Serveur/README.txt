@@ -23,15 +23,9 @@ Version : 1.2
 |    |
 |    |   VSCode est intégré dans la VM
 |    |
-|    |   Se connecter à GitHub dans VSCode :
-|    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
-|    |
 |    |   *Modifier le nom et l'@ mail
 |    |   git config --global user.name "[Prenom Nom]"
 |    |   git config --global user.email "[@ Mail]"
-|    |
-|    |   *Pour actualiser le code dans le dossier Web sur le serveur apache, il faut tourner Start.sh
-|    |   => en cas d'ajout de fichiers (HTML/CSS/JS), il faut ajouter les fichiers (cf. ligne 23 > Start.sh)
 |    |
 |    +---------------------------------------------------------
 |
@@ -68,9 +62,8 @@ Version : 1.2
 |    |
 |    |   Pour lancer les daemons, actualiser les fichiers Web et reconstruire la DB, lancez Start.sh (cf. section VM > Général)
 |    |
-|    |   Pour sauvegarder le projet > VSCode
-|    |   => icon source control (branche à gauche) > survoler menu déroulant "Changes" > cliquer sur le + pour ajouter tous les fichiers (tt dans être dans "staged changes")
-|    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
+|    |   Se connecter à GitHub dans VSCode :
+|    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
 |    |
 |    |   Cloner un répertoire Github sur le BUREAU (obligatoire avant de commencer) :
 |    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau NetBEANS)
@@ -78,10 +71,13 @@ Version : 1.2
 |    |   Remplacer le répertoire Github local par celui en ligne (si tu veux reset les modifs du projet)
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
 |    |
+|    |   Pour sauvegarder le projet > VSCode
+|    |   => icon source control (branche à gauche) > survoler menu déroulant "Changes" > cliquer sur le + pour ajouter tous les fichiers (tt dans être dans "staged changes")
+|    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
+|    |
 |    |   *Ajouter le certificat de l'authorité de certification (déjà fait sur la VM)
 |    |   => *Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé (mais ça marche)
 |    |   => Pour ajouter un certificat, merci de regarder la section "procédure d'installation", rubrique "Ajout certificat"
-|    |
 |    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
