@@ -11,11 +11,13 @@ Version : 1.0
 |
 |    +-------------------------Général-------------------------  
 |    |
-|    |  Lien VM : TBD
-|    |  MDP : leffe
+|    |   Lien VM : TBD
+|    |   MDP : leffe
 |    |
-|    |  *Demarrer les daemons + actualiser BD + Web
-|    |  /home/$USER/Bureau/SAE-52/Serveur/Start.sh
+|    |   *Demarrer les daemons + actualiser BD + Web
+|    |   /home/$USER/Bureau/SAE-52/Serveur/Start.sh
+|    |
+|    |   *Le copier-coller est suporté entre la VM et l'hôte et vise-versa
 |    |
 |    +---------------------------------------------------------
 |
@@ -49,7 +51,7 @@ Version : 1.0
 |    |
 |    +---------------------------------------------------------
 |
-|    +------------------------NetBEANS------------------------- 
+|    +------------------------Tomcat------------------------- 
 |    |
 |    |   Tomcat se lance lorsqu'on lance le projet dans NetBEANS (ne JAMAIS le lancer manuellement sinon le serveur Tomcat ne fonctonnera PAS)
 |    |
@@ -72,21 +74,25 @@ Version : 1.0
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Changes" > cliquer sur le + pour ajouter tous les fichiers (tt dans être dans "staged changes")
 |    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
 |    |
-|    |   Cloner un répertoire Github sur le BUREAU(obligatoire avant de commencer):
-|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau
-|    |   => clarification : le projet est déjà sur la VM mais il faut se connecter au copmpte github pour le cloner et le synchro (celui présent était juste la pour configurer NetBEANS)
+|    |   Cloner un répertoire Github sur le BUREAU (obligatoire avant de commencer) :
+|    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau NetBEANS)
 |    |
-|    |   Remplacer le répertoire Github local par celui en ligne
+|    |   Remplacer le répertoire Github local par celui en ligne (si tu veux reset les modifs du projet)
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
+|    |
+|    |   *Ajouter le certificat de l'authorité de certification (déjà fait sur la VM)
+|    |   => *Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé (mais ça marche)
+|    |   => Pour ajouter un certificat, merci de regarder la section "procédure d'installation", rubrique "Ajout certificat"
+|    |
 |    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
 |    |   => Web et Serveur > VSCode | Servlets (dossier NetBEANS) > NetBEANS
 |    |   => Il n'y a besoin du terminal que pour lancer Start.sh et NetBEANS
 |    |
-|    |   Adresses serveurs :
+|    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM):
 |    |   => Apache : https://gmao.[@IP VM]/[NomPage]
-|    |   => Tomcat (administration) : http://[@IP VM]:8080
+|    |   => Tomcat (administration) : http://[@IP VM]:8443
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/[NomServlet]
 |    | 
 |    +---------------------------------------------------------
@@ -299,12 +305,21 @@ Version : 1.0
 |
 |    +---------------------Ajout Certificat-------------------- 
 |    |
-|    |   
+|    |   *Linux
+|    |   cd /usr/local/share/ca-certificates/
+|    |   sudo mkdir ./SSL
+|    |   sudo chmod 755 ./SSL/
+|    |
+|    |   cp /certs/SAE52.crt /usr/local/share/ca-certificates/SSL/SAE52.crt
+|    |   sudo chmod 644 ./SSL/SAE52.crt
+|    |
+|    |   sudo update-ca-certificates
+|    |
+|    |   *Windows
+|    |
+|    |
 |    |
 |    |   
-|    |
-|    |
-|    |
 |    +---------------------------------------------------------
 |
 +---------------------------------------------------------
