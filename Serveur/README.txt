@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 1.0
+Version : 1.2
 
 à faire : 
     - Servlets + BD
@@ -49,7 +49,7 @@ Version : 1.0
 |    |
 |    +---------------------------------------------------------
 |
-|    +------------------------Tomcat------------------------- 
+|    +-------------------------Tomcat-------------------------- 
 |    |
 |    |   Tomcat se lance lorsqu'on lance le projet dans NetBEANS (ne JAMAIS le lancer manuellement sinon le serveur Tomcat ne fonctonnera PAS)
 |    |
@@ -88,10 +88,16 @@ Version : 1.0
 |    |   => Web et Serveur > VSCode | Servlets (dossier NetBEANS) > NetBEANS
 |    |   => Il n'y a besoin du terminal que pour lancer Start.sh et NetBEANS
 |    |
-|    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM):
-|    |   => Apache : https://gmao.[@IP VM]/[NomPage]
+|    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM) :
+|    |   => Apache : https://[@IP VM]/[NomPage]
 |    |   => Tomcat (administration) : http://[@IP VM]:8443
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/[NomServlet]
+|    |
+|    |   *Cartes réseau :
+|    |   => il y'a deux cartes réseaux : une en mode bridge et une en mode NAT
+|    |   => dans le cas ou la première fonctionne (enp0s3), les serveurs sont accessibles à partir de l'IP de l'OS hôte (donc accessible au réseau local)
+|    |   => dans le cas ou la deuxième est la seule qui fonctionne (enp0s8), les serveurs sont accessibles à partir de l'IP de la carte virtuelle VirtualBox (donc accessible à l'OS hôte uniquement)
+|    |   => aucune modif requise/ raison : impossible d'utiliser le mode bridge sur eduroam
 |    | 
 |    +---------------------------------------------------------
 |
@@ -303,6 +309,8 @@ Version : 1.0
 |
 |    +---------------------Ajout Certificat-------------------- 
 |    |
+|    |   *Le certificat (de la VM) est disponible dans le dossier "Serveur" => "SAE52.crt"
+|    |
 |    |   *Linux
 |    |   cd /usr/local/share/ca-certificates/
 |    |   sudo mkdir ./SSL
@@ -313,11 +321,9 @@ Version : 1.0
 |    |
 |    |   sudo update-ca-certificates
 |    |
-|    |   *Windows
+|    |   *Windows (flemme)
+|    |   https://support.securly.com/hc/en-us/articles/360026808753-How-do-I-manually-install-the-Securly-SSL-certificate-on-Windows
 |    |
-|    |
-|    |
-|    |   
 |    +---------------------------------------------------------
 |
 +---------------------------------------------------------
