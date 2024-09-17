@@ -2,8 +2,6 @@ Auteur : Maxime VALLET
 Version : 1.0
 
 à faire : 
-    - installer et configurer Tomcat + NetBEANS sur la VM (Maxime)
-    - envoyer la VM (Maxime)
     - Servlets + BD
     - Web
 
