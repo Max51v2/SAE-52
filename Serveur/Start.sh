@@ -1,8 +1,16 @@
 #!/bin/bash
 # Auteur : Maxime VALLET
-# Version : 0.9
+# Version : 1.0
+
+
+#Récupperation de la version de Java (lancement NetBEANS)
+clear
+cd /usr/java
+Java_version=`ls | head -n 1`
 
 clear
+
+sudo systemctl daemon-reload
 
 #Récupération du status du daemon postgresql
 PostgreSQL=`systemctl status postgresql | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
@@ -41,7 +49,7 @@ then
 fi
 
 #On recharge apache2 car le contenu du rep a changé
-sudo systemctl reload apache2
+sudo systemctl daemon-reload
 
 echo
 
@@ -110,9 +118,20 @@ fi
 
 echo
 
-#cmd NetBEANS
-cd /usr/java
-Java_version=`ls | head -n 1`
+#Lancement NetBEANS
+#Recupération option utilisateur
+echo "Souhaitez-vous lancer NetBeans ? [O/N]"
 
-echo "Commande pour démarrer NetBEANS (ne pas fermer le terminal une fois NetBEANS ouvert):"
-echo "sudo netbeans --jdkhome /usr/java/"$Java_version
+read  -n 1 -p "Option :" optionNetbeans
+
+#Lancement NetBEANS
+if [ "$optionNetbeans" = "o" ] || [ "$optionNetbeans" = "O" ]
+then
+    clear
+
+    echo "!!! Ne pas fermer le terminal !!!"
+
+    sudo netbeans --jdkhome /usr/java/$Java_version
+fi
+
+echo
