@@ -7,8 +7,9 @@ package DAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+
 
 /**
  *
@@ -34,6 +35,7 @@ public class DAOSAE52 {
     private static final String PasswordUtilisateur="Utilisateur";
     
     
+    //Demarrage du driver postgresql
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -42,6 +44,7 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
     
     /**
      * Connection utilisateur postgres
@@ -82,23 +85,32 @@ public class DAOSAE52 {
     
     
     /**
-     * Récupération du hash en fonction du login donné
-     * @param login
+     * Récupération du hash dans la table password_Hash_MD5 en fonction du login donné par l'utilisateur
+     * 
+     * @param login     login donné par l'utilisateur
+     * @var RequeteSQL    Requête pour obtenir le hash associé au login
+     * @var hashDB      hash stocké dans la table
+     * @return      hash stocké dans la table
      */
     public String GetUserPasswordHash(String login){
-        String RequeteSQL="SELECT * FROM password_Hash_MD5 WHERE login='"+login+"'";
+        String RequeteSQL="SELECT * FROM password_Hash_MD5 WHERE login = ?";
         String hashDB="";
         
+        
+        //Connection BD sae_52 en tant que postgres
         try (Connection connection = DAOSAE52.getConnectionPostgres();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(RequeteSQL)) {
-
-            if (resultSet.next()) {
-                hashDB = resultSet.getString("hash");
-                System.out.println(hashDB);
-            } 
-            else {
-                //rien
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, login);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    hashDB = resultSet.getString("hash");
+                }
             }
             
         } catch (SQLException e) {

@@ -21,7 +21,6 @@ INSERT INTO password_Hash_MD5 (login, nom, prenom, hash, token) VALUES ('Admin1'
 --Droits table contenant les MDP hashés des utilisateurs
 GRANT ALL ON password_hash_md5 TO administrateur;
 GRANT USAGE, SELECT ON SEQUENCE password_hash_md5_id_seq TO administrateur;
---
 
 --Autres tables à faire
 

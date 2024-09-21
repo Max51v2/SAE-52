@@ -6,12 +6,13 @@ package Servlets;
 
 import DAO.DAOSAE52;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
+import java.io.PrintWriter;
 
 /**
  *
@@ -35,23 +36,36 @@ public class PasswordCheck extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        DAOSAE52 user = new DAOSAE52();
+        //Type de la réponse
+        response.setContentType("application/json;charset=UTF-8");
         
-        String hashDB = user.GetUserPasswordHash("Admin1");
-        System.out.println(hashDB);
+        DAOSAE52 DAO = new DAOSAE52();
         
-        response.setContentType("text/html;charset=UTF-8");
+        //Récuperation du login et MDP
+        String login = String.valueOf(request.getParameter("login"));
+        String password = String.valueOf(request.getParameter("password"));
+        
+        String jsonString = "";
+        Gson gson = new Gson();
+        
+        try { 
+            //Récuperation du hash
+            String hashDB = DAO.GetUserPasswordHash(login);
+            System.out.println(login);
+            System.out.println(hashDB);
+            
+            String rights = "test";
+            
+            jsonString = "{\"hash\":\""+hashDB+"\", \"droits\":\""+rights+"\"}";
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        //Envoi des données
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Test</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1> Hash DB : " + hashDB + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            out.print(jsonString);
+            out.flush();
         }
     }
 

@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 1.2
+Version : 1.3
 
 à faire : 
     - Servlets + BD
@@ -9,7 +9,7 @@ Version : 1.2
 |
 |    +-------------------------Général-------------------------  
 |    |
-|    |   Lien VM : TBD
+|    |   Lien VM : https://drive.google.com/drive/folders/1WY2FbuyUUOAIFGDxtMXPeEN3Un0cfutZ?usp=sharing
 |    |   MDP : leffe
 |    |
 |    |   *Demarrer les daemons + actualiser BD + Web
@@ -75,7 +75,7 @@ Version : 1.2
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Changes" > cliquer sur le + pour ajouter tous les fichiers (tt dans être dans "staged changes")
 |    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
 |    |
-|    |   *Ajouter le certificat de l'authorité de certification (déjà fait sur la VM)
+|    |   *Ajouter le certificat de l'authorité de certification
 |    |   => *Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé (mais ça marche)
 |    |   => Pour ajouter un certificat, merci de regarder la section "procédure d'installation", rubrique "Ajout certificat"
 |    |
@@ -87,7 +87,7 @@ Version : 1.2
 |    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM) :
 |    |   => Apache : https://[@IP VM]/[NomPage]
 |    |   => Tomcat (administration) : http://[@IP VM]:8443
-|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/[NomServlet]
+|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
 |    |
 |    |   *Cartes réseau :
 |    |   => il y'a deux cartes réseaux : une en mode bridge et une en mode NAT
@@ -95,6 +95,25 @@ Version : 1.2
 |    |   => dans le cas ou la deuxième est la seule qui fonctionne (enp0s8), les serveurs sont accessibles à partir de l'IP de la carte virtuelle VirtualBox (donc accessible à l'OS hôte uniquement)
 |    |   => aucune modif requise/ raison : impossible d'utiliser le mode bridge sur eduroam
 |    | 
+|    +---------------------------------------------------------
+|
+|    +------------------Modifications A LIRE-------------------
+|    |
+|    |   *Modifications à faire sur la VM si téléchargé avant 21 septembre
+|    |
+|    |   sudo nano /etc/apache2/sites-available/gmao.conf
+|    |   *ajouter entre les balises "virtuahost" (retirer les "|")
+|    |   "
+|    |   <IfModule mod_headers.c>
+|    |      Header set Access-Control-Allow-Origin "*"
+|    |      Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+|    |      Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+|    |   </IfModule>
+|    |   " 
+|    |
+|    |   sudo a2enmod headers
+|    |   sudo systemctl restart apache2
+|    |
 |    +---------------------------------------------------------
 |
 +---------------------------------------------------------
@@ -200,9 +219,20 @@ Version : 1.2
 |    |   sudo nano gmao.conf
 |    |   *Remplacer la ligne commencant par "DocumentRoot" par "DocumentRoot /var/www/gmao"
 |    |
+|    |   sudo nano /etc/apache2/sites-available/gmao.conf
+|    |   *ajouter entre les balises "virtuahost" (retirer les "|")
+|    |   "
+|    |   <IfModule mod_headers.c>
+|    |      Header set Access-Control-Allow-Origin "*"
+|    |      Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+|    |      Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+|    |   </IfModule>
+|    |   " 
+|    |
 |    |   sudo a2ensite gmao.conf
+|    |   sudo a2enmod headers
 |    |   sudo a2dissite 000-default.conf
-|    |   sudo systemctl reload apache2
+|    |   sudo systemctl restart apache2
 |    |
 |    +---------------------------------------------------------
 |
@@ -305,20 +335,9 @@ Version : 1.2
 |
 |    +---------------------Ajout Certificat-------------------- 
 |    |
-|    |   *Le certificat (de la VM) est disponible dans le dossier "Serveur" => "SAE52.crt"
-|    |
-|    |   *Linux
-|    |   cd /usr/local/share/ca-certificates/
-|    |   sudo mkdir ./SSL
-|    |   sudo chmod 755 ./SSL/
-|    |
-|    |   cp /certs/SAE52.crt /usr/local/share/ca-certificates/SSL/SAE52.crt
-|    |   sudo chmod 644 ./SSL/SAE52.crt
-|    |
-|    |   sudo update-ca-certificates
-|    |
-|    |   *Windows (flemme)
-|    |   https://support.securly.com/hc/en-us/articles/360026808753-How-do-I-manually-install-the-Securly-SSL-certificate-on-Windows
+|    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
+|    |   => Apache : https://[@IP VM]/
+|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/
 |    |
 |    +---------------------------------------------------------
 |
