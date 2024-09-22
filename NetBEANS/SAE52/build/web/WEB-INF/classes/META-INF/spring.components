@@ -1,1 +1,2 @@
 Servlets.PasswordCheck=javax.servlet.annotation.WebServlet
+Servlets.TokenCheck=javax.servlet.annotation.WebServlet

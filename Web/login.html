@@ -97,6 +97,9 @@ button i {
     </div>
 
     <script>
+        //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
+        window.onunload = function(){reload()};
+
         const loginForm = document.getElementById('loginForm');
         const loginError = document.getElementById('loginError');
 
@@ -105,28 +108,84 @@ button i {
         const currentUrl = window.location.href;
         const url = new URL(currentUrl);
         const ServerIP = url.hostname;
-        console.log(ServerIP)
+
+
+        //check si le token existe et l'envoi au servlet
+        var tokenGMAO = sessionStorage['tokenGMAO'];
+
+        if(typeof tokenGMAO !== 'undefined'){
+            console.log("token : "+tokenGMAO)
+
+            //Vérification du token
+            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO})}).then(r => r.json()).then(TokenCheck)
+        }
+        else{
+            console.log("no token")
+
+            //window.location.href = 'login.html'; // Redirection vers la page login si pas de token (déjà sur login.html)
+        }
+
+        function TokenCheck(r){
+            //JSON obtenu
+            console.log(r)
+
+            //si besoin
+            const login = r["login"]
+            const role = r["droits"]
+
+            //redirection selon les droits
+            if(r["droits"] === 'Admin'){
+                window.location.href = 'admin.html'; // Redirection vers la page principale pour l'admin
+            }
+            else if(r["droits"] === 'Technicien'){
+                window.location.href = 'sae52.html'; // Redirection vers la page principale pour le technicien
+            }
+            else if(r["droits"] === 'Utilisateur'){
+                window.location.href = 'sae52.html'; // Redirection vers la page principale pour l'utilisateur
+            }
+            //si aucun droit
+            else{
+                //window.location.href = 'login.html'; // Redirection vers la page login si mauvais token (déjà sur login.html)
+            } 
+        }
+        //fin check token
+
+
 
         loginForm.addEventListener('submit', function (e) {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            
 
-            fetch("https://"+ServerIP+":8443/SAE52/PasswordCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: username, password: password })}).then(r => r.json()).then(PaswordCheck)
+            //si cookie contenant le token inexistant
+            fetch("https://"+ServerIP+":8443/SAE52/PasswordCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: username, password: password })}).then(r => r.json()).then(PasswordCheck)
 
-            function PaswordCheck(r){
-                //Adapter le code suivant pour prendre en compte le JSON obtenu
-
+            function PasswordCheck(r){
                 //JSON obtenu
                 console.log(r)
+                
+                //Message d'erreur si login ou MDP incorrect
+                if(r["droits"] === 'Aucun'){
+                    loginError.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                }
+                //redirection selon les droits
+                else if(r["droits"] === 'Admin'){
+                    window.location.href = 'admin.html'; // Redirection vers la page principale pour l'admin
+                }
+                else if(r["droits"] === 'Technicien'){
+                    window.location.href = 'sae52.html'; // Redirection vers la page principale pour le technicien
+                }
+                else if(r["droits"] === 'Utilisateur'){
+                    window.location.href = 'sae52.html'; // Redirection vers la page principale pour l'utilisateur
+                }
+                else{
+                    loginError.textContent = '';
+                } 
 
-                //if (username === 'admin' && password === 'admin123') {
-                //    window.location.href = 'page admin.html'; // Redirection vers la page principale pour l'admin
-                //} else if (username === 'secretaire' && password === 'secretaire123') {
-                //    window.location.href = 'sae52.html'; // Redirection vers la page spécifique pour le secrétaire
-                //} else {
-                //    loginError.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
-                //}
+
+                //stockage du token
+                sessionStorage['tokenGMAO'] = r["token"];
             }
         });
     </script>

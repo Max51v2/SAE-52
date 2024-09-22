@@ -31,7 +31,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+            sessionStorage.removeItem("tokenGMAO")
 
             window.location.href = 'login.html';
         });

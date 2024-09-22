@@ -13,17 +13,27 @@ public class PasswordHashMD5 {
     private String login;
     private String nom;
     private String prenom;
+    private String role;
     private String hash;
     private String token;
     
     
-    PasswordHashMD5(Integer id, String login, String nom, String prenom, String hash, String token){
+    PasswordHashMD5(Integer id, String login, String nom, String prenom, String role, String hash, String token){
         this.id=id;
         this.login=login;
         this.nom=nom;
         this.prenom=prenom;
+        this.role=role;
         this.hash=hash;
         this.token=token;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Integer getId() {

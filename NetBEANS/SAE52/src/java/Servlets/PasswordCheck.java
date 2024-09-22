@@ -12,7 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.security.*;
+import java.util.Random;
+import org.apache.commons.lang3.RandomStringUtils;
+import static org.apache.commons.lang3.StringUtils.length;
 
 /**
  *
@@ -21,12 +27,29 @@ import java.io.PrintWriter;
 @WebServlet(name = "PasswordCheck", urlPatterns = {"/PasswordCheck"})
 public class PasswordCheck extends HttpServlet {
 
+    /*
+    * classe permettant de stocker le contenu du JSON de la requête
+    * @param login      login utilisateur
+    * @param password       MDP utilisateur
+    */
+    private class User{
+        private String login;
+        private String password;
+        
+        private User(String login, String password){
+            this.login=login;
+            this.password=password;
+        }
+    }
+    
+    
+    
     /**
      * test (pas terminé)
      * entrées : MDP utilisateur et login
      * Récupération du hash associé au login
      * hashage du MDP utilisateur et comparaison
-     * si bon : envoi des droits de l'utilsateur (modifier DB)
+     * si bon : envoi des droits de l'utilsateur + token
      *
      * @param request servlet request
      * @param response servlet response
@@ -41,22 +64,63 @@ public class PasswordCheck extends HttpServlet {
         
         DAOSAE52 DAO = new DAOSAE52();
         
-        //Récuperation du login et MDP
-        String login = String.valueOf(request.getParameter("login"));
-        String password = String.valueOf(request.getParameter("password"));
+        //Récuperation du JSON envoyé
+        BufferedReader reader = request.getReader();
+        Gson gsonRequest = new Gson();
         
+        // Convertion du JSON en objet Java
+        User user = gsonRequest.fromJson(reader, User.class);
+        
+        //Données
+        String login = user.login;
+        String password = user.password;
+        String rights = "Aucun";
+        String token = "";
+        
+        //Création du JSON à renvoyer (vide)
         String jsonString = "";
-        Gson gson = new Gson();
         
         try { 
             //Récuperation du hash
             String hashDB = DAO.GetUserPasswordHash(login);
-            System.out.println(login);
-            System.out.println(hashDB);
             
-            String rights = "test";
             
-            jsonString = "{\"hash\":\""+hashDB+"\", \"droits\":\""+rights+"\"}";
+            //si il n'y a pas de hash, utilisateur inexistant
+            if(hashDB.equals("")){
+                //rien
+            }
+            //l'utilisateur existe mais il faut vérifier le MDP
+            else{
+                //génération du hash du MDP donné par l'utilisateur
+                MessageDigest m = MessageDigest.getInstance("MD5");
+                m.reset();
+                m.update(password.getBytes());
+                byte[] digest = m.digest();
+                BigInteger bigInt = new BigInteger(1,digest);
+                String hashtext = bigInt.toString(16);
+                
+                while(hashtext.length() < 32 ){
+                    hashtext = "0"+hashtext;
+                }
+                
+                //si le hash de la DB est identique au hash envoyé 
+                if(hashDB.equals(hashtext)){
+                    //Récupération des droits utilisateur
+                    rights = DAO.GetUserRights(login);
+                    
+                    //Génération d'une chaine de 32 caractères (token)
+                    byte[] array = new byte[32];
+                    new Random().nextBytes(array);
+                    token = RandomStringUtils.randomAlphanumeric(32);
+                    
+                    //Enregistrement du token dans la DB
+                    DAO.SetToken(token, login);
+                }
+            }
+            
+            
+            //JSON renvoyé
+            jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\"}";
             
         } catch (Exception e) {
             e.printStackTrace();

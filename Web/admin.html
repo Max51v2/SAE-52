@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMAO - Gestion des équipements</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+            position: relative;
+        }
+        header a {
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            text-decoration: none;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:active {
+            background-color: #004085;
+        }
+        button i {
+            margin-right: 8px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="number"], select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        input[type="submit"], button {
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        input[type="submit"]:hover, button:hover {
+            background-color: #555;
+        }
+        .hidden {
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .icon-button {
+            display: flex;
+            align-items: center;
+        }
+        .icon-button i {
+            margin-right: 8px;
+        }
+        .tabs {
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>    
+<body>
+    <header>
+        <h1>GMAO - Gestion des équipements</h1>
+        <a href="logout.html">
+            <button type="button">
+                <i class="fas fa-sign-out-alt"></i> Se déconnecter
+            </button>
+        </a>
+    </header>
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-button" onclick="openTab('stockManagement')">Gestion des Stocks</button>
+            <button class="tab-button" onclick="window.location.href='manageuser.html'">Gestion des Rôles</button>
+            <button class="tab-button" onclick="openTab('stockChartTab')">Évolution des Stocks</button>
+        </div>
+
+        <div id="stockManagement" class="tab-content active">
+            <h2>Ajouter un équipement</h2>
+            <form id="equipmentForm" method="POST" action="InsertEquipmentServlet">
+                <label for="equipment_type">Type d'équipement :</label>
+                <select id="equipment_type" name="equipment_type">
+                    <option value="pc">PC</option>
+                    <option value="router">Routeur</option>
+                    <option value="switch">Switch</option>
+                    <option value="cable">Câble RJ45</option>
+                </select>
+
+                <div id="pc_fields" class="hidden">
+                    <label for="processor">Processeur :</label>
+                    <input type="text" id="processor" name="processor">
+
+                    <label for="ram">RAM (Go) :</label>
+                    <input type="number" id="ram" name="ram">
+                </div>
+
+                <div id="router_fields" class="hidden">
+                    <label for="router_ports">Nombre de ports :</label>
+                    <input type="number" id="router_ports" name="router_ports">
+                </div>
+
+                <div id="switch_fields" class="hidden">
+                    <label for="switch_speed">Vitesse du Switch (Gbps) :</label>
+                    <input type="number" id="switch_speed" name="switch_speed">
+                </div>
+
+                <div id="cable_fields" class="hidden">
+                    <label for="cable_length">Longueur du câble (m) :</label>
+                    <input type="number" id="cable_length" name="cable_length">
+                </div>
+
+                <div id="additional_fields" class="hidden">
+                    <label for="mac_address">Adresse MAC :</label>
+                    <input type="text" id="mac_address" name="mac_address">
+
+                    <label for="vlan">VLAN :</label>
+                    <input type="text" id="vlan" name="vlan">
+                </div>
+
+                <label for="name">Nom de l'appareil :</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="serial_number">Numéro de série :</label>
+                <input type="text" id="serial_number" name="serial_number" required>
+
+                <label for="status">État de l'équipement :</label>
+                <select id="status" name="status">
+                    <option value="En stock">En stock</option>
+                    <option value="Sur site">Sur site</option>
+                    <option value="En maintenance">En maintenance</option>
+                </select>
+
+                <input type="submit" value="Ajouter l'équipement">
+            </form>
+        </div>
+
+        <!-- Gestion des Rôles -->
+        <div id="roleManagement" class="tab-content">
+            <h2>Gestion des Rôles</h2>
+            <!-- Contenu de gestion des rôles ici -->
+        </div>
+
+        <!-- Graphique d'évolution des stocks -->
+        <div id="stockChartTab" class="tab-content">
+            <h2>Évolution des Stocks</h2>
+            <canvas id="stockChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
+        window.onunload = function(){reload()};
+
+        // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Apache)
+        // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const ServerIP = url.hostname;
+
+
+        //check si le token existe et l'envoi au servlet (à compier sur chaque page et modif les pages de redirection)
+        var tokenGMAO = sessionStorage['tokenGMAO'];
+
+        if(typeof tokenGMAO !== 'undefined'){
+            console.log("token : "+tokenGMAO)
+
+            //Vérification du token
+            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO})}).then(r => r.json()).then(TokenCheck)
+        }
+        else{
+            console.log("no token")
+
+            window.location.href = 'login.html'; // Redirection vers la page login si pas de token
+        }
+
+        function TokenCheck(r){
+            //JSON obtenu
+            console.log(r)
+
+            //si besoin
+            const login = r["login"]
+            const role = r["droits"]
+
+            //redirection selon les droits
+            if(r["droits"] === 'Admin'){
+                //Rien
+            }
+            else if(r["droits"] === 'Technicien'){
+                window.location.href = 'sae52.html'; // Redirection vers la page principale pour le technicien
+            }
+            else if(r["droits"] === 'Utilisateur'){
+                window.location.href = 'sae52.html'; // Redirection vers la page principale pour l'utilisateur
+            }
+            //si aucun droit
+            else{
+                window.location.href = 'login.html'; // Redirection vers la page login si mauvais token
+            } 
+        }
+        //fin check token
+    </script>
+    <script>
+        // Gérer les onglets
+        function openTab(tabName) {
+            var tabContent = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < tabContent.length; i++) {
+                tabContent[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+        }
+
+        // Par défaut, ouvrir l'onglet "Gestion des Stocks"
+        openTab('stockManagement');
+
+        // Graphique d'évolution des stocks
+        var ctx = document.getElementById('stockChart').getContext('2d');
+        var stockChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai'], // Mois ou périodes
+                datasets: [{
+                    label: 'Stocks de câbles RJ45',
+                    data: [30, 25, 20, 15, 10], // Données de l'évolution des stocks
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Gestion des champs d'équipement
+        const equipmentTypeSelect = document.getElementById('equipment_type');
+        const pcFields = document.getElementById('pc_fields');
+        const routerFields = document.getElementById('router_fields');
+        const switchFields = document.getElementById('switch_fields');
+        const cableFields = document.getElementById('cable_fields');
+        const additionalFields = document.getElementById('additional_fields');
+
+        function toggleFields() {
+            const selectedType = equipmentTypeSelect.value;
+            pcFields.classList.add('hidden');
+            routerFields.classList.add('hidden');
+            switchFields.classList.add('hidden');
+            cableFields.classList.add('hidden');
+            additionalFields.classList.add('hidden'); // Cacher les champs supplémentaires
+
+            if (selectedType === 'pc') {
+                pcFields.classList.remove('hidden');
+                additionalFields.classList.remove('hidden'); // Afficher les champs supplémentaires
+            } else if (selectedType === 'router') {
+                routerFields.classList.remove('hidden');
+                additionalFields.classList.remove('hidden'); // Afficher les champs supplémentaires
+            } else if (selectedType === 'switch') {
+                switchFields.classList.remove('hidden');
+                additionalFields.classList.remove('hidden'); // Afficher les champs supplémentaires
+            } else if (selectedType === 'cable') {
+                cableFields.classList.remove('hidden');
+                additionalFields.classList.add('hidden'); // Cacher les champs supplémentaires
+            }
+        }
+
+        equipmentTypeSelect.addEventListener('change', toggleFields);
+        toggleFields(); // Initialiser l'affichage des champs corrects
+    </script>
+</body>
+</html>
