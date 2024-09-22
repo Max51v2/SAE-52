@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 1.3
+Version : 1.4
 
 à faire : 
     - Servlets + BD
@@ -58,6 +58,12 @@ Version : 1.3
 |    |
 |    +---------------------------------------------------------
 |
+|    +---------------------Client OpenVPN---------------------- 
+|    |
+|    |   bash <(curl -fsS https://as-repository.openvpn.net/as/install.sh)
+|    |
+|    +---------------------------------------------------------
+|
 |    +-------------------CONCLUSION A LIRE--------------------- 
 |    |
 |    |   Pour lancer les daemons, actualiser les fichiers Web et reconstruire la DB, lancez Start.sh (cf. section VM > Général)
@@ -113,6 +119,10 @@ Version : 1.3
 |    |
 |    |   sudo a2enmod headers
 |    |   sudo systemctl restart apache2
+|    |
+|    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
+|    |   => Apache : https://[@IP VM]/
+|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/
 |    |
 |    +---------------------------------------------------------
 |
@@ -338,6 +348,50 @@ Version : 1.3
 |    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
 |    |   => Apache : https://[@IP VM]/
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/
+|    |
+|    +---------------------------------------------------------
+|
+|    +---------------------Serveur OpenVPN--------------------- 
+|    |
+|    |   *Etape facultative
+|    |   => réalisée car il est impossible de faire de la redirection de port sur Eduroam (utilité : demo)
+|    |
+|    |   *MDP clé "leffe" / nom serveur "SAE52"
+|    |
+|    |   sudo apt install openvpn easy-rsa
+|    |
+|    |   sudo make-cadir /etc/openvpn/easy-rsa
+|    |   sudo /etc/openvpn/easy-rsa/easyrsa init-pki
+|    |   sudo /etc/openvpn/easy-rsa/easyrsa build-ca
+|    |   
+|    |   sudo /etc/openvpn/easy-rsa/easyrsa gen-req SAE52 nopass
+|    |   sudo /etc/openvpn/easy-rsa/easyrsa gen-dh
+|    |   sudo /etc/openvpn/easy-rsa/easyrsa sign-req server SAE52
+|    |   
+|    |   sudo cp pki/dh.pem pki/ca.crt pki/issued/SAE52.crt pki/private/SAE52.key /etc/openvpn/
+|    |
+|    |   *création d'un ou plusieurs certificats pour les utilisateurs (un dans ce cas)
+|    |   sudo /etc/openvpn/easy-rsa/easyrsa gen-req Client1 nopass
+|    |   sudo /etc/openvpn/easy-rsa/easyrsa sign-req client Client1
+|    |
+|    |   sudo cp /home/sae-52/pki/ca.crt /home/sae-52/Bureau/SAE-52/Serveur/Certificats/ca.crt
+|    |   sudo cp /home/sae-52/pki/issued/Client1.crt /home/sae-52/Bureau/SAE-52/Serveur/Certificats/Client1.crt
+|    |   sudo chmod 777 /home/sae-52/Bureau/SAE-52/Serveur/Certificats/Client1.crt
+|    |   sudo chmod 777 /home/sae-52/Bureau/SAE-52/Serveur/Certificats/ca.crt
+|    |
+|    |   sudo cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf /etc/openvpn/SAE52.conf
+|    |   
+|    |   *remplacer "cert server.crt" par "cert SAE52.crt", "key server.key" par "SAE52.key" et "dh dh2048.pem" par "dh dh.pem"
+|    |   => sudo cp /etc/openvpn/SAE52.conf
+|    |
+|    |   sudo openvpn --genkey secret /etc/openvpn/ta.key
+|    |
+|    |   *Décommenter "#net.ipv4.ip_forward=1"
+|    |   => sudo nano /etc/sysctl.conf
+|    |
+|    |   sudo sysctl -p /etc/sysctl.conf
+|    |
+|    |   sudo systemctl start openvpn@SAE52
 |    |
 |    +---------------------------------------------------------
 |
