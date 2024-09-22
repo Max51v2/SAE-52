@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 1.4
+Version : 1.5
 
 à faire : 
     - Servlets + BD
@@ -62,6 +62,18 @@ Version : 1.4
 |    |
 |    |   bash <(curl -fsS https://as-repository.openvpn.net/as/install.sh)
 |    |
+|    |   sudo apt install openvpn
+|    |
+|    |   sudo cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf /etc/openvpn/
+|    |   
+|    |   *Transferer "ca.crt", "Client1.crt", "Client1.key" et "ta.key" du dossier "/SAE-52/Serveur/Certificats" vers "/etc/openvpn" (client)
+|    |
+|    |   *Remplacer "client.crt" par "Client1.crt", "client.key" par "Client1.key" et ajouter "remote vpnserver.example.com 1194" en dessous de "client" (début)
+|    |   sudo nano /etc/openvpn/client.conf
+|    |
+|    |   *Démarrer OpenVPN Client 
+|    |   => sudo systemctl start openvpn@client
+|    |
 |    +---------------------------------------------------------
 |
 |    +-------------------CONCLUSION A LIRE--------------------- 
@@ -123,6 +135,9 @@ Version : 1.4
 |    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
 |    |   => Apache : https://[@IP VM]/
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/
+|    |
+|    |   *Désactiver les notifs réseau
+|    |   paramètres > notifications > Ne pas déranger
 |    |
 |    +---------------------------------------------------------
 |
@@ -376,8 +391,10 @@ Version : 1.4
 |    |
 |    |   sudo cp /home/sae-52/pki/ca.crt /home/sae-52/Bureau/SAE-52/Serveur/Certificats/ca.crt
 |    |   sudo cp /home/sae-52/pki/issued/Client1.crt /home/sae-52/Bureau/SAE-52/Serveur/Certificats/Client1.crt
+|    |   sudo cp /etc/openvpn/ta.key /home/sae-52/Bureau/SAE-52/Serveur/Certificats/ta.key
 |    |   sudo chmod 777 /home/sae-52/Bureau/SAE-52/Serveur/Certificats/Client1.crt
 |    |   sudo chmod 777 /home/sae-52/Bureau/SAE-52/Serveur/Certificats/ca.crt
+|    |   sudo chmod 777 /home/sae-52/Bureau/SAE-52/Serveur/Certificats/ta.key
 |    |
 |    |   sudo cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf /etc/openvpn/SAE52.conf
 |    |   
@@ -390,6 +407,8 @@ Version : 1.4
 |    |   => sudo nano /etc/sysctl.conf
 |    |
 |    |   sudo sysctl -p /etc/sysctl.conf
+|    |
+|    |   sudo ufw allow 1194
 |    |
 |    |   sudo systemctl start openvpn@SAE52
 |    |

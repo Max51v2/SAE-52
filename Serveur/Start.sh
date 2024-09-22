@@ -1,6 +1,6 @@
 #!/bin/bash
 # Auteur : Maxime VALLET
-# Version : 1.0
+# Version : 1.4
 
 
 #Récupperation de la version de Java (lancement NetBEANS)
@@ -8,13 +8,13 @@ clear
 cd /usr/java
 Java_version=`ls | head -n 1`
 
-clear
 
-sudo systemctl daemon-reload
+clear
+echo "Veuillez patienter"
+
 
 #Récupération du status du daemon postgresql
 PostgreSQL=`systemctl status postgresql | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-echo "Status PostgreSQL : "$PostgreSQL
 
 #Demarrage de PostgreSQL si il est éteint
 if [ "$PostgreSQL" = "inactive" ]
@@ -22,10 +22,9 @@ then
     #demarrage
     echo "demarrage de PostgreSQL"
     systemctl start postgresql
+
+    echo
 fi
-
-echo
-
 
 
 #Copie des fichiers dans le répertoire d'Apache2 (à modifier si nouveaux fichiers)
@@ -38,7 +37,6 @@ sudo cp $GitRep"sae52.html" $ApacheRep"/sae52.html"
 
 #Récupération du status du daemon apache2
 apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-echo "Status apache2 : "$apache2
 
 #Demarrage de apache2 si il est éteint
 if [ "$apache2" = "inactive" ]
@@ -46,18 +44,16 @@ then
     #demarrage
     echo "demarrage de apache2"
     sudo systemctl start apache2
+
+    echo
 fi
 
 #On recharge apache2 car le contenu du rep a changé
 sudo systemctl daemon-reload
 
-echo
-
-
 
 #Récupération du status du daemon tomcat
 #tomcat=`systemctl status tomcat | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-#echo "Status tomcat : "$tomcat
 
 #Demarrage de tomcat si il est éteint
 #if [ "$tomcat" = "active" ]
@@ -65,17 +61,20 @@ echo
     #demarrage
     #echo "demarrage de tomcat"
     #sudo systemctl start tomcat
+
+    #echo
 #fi
-
-#echo
-
 
 
 #Section reconstruction BD
 #Recupération option utilisateur
+clear
+
 echo "Souhaitez-vous reconstruire la Base de Données ? [O/N]
-*Cela va effacer le contenu de la BD 
-"
+*Cela va effacer le contenu de la BD"
+
+echo
+
 read  -n 1 -p "Option :" option
 
 clear
@@ -87,6 +86,34 @@ then
     psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_52;" -f "/home/"$USER"/Bureau/SAE-52/Serveur/PostgreSQL_config.sql"
 fi
 
+
+#Demande de lancement NetBEANS s'il n'est pas en train de tourner
+ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/openjdk-22.0.2" | head -n 1`
+
+#Démarrage NetBEANS
+if [ "$ProcNetBEANS" = "" ]
+then
+    #Recupération option utilisateur
+    clear
+    echo "Souhaitez-vous lancer NetBeans ? [O/N]"
+
+    echo
+
+    read  -n 1 -p "Option :" optionNetbeans
+
+    #Lancement NetBEANS
+    if [ "$optionNetbeans" = "o" ] || [ "$optionNetbeans" = "O" ]
+    then
+        clear
+
+        #Lancement de NetBEANS dans un nouvel onglet
+        gnome-terminal --tab -- /bin/sh -c 'echo "!!! Ne pas fermer cette fenêtre !!!"; echo; sudo netbeans --jdkhome /usr/java/'$Java_version
+
+        sleep 1
+    fi
+
+    echo
+fi
 
 
 #Affichage du status des opérations
@@ -111,27 +138,20 @@ echo
 
 #echo
 
+#Statut DB
 if [ "$option" = "o" ] || [ "$option" = "O" ]
 then
     echo "Base de données SQL reconstruite"
+    echo
 fi
 
-echo
-
-#Lancement NetBEANS
-#Recupération option utilisateur
-echo "Souhaitez-vous lancer NetBeans ? [O/N]"
-
-read  -n 1 -p "Option :" optionNetbeans
-
-#Lancement NetBEANS
-if [ "$optionNetbeans" = "o" ] || [ "$optionNetbeans" = "O" ]
+#Affichage status NetBEANS
+ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/openjdk-22.0.2" | head -n 1`
+if [ "$ProcNetBEANS" = "" ]
 then
-    clear
-
-    echo "!!! Ne pas fermer le terminal !!!"
-
-    sudo netbeans --jdkhome /usr/java/$Java_version
+    echo "Status NetBEANS : inactive"
+else
+    echo "Status NetBEANS : active"
 fi
 
 echo
