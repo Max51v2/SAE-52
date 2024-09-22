@@ -99,7 +99,7 @@ Version : 1.5
 |
 |    +------------------Modifications A LIRE-------------------
 |    |
-|    |   *Modifications à faire sur la VM si téléchargé avant 21 septembre
+|    |   *Modifications à faire sur la VM si téléchargé avant 22 septembre
 |    |
 |    |   sudo nano /etc/apache2/sites-available/gmao.conf
 |    |   *ajouter entre les balises "virtuahost" (retirer les "|")
