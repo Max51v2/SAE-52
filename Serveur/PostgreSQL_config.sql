@@ -34,3 +34,5 @@ GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO administrateur;
 \echo
 \echo
 \echo Fait
+
+

@@ -200,7 +200,7 @@ public class DAOSAE52 {
     /**
      * Vérification du token
      * 
-     * @param login     login donné par l'utilisateur
+     * @param token     token donné par l'utilisateur
      * @var RequeteSQL    Requête pour obtenir le hash associé au login
      * @return      login stocké dans la table
      */
@@ -230,6 +230,13 @@ public class DAOSAE52 {
         }
         
         return login;
+    }
+    
+    
+    
+    public void addUser(String login, String nom, String prenom){
+        //à compléter
+        
     }
 
 }
