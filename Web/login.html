@@ -188,6 +188,20 @@ button i {
                 sessionStorage['tokenGMAO'] = r["token"];
             }
         });
+
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'admin' && password === 'admin') {
+                window.location.href = 'page admin.html'; // Redirection vers la page principale pour l'admin
+            } else if (username === 'secretaire' && password === 'secretaire') {
+                window.location.href = 'secretaire.html'; // Redirection vers la page spécifique pour le secrétaire
+            } else {
+                loginError.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
+            }
+        });
     </script>
 </body>
 </html>
