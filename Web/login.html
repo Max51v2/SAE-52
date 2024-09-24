@@ -97,8 +97,97 @@ button i {
     </div>
 
     <script>
+        //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
+        window.onunload = function(){reload()};
+
         const loginForm = document.getElementById('loginForm');
         const loginError = document.getElementById('loginError');
+
+        // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Apache)
+        // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const ServerIP = url.hostname;
+
+
+        //check si le token existe et l'envoi au servlet
+        var tokenGMAO = sessionStorage['tokenGMAO'];
+
+        if(typeof tokenGMAO !== 'undefined'){
+            console.log("token : "+tokenGMAO)
+
+            //Vérification du token
+            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO})}).then(r => r.json()).then(TokenCheck)
+        }
+        else{
+            console.log("no token")
+
+            //window.location.href = 'login.html'; // Redirection vers la page login si pas de token (déjà sur login.html)
+        }
+
+        function TokenCheck(r){
+            //JSON obtenu
+            console.log(r)
+
+            //si besoin
+            const login = r["login"]
+            const role = r["droits"]
+
+            //redirection selon les droits
+            if(r["droits"] === 'Admin'){
+                window.location.href = 'admin.html'; // Redirection vers la page principale pour l'admin
+            }
+            else if(r["droits"] === 'Technicien'){
+                window.location.href = 'sae52.html'; // Redirection vers la page principale pour le technicien
+            }
+            else if(r["droits"] === 'Utilisateur'){
+                window.location.href = 'sae52.html'; // Redirection vers la page principale pour l'utilisateur
+            }
+            //si aucun droit
+            else{
+                //window.location.href = 'login.html'; // Redirection vers la page login si mauvais token (déjà sur login.html)
+            } 
+        }
+        //fin check token
+
+
+
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+
+            //si cookie contenant le token inexistant
+            fetch("https://"+ServerIP+":8443/SAE52/PasswordCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: username, password: password })}).then(r => r.json()).then(PasswordCheck)
+
+            function PasswordCheck(r){
+                //JSON obtenu
+                console.log(r)
+                
+                //Message d'erreur si login ou MDP incorrect
+                if(r["droits"] === 'Aucun'){
+                    loginError.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                }
+                //redirection selon les droits
+                else if(r["droits"] === 'Admin'){
+                    window.location.href = 'admin.html'; // Redirection vers la page principale pour l'admin
+                }
+                else if(r["droits"] === 'Technicien'){
+                    window.location.href = 'sae52.html'; // Redirection vers la page principale pour le technicien
+                }
+                else if(r["droits"] === 'Utilisateur'){
+                    window.location.href = 'sae52.html'; // Redirection vers la page principale pour l'utilisateur
+                }
+                else{
+                    loginError.textContent = '';
+                } 
+
+
+                //stockage du token
+                sessionStorage['tokenGMAO'] = r["token"];
+            }
+        });
 
         loginForm.addEventListener('submit', function (e) {
             e.preventDefault();
