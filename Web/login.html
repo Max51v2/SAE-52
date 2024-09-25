@@ -6,16 +6,19 @@
     <title>GMAO - Gestion des équipements</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
+        /* Ajoute la police Arial par défaut pour tout le document */
+        body, input, button, h1, label {
             font-family: Arial, sans-serif;
+        }
+        html, body {
+            height: 100vh;
             margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            background-color: #f0f0f0;
         }
+
         .login-container {
             max-width: 400px;
             width: 100%;
@@ -25,64 +28,74 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        button {
-    padding: 10px 20px;
-    background-color: #007bff; 
-    color: #fff; 
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    display: inline-flex;
-    align-items: center;
-}
-
-button:hover {
-    background-color: #0056b3; 
-}
-
-button:active {
-    background-color: #004085; 
-}
-
-button i {
-    margin-right: 8px; 
-}
 
         h1 {
             margin-bottom: 20px;
         }
+
+        .logo {
+            margin-bottom: 20px;
+            display: block;
+            margin: 0 auto; 
+            max-width: 1500px; 
+            height: auto; 
+        }
+
         label {
             margin: 10px 0 5px;
             display: block;
         }
+
         input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 15px;
+            width: calc(100% - 22px); /* Ajuster la largeur pour le padding et les bordures */
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            margin-bottom: 15px; 
+            box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur */
         }
-        input[type="submit"] {
-            padding: 10px;
-            background-color: #333;
+
+        button, input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #000000;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
-        input[type="submit"]:hover {
-            background-color: #555;
+
+        button:hover, input[type="submit"]:hover {
+            background-color: #0056b3;
         }
+
+        button:focus, input[type="submit"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
         .error {
             color: red;
             margin-top: 10px;
+        }
+
+        img.logo {
+            max-width: 150px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
+        <!-- Ajout du logo -->
+        <img src="/Web/LogoVIM.jpg" alt="" class="logo">
+        
         <h1>Connexion</h1>
         <form id="loginForm">
             <label for="username">Nom d'utilisateur :</label>
@@ -97,103 +110,74 @@ button i {
     </div>
 
     <script>
-        //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
-        window.onunload = function(){reload()};
+        // Rafraîchit la page en arrière
+        window.onunload = function() { reload(); };
 
         const loginForm = document.getElementById('loginForm');
         const loginError = document.getElementById('loginError');
 
-        // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Apache)
-        // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
         const currentUrl = window.location.href;
         const url = new URL(currentUrl);
         const ServerIP = url.hostname;
 
+        // Vérification du token
+        let tokenGMAO = sessionStorage.getItem('tokenGMAO');
 
-        //check si le token existe et l'envoi au servlet
-        var tokenGMAO = sessionStorage['tokenGMAO'];
+        if (tokenGMAO) {
+            console.log("token : " + tokenGMAO);
 
-        if(typeof tokenGMAO !== 'undefined'){
-            console.log("token : "+tokenGMAO)
-
-            //Vérification du token
-            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO})}).then(r => r.json()).then(TokenCheck)
+            fetch(`https://${ServerIP}:8443/SAE52/TokenCheck`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: tokenGMAO })
+            })
+            .then(response => response.json())
+            .then(TokenCheck);
+        } else {
+            console.log("no token");
         }
-        else{
-            console.log("no token")
 
-            //window.location.href = 'login.html'; // Redirection vers la page login si pas de token (déjà sur login.html)
+        function TokenCheck(response) {
+            console.log(response);
+            const role = response.droits;
+
+            if (role === 'Admin') {
+                window.location.href = 'admin.html';
+            } else if (role === 'Technicien' || role === 'Utilisateur') {
+                window.location.href = 'secretaire.html';
+            }
         }
 
-        function TokenCheck(r){
-            //JSON obtenu
-            console.log(r)
-
-            //si besoin
-            const login = r["login"]
-            const role = r["droits"]
-
-            //redirection selon les droits
-            if(r["droits"] === 'Admin'){
-                window.location.href = 'admin.html'; // Redirection vers la page principale pour l'admin
-            }
-            else if(r["droits"] === 'Technicien'){
-                window.location.href = 'secretaire.html'; // Redirection vers la page principale pour le technicien
-            }
-            else if(r["droits"] === 'Utilisateur'){
-                window.location.href = 'secretaire.html'; // Redirection vers la page principale pour l'utilisateur
-            }
-            //si aucun droit
-            else{
-                //window.location.href = 'login.html'; // Redirection vers la page login si mauvais token (déjà sur login.html)
-            } 
-        }
-        //fin check token
-
-
-
-        loginForm.addEventListener('submit', function (e) {
+        // Gestion du formulaire de connexion
+        loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            
 
-            //si cookie contenant le token inexistant
-            fetch("https://"+ServerIP+":8443/SAE52/PasswordCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ login: username, password: password })}).then(r => r.json()).then(PasswordCheck)
+            fetch(`https://${ServerIP}:8443/SAE52/PasswordCheck`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ login: username, password: password })
+            })
+            .then(response => response.json())
+            .then(PasswordCheck);
+        });
 
-            function PasswordCheck(r){
-                //JSON obtenu
-                console.log(r)
-                
-                //Message d'erreur si login ou MDP incorrect
-                if(r["droits"] === 'Aucun'){
-                    loginError.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
-                }
-                //redirection selon les droits
-                else if(r["droits"] === 'Admin'){
-                    window.location.href = 'admin.html'; // Redirection vers la page principale pour l'admin
-                }
-                else if(r["droits"] === 'Technicien'){
-                    window.location.href = 'secretaire.html'; // Redirection vers la page principale pour le technicien
-                }
-                else if(r["droits"] === 'Utilisateur'){
-                    window.location.href = 'secretaire.html'; // Redirection vers la page principale pour l'utilisateur
-                }
-                else{
-                    loginError.textContent = '';
-                } 
+        function PasswordCheck(response) {
+            console.log(response);
 
+            if (response.droits === 'Aucun') {
+                loginError.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
+            } else {
+                sessionStorage.setItem('tokenGMAO', response.token);
 
-                //stockage du token
-                sessionStorage['tokenGMAO'] = r["token"];
+                if (response.droits === 'Admin') {
+                    window.location.href = 'admin.html';
+                } else if (response.droits === 'Technicien' || response.droits === 'Utilisateur') {
+                    window.location.href = 'secretaire.html';
+                }
             }
-        });
-
-        loginForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-        });
+        }
     </script>
 </body>
 </html>
