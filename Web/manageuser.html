@@ -142,19 +142,25 @@
         <form id="userForm" method="POST" action="AddUserServlet">
             <label for="first_name">Prénom :</label>
             <input type="text" id="first_name" name="first_name" required>
-
+        
             <label for="last_name">Nom :</label>
             <input type="text" id="last_name" name="last_name" required>
-
+        
+            <label for="login">Nom d'utilisateur :</label>
+            <input type="text" id="login" name="login" required>
+        
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required>
+        
             <label for="role">Droits :</label>
             <select id="role" name="role">
                 <option value="technician">Technicien</option>
                 <option value="admin">Admin</option>
                 <option value="user">Utilisateur</option>
             </select>
-
             <input type="submit" value="Ajouter l'utilisateur">
         </form>
+
 
         <h2>Liste des utilisateurs</h2>
         <table>
