@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Déconnexion</title>
+    <link rel="icon" type="image/x-icon" href="/LogoVIM.png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,14 +27,52 @@
     <div class="message">
         <h1>Déconnexion</h1>
         <p>Vous avez été déconnecté avec succès.</p>
-        <a href="login.html">Retour à la connexion</a>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            sessionStorage.removeItem("tokenGMAO")
+        // Rafraîchit la page en arrière
+        window.onunload = function() { reload(); };
 
-            window.location.href = 'login.html';
+        //IP Tomcat
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const ServerIP = url.hostname;
+            
+        //Token
+        let tokenGMAO = sessionStorage.getItem('tokenGMAO');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            //Vérification de l'existance du token
+            if (tokenGMAO) {
+                console.log("token : " + tokenGMAO);
+
+                //Suppression du token dans la BD
+                fetch(`https://${ServerIP}:8443/SAE52/DeleteToken`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token: tokenGMAO })
+                })
+                .then(response => response.json())
+                .then(CheckDeletion);
+
+                //Suppression du token du navigateur
+                sessionStorage.removeItem("tokenGMAO")
+            } else {
+                console.log("no token");
+
+                //Redirection page login
+                window.location.href = 'login.html';
+            }
+
+            function CheckDeletion(response){
+                if(response.result === "Fait"){
+                    console.log("token supprimé");
+                    window.location.href = 'login.html';
+                }
+                else{
+                    window.alert("Une erreur s'est produite lors de la suppresion du token");
+                }
+            }
         });
     </script>
 </body>

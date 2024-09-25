@@ -18,7 +18,6 @@ import java.math.BigInteger;
 import java.security.*;
 import java.util.Random;
 import org.apache.commons.lang3.RandomStringUtils;
-import static org.apache.commons.lang3.StringUtils.length;
 
 /**
  *
@@ -45,16 +44,18 @@ public class PasswordCheck extends HttpServlet {
     
     
     /**
-     * test (pas terminé)
+     * Hash le MDP envoyé et le compare à celui dans la base de données puis renvoi un token avec les droits de l'utilisateur si tout est bon
      * entrées : MDP utilisateur et login
      * Récupération du hash associé au login
      * hashage du MDP utilisateur et comparaison
      * si bon : envoi des droits de l'utilsateur + token
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request       servlet request
+     * @param response      servlet response
+     * @var login       login envoyé par l'utilsateur (requête POST)
+     * @var password        MDP envoyé par l'utilsateur (requête POST)
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

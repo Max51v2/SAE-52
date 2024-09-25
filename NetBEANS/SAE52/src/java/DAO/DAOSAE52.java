@@ -168,8 +168,8 @@ public class DAOSAE52 {
      * Enregistrement du token
      * 
      * @param login     login donné par l'utilisateur
-     * @var RequeteSQL    Requête pour obtenir le hash associé au login
-     * @return      hash stocké dans la table
+     * @param token     token généré par le servlet
+     * @var RequeteSQL    Requête pour mettre à jour le token pour un login donné
      */
     public void SetToken(String token, String login){
         String RequeteSQL="UPDATE users SET token = ? WHERE login = ?";
@@ -201,7 +201,7 @@ public class DAOSAE52 {
      * Vérification du token
      * 
      * @param token     token donné par l'utilisateur
-     * @var RequeteSQL    Requête pour obtenir le hash associé au login
+     * @var RequeteSQL    Requête pour obtenir l(utilisateur correspondant au token
      * @return      login stocké dans la table
      */
     public String CheckToken(String token){
@@ -231,6 +231,39 @@ public class DAOSAE52 {
         
         return login;
     }
+    
+    
+    
+    
+    /**
+     * Supression du token
+     * 
+     * @param token     token stocké dans le navigateur
+     * @var RequeteSQL    Requête pour mettre à jour le token donné (par du vide)
+     */
+    public void DeleteToken(String token){
+        String RequeteSQL="UPDATE users SET token = ? WHERE token = ?";
+        
+        
+        //Connection BD sae_52 en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" n°1 par du vide et n°2 par le token (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, "");
+            preparedStatement.setString(2, token);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {}
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     
     
     

@@ -35,6 +35,8 @@ sudo cp $GitRep"logout.html" $ApacheRep"/logout.html"
 sudo cp $GitRep"manageuser.html" $ApacheRep"/manageuser.html"
 sudo cp $GitRep"admin.html" $ApacheRep"/admin.html"
 sudo cp $GitRep"secretaire.html" $ApacheRep"/secretaire.html"
+sudo cp $GitRep"LogoVIM.jpg" $ApacheRep"/LogoVIM.jpg"
+sudo cp $GitRep"LogoVIM.png" $ApacheRep"/LogoVIM.png"
 
 #Récupération du status du daemon apache2
 apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`

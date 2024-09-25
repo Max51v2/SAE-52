@@ -99,27 +99,18 @@ Version : 1.5
 |
 |    +------------------Modifications A LIRE-------------------
 |    |
-|    |   *Modifications à faire sur la VM si téléchargé avant 22 septembre
+|    |   *Modifications à faire sur la VM si téléchargé après 22 septembre
 |    |
+|    |   *Modification page index
 |    |   sudo nano /etc/apache2/sites-available/gmao.conf
-|    |   *ajouter entre les balises "virtuahost" (retirer les "|")
-|    |   "
-|    |   <IfModule mod_headers.c>
-|    |      Header set Access-Control-Allow-Origin "*"
-|    |      Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
-|    |      Header set Access-Control-Allow-Headers "Content-Type, Authorization"
-|    |   </IfModule>
-|    |   " 
 |    |
-|    |   sudo a2enmod headers
+|    |   *coller le texte ci-dessous (retirer les "|")
+|    |   #Directory index
+|    |        <IfModule dir_module>
+|    |                DirectoryIndex login.html
+|    |        </IfModule>
+|    |
 |    |   sudo systemctl restart apache2
-|    |
-|    |   Il faut se connecter aux sites suivants et "Avancé" > "Accepter le risque et poursuivre" (si ce n'est pas fait, il y aura une erreur CORS !!!) :
-|    |   => Apache : https://[@IP VM]/
-|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/
-|    |
-|    |   *Désactiver les notifs réseau
-|    |   paramètres > notifications > Ne pas déranger
 |    |
 |    +---------------------------------------------------------
 |

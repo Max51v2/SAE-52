@@ -40,10 +40,11 @@ public class TokenCheck extends HttpServlet {
     /**
      * Récupère le login correspondant au token et les droit de l'utilisateur (par rapport au login)
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request       servlet request
+     * @param response      servlet response
+     * @var token       token stocké dans le navigateur (requête POST)
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
