@@ -79,7 +79,7 @@ public class TokenCheck extends HttpServlet {
             //l'utilisateur existe mais il faut vérifier le MDP
             else{
                 //Récupération des droits de l'utilisateur
-                rights = DAO.GetUserRights(login);
+                rights = DAO.GetUserRightsFromLogin(login);
             }
             
             

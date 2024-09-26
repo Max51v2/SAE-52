@@ -140,7 +140,7 @@
 
     <div class="container">
         <h2>Ajouter un utilisateur</h2>
-        <form id="userForm" method="POST" action="AddUserServlet">
+        <form id="userForm">
             <label for="first_name">Prénom :</label>
             <input type="text" id="first_name" name="first_name" required>
         
@@ -155,11 +155,11 @@
         
             <label for="role">Droits :</label>
             <select id="role" name="role">
-                <option value="technician">Technicien</option>
-                <option value="admin">Admin</option>
-                <option value="user">Utilisateur</option>
+                <option value="Technicien">Technicien</option>
+                <option value="Admin">Admin</option>
+                <option value="Utilisateur">Utilisateur</option>
             </select>
-            <input type="submit" value="Ajouter l'utilisateur">
+            <button type="button" id="submitButton">Ajouter l'utilisateur</button>
         </form>
 
 
@@ -213,13 +213,10 @@
 
             //redirection selon les droits
             if(r["droits"] === 'Admin'){
-                //Rien
+                ShowData();
             }
-            else if(r["droits"] === 'Technicien'){
+            else if(r["droits"] === 'Technicien' || r["droits"] === 'Utilisateur'){
                 window.location.href = 'secretaire.html'; // Redirection vers la page principale pour le technicien
-            }
-            else if(r["droits"] === 'Utilisateur'){
-                window.location.href = 'secretaire.html'; // Redirection vers la page principale pour l'utilisateur
             }
             //si aucun droit
             else{
@@ -228,28 +225,44 @@
         }
         //fin check token
 
+        function ShowData(){
+            const button =  document.getElementById('submitButton');
+            const userList = document.getElementById('userList');
+
+
+            //Récupérration des utilisateurs (Servlet ?)
+            //code ici
+
+
+            //Clique boutton ajout utilisateur
+            button.addEventListener('click', function (e) {
+
+                //Var form
+                e.preventDefault();
+                const firstName = document.getElementById('first_name').value;
+                const lastName = document.getElementById('last_name').value;
+                const role = document.getElementById('role').value;
+                const login = document.getElementById('login').value;
+                const password = document.getElementById('password').value;
+
+
+                //Ajout utilisateur BD
+                fetch(`https://${ServerIP}:8443/SAE52/AddUser`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ firstName: firstName, lastName: lastName, role: role, login: login, password: password, token:tokenGMAO })
+                })
+                .then(response => response.json())
+                .then(CheckAddition);
+
+                //Reset form
+
+                function CheckAddition(response){
+                    //Si c'est bon, actualiser le tableau (servlet ?)
+                }
+            });
+        }
         
-        const userForm = document.getElementById('userForm');
-        const userList = document.getElementById('userList');
-
-
-        userForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const firstName = document.getElementById('first_name').value;
-            const lastName = document.getElementById('last_name').value;
-            const role = document.getElementById('role').value;
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${firstName}</td>
-                <td>${lastName}</td>
-                <td>${role}</td>
-            `;
-
-            userList.appendChild(row);
-
-            userForm.reset();
-        });
     </script>
 </body>
 </html>

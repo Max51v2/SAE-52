@@ -57,10 +57,10 @@ public class DeleteToken extends HttpServlet {
         Gson gsonRequest = new Gson();
         
         // Convertion du JSON en objet Java
-        DeleteToken.Token tokenRequest = gsonRequest.fromJson(reader, DeleteToken.Token.class);
+        DeleteToken.Token deleteToken = gsonRequest.fromJson(reader, DeleteToken.Token.class);
         
         //Données
-        String token = tokenRequest.token;
+        String token = deleteToken.token;
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";

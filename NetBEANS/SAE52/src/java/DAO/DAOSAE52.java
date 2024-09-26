@@ -125,14 +125,14 @@ public class DAOSAE52 {
     
     
     /**
-     * Récupération des droits de l'utilisateur
+     * Récupération des droits de l'utilisateur à partir du login
      * 
      * @param login     login donné par l'utilisateur
      * @var RequeteSQL    Requête pour obtenir le hash associé au login
      * @var rights      role utilisateur stocké dans la table
      * @return      hash stocké dans la table
      */
-    public String GetUserRights(String login){
+    public String GetUserRightsFromLogin(String login){
         String RequeteSQL="SELECT * FROM users WHERE login = ?";
         String rights="";
         
@@ -146,6 +146,45 @@ public class DAOSAE52 {
             
             //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
             preparedStatement.setString(1, login);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    rights = resultSet.getString("role");
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return rights;
+    }
+    
+    
+    
+    /**
+     * Récupération des droits de l'utilisateur à partir du token
+     * 
+     * @param token     token stocké dans le navigateur
+     * @var RequeteSQL    Requête pour obtenir le hash associé au login
+     * @var rights      role utilisateur stocké dans la table
+     * @return      hash stocké dans la table
+     */
+    public String GetUserRightsFromToken(String token){
+        String RequeteSQL="SELECT * FROM users WHERE token = ?";
+        String rights="";
+        
+        
+        //Connection BD sae_52 en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, token);
             
             // Exécution de la requête
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -267,9 +306,30 @@ public class DAOSAE52 {
     
     
     
-    public void addUser(String login, String nom, String prenom){
-        //à compléter
+    public void addUser(String login, String nom, String prenom, String role, String hashedPassword){
+        String RequeteSQL="INSERT INTO users (login, nom, prenom, role, hash, token) VALUES (?, ?, ?, ?, ?,'')";
         
+        
+        //Connection BD sae_52 en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, nom);
+            preparedStatement.setString(3, prenom);
+            preparedStatement.setString(4, role);
+            preparedStatement.setString(5, hashedPassword);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {}
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -107,7 +107,7 @@ public class PasswordCheck extends HttpServlet {
                 //si le hash de la DB est identique au hash envoyé 
                 if(hashDB.equals(hashtext)){
                     //Récupération des droits utilisateur
-                    rights = DAO.GetUserRights(login);
+                    rights = DAO.GetUserRightsFromLogin(login);
                     
                     //Génération d'une chaine de 32 caractères (token)
                     byte[] array = new byte[32];

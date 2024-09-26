@@ -1,3 +1,4 @@
+Servlets.AddUser=javax.servlet.annotation.WebServlet
 Servlets.DeleteToken=javax.servlet.annotation.WebServlet
 Servlets.PasswordCheck=javax.servlet.annotation.WebServlet
 Servlets.TokenCheck=javax.servlet.annotation.WebServlet
