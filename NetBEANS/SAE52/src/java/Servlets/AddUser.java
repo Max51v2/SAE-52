@@ -38,7 +38,7 @@ public class AddUser extends HttpServlet {
         private String role;
         private String token;
         
-        private user(String token){
+        private user(String token, String lastName, String firstName, String login, String password, String role){
             this.firstName = firstName;
             this.lastName = lastName;
             this.login = login;
@@ -106,23 +106,29 @@ public class AddUser extends HttpServlet {
             Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
         
         try { 
             //VERIF si login en doublon !!!
+            Boolean loginExist = DAO.doLoginExist(login);
             
-            //verif droits utilisateur demande
-            String userRights = DAO.GetUserRightsFromToken(token);
-            
-            //Verification si l'utilisateur a les droits Admin
-            if(userRights.equals("Admin")){
-                DAO.addUser(login, nom, prenom, role, hashedPassword);
+            if(loginExist == false){
+                //verif droits utilisateur demande
+                String userRights = DAO.GetUserRightsFromToken(token);
+                
+                //Verification si l'utilisateur a les droits Admin
+                if(userRights.equals("Admin")){
+                    DAO.addUser(login, nom, prenom, role, hashedPassword);
+                }
+                
+                //JSON renvoyé
+                jsonString = "{\"result\":\"Fait\"}";
             }
-            
-            //JSON renvoyé
-            jsonString = "{\"result\":\"Fait\"}";
+            else{
+                //JSON renvoyé
+                jsonString = "{\"result\":\"Login exist\"}";
+            }
             
         } catch (Exception e) {
             e.printStackTrace();

@@ -331,5 +331,50 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
+    
+    
+    /**
+     * Vérifie l'existance du login dans la base de données
+     * 
+     * @param login     login donné par l'utilisateur
+     * @var RequeteSQL    Requête pour obtenir le hash associé au login
+     * @var rights      role utilisateur stocké dans la table
+     * @return loginExist       éxsitance du login (booléen)
+     */
+    public Boolean doLoginExist(String login){
+        String RequeteSQL="SELECT * FROM users WHERE login = ?";
+        String loginDB="";
+        Boolean loginExist = false;
+        
+        
+        //Connection BD sae_52 en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, login);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    loginDB = resultSet.getString("login");
+                }
+            }
+            
+            //Vérification du login renvoyé
+            if(login.equals(loginDB)){
+                loginExist = true;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return loginExist;
+    }
 
 }

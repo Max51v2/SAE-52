@@ -258,7 +258,10 @@
                 //Reset form
 
                 function CheckAddition(response){
-                    //Si c'est bon, actualiser le tableau (servlet ?)
+                    //si le login existe dans la DB
+                    if(response.result === "Login exist"){
+                        window.alert("Le login existe déjà");
+                    }
                 }
             });
         }
