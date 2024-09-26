@@ -81,13 +81,6 @@ public class AddUser extends HttpServlet {
         String role = user.role;
         String token = user.token;
         
-        System.out.println(prenom);
-        System.out.println(nom);
-        System.out.println(role);
-        System.out.println(login);
-        System.out.println(password);
-        System.out.println(token);
-        
         //génération du hash du MDP donné par l'utilisateur
         MessageDigest m;
         String hashedPassword="";
@@ -110,7 +103,7 @@ public class AddUser extends HttpServlet {
         String jsonString = "";
         
         try { 
-            //VERIF si login en doublon !!!
+            //VERIF si login en doublon
             Boolean loginExist = DAO.doLoginExist(login);
             
             if(loginExist == false){
