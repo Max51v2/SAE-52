@@ -31,42 +31,42 @@ GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO administrateur;
 
 -- table pc
 CREATE TABLE pc (
-    processeur text,
+    processor text,
     ram text,
-    mac text,
+    mac_address text,
     vlan text,
-    nom text,
-    sn text,
-    Etat text
+    name text,
+    serial_number text,
+    status text
 );
 
 
 -- table routeur
 CREATE TABLE routeur (
-    ndp text,
-    mac text,
+    router_ports text,
+    mac_address text,
     vlan text,
-    nom text,
-    sn text,
-    Etat text
+    name text,
+    serial_number text,
+    status text
 );
 
 -- table switch
 CREATE TABLE switch (
-    speed text,
-    mac text,
+    switch_speed text,
+    mac_address text,
     vlan text,
-    nom text,
-    sn text,
-    Etat text
+    name text,
+    serial_number text,
+    status text
 );
 
 -- table cable
 CREATE TABLE cable (
-    meter text,
-    nom text,
-    sn text,
-    Etat text
+    cable_lenght text,
+    name text,
+    serial_number text,
+    status text
 );
 
 --Msg fin
