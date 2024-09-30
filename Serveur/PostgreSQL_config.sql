@@ -29,6 +29,45 @@ GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO administrateur;
 
 --Autres tables à faire
 
+-- table pc
+CREATE TABLE pc (
+    processeur text,
+    ram text,
+    mac text,
+    vlan text,
+    nom text,
+    sn text,
+    Etat text
+);
+
+
+-- table routeur
+CREATE TABLE routeur (
+    ndp text,
+    mac text,
+    vlan text,
+    nom text,
+    sn text,
+    Etat text
+);
+
+-- table switch
+CREATE TABLE switch (
+    speed text,
+    mac text,
+    vlan text,
+    nom text,
+    sn text,
+    Etat text
+);
+
+-- table cable
+CREATE TABLE cable (
+    meter text,
+    nom text,
+    sn text,
+    Etat text
+);
 
 --Msg fin
 \echo
