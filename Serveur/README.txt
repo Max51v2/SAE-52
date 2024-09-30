@@ -32,7 +32,7 @@ Version : 1.5
 |    +-----------------------PostgreSQL-----------------------  
 |    |
 |    |   *Connexion à la BD
-|    |   sudo -u postgres psql template1
+|    |   sudo -u postgres psql sae_52
 |    |
 |    |   *Aide commandes 
 |    |   \?
