@@ -2,4 +2,4 @@ Aller dans le fichier : /etc/hosts
 -> modifier "127.0.0.1   localhost" par "127.0.0.1   gmaovim.local"
 save
 
-Dans le navigateur -> https://gmaovim.local/ ou https://gmaovim.local/login.html et pour tomcat -> http://gmaovim.local:8080/
+Dans le navigateur -> https://gmaovim.local/ ou https://gmaovim.local/login.html et pour tomcat -> http://gmaovim.local:8443/
