@@ -6,6 +6,7 @@ A faire :
 - les objets doivent être dans une table qui se situe dans la BD "sae_52" (4 -> 1 pour chaque type d'équipement)
 - facultatif : à voir pour un dns via un bridge
 - test servlets
+- page technicien à faire, il doit pouvoir voir les demandes d'équipements (uniquement les voir) + pareil pour les demandes support mais sous forme de listing
 
 
 Fait :
