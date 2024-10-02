@@ -242,6 +242,27 @@
 
             function GetUsers(response){
                 console.log(response)
+
+                c = 0;
+
+                while(c < response.length){
+                    const login = response[c].login;
+                    const firstName = response[c].prenom;
+                    const lastName = response[c].nom;
+                    const role = response[c].droits;
+                    const row = document.createElement('tr');
+                    
+                    console.log(login);
+                    row.innerHTML = `
+                        <td>${login}</td>
+                        <td>${firstName}</td>
+                        <td>${lastName}</td>
+                        <td>${role}</td>
+                    `;
+                    userList.appendChild(row);
+
+                    c = c+1;
+                }
             }
             
 
