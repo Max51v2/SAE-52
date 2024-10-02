@@ -9,6 +9,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -375,6 +377,68 @@ public class DAOSAE52 {
         }
         
         return loginExist;
+    }
+    
+    
+    
+    /**
+     * Renvoi les utilisateurs
+     * 
+     * @var RequeteSQL    Requête pour obtenir le hash associé au login
+     * @var rights      role utilisateur stocké dans la table
+     * @return JSONString       contenu de la table au format JSON
+     */
+    public String getUsers(){
+        String RequeteSQL="SELECT * FROM users";
+        String login="";
+        String prenom="";
+        String nom="";
+        String droits="";
+        String JSONString="";
+        
+        
+        //Connection BD sae_52 en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Integer c = 1;
+                
+                // Ouvrir le tableau JSON
+                JSONString += "[";
+
+                while (resultSet.next()) {
+                    login = resultSet.getString("login");
+                    prenom = resultSet.getString("prenom");
+                    nom = resultSet.getString("nom");
+                    droits = resultSet.getString("role");
+
+                    // Ajouter une virgule avant chaque entrée sauf la première
+                    if (c > 1) {
+                        JSONString += ",";
+                    }
+
+                    // Ajouter l'objet JSON
+                    JSONString += "{\"login\":\"" + login + "\", \"prenom\":\"" + prenom + "\", \"nom\":\"" + nom + "\", \"droits\":\"" + droits + "\"}";
+
+                    c += 1;
+                }
+
+                // Fermer le tableau JSON
+                JSONString += "]";
+
+            }
+            
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return JSONString;
     }
 
 }

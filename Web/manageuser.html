@@ -167,6 +167,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Login</th>
                     <th>Prénom</th>
                     <th>Nom</th>
                     <th>Droits</th>
@@ -231,8 +232,18 @@
 
 
             //Récupérration des utilisateurs (Servlet ?)
-            //code ici
+            fetch(`https://${ServerIP}:8443/SAE52/ListUsers`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO })
+                })
+                .then(response => response.json())
+                .then(GetUsers);
 
+            function GetUsers(response){
+                console.log(response)
+            }
+            
 
             //Clique boutton ajout utilisateur
             button.addEventListener('click', function (e) {
