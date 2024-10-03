@@ -104,15 +104,15 @@ public class AddUser extends HttpServlet {
         
         try { 
             //VERIF si login en doublon
-            Boolean loginExist = DAO.doLoginExist(login);
+            Boolean loginExist = DAO.doLoginExist(login, false);
             
             if(loginExist == false){
                 //verif droits utilisateur demande
-                String userRights = DAO.GetUserRightsFromToken(token);
+                String userRights = DAO.GetUserRightsFromToken(token, false);
                 
                 //Verification si l'utilisateur a les droits Admin
                 if(userRights.equals("Admin")){
-                    DAO.addUser(login, nom, prenom, role, hashedPassword);
+                    DAO.addUser(login, nom, prenom, role, hashedPassword, false);
                 }
                 
                 //JSON renvoyé

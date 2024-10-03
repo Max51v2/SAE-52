@@ -71,16 +71,16 @@ public class DeleteUser extends HttpServlet {
             
         try { 
             //VERIF si login en doublon
-            Boolean loginExist = DAO.doLoginExist(login);
+            Boolean loginExist = DAO.doLoginExist(login, false);
             
             if(loginExist == true){
                 //verif droits utilisateur demande
-                String userRights = DAO.GetUserRightsFromToken(token);
+                String userRights = DAO.GetUserRightsFromToken(token, false);
                 
                 //Verification si l'utilisateur a les droits Admin
                 if(userRights.equals("Admin")){
                     //Suppression utilisateur
-                    DAO.deleteUser(login);
+                    DAO.deleteUser(login, false);
 
                     //JSON renvoyé
                     jsonString = "{\"result\":\"Fait\"}";

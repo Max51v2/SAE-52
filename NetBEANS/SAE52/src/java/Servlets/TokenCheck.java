@@ -70,7 +70,7 @@ public class TokenCheck extends HttpServlet {
         
         try { 
             //Récuperation du login correspondant au token
-            login = DAO.CheckToken(token);
+            login = DAO.CheckToken(token, false);
             
             //si il n'y a pas de hash, utilisateur inexistant
             if(login.equals("")){
@@ -79,7 +79,7 @@ public class TokenCheck extends HttpServlet {
             //l'utilisateur existe mais il faut vérifier le MDP
             else{
                 //Récupération des droits de l'utilisateur
-                rights = DAO.GetUserRightsFromLogin(login);
+                rights = DAO.GetUserRightsFromLogin(login, false);
             }
             
             

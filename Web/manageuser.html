@@ -194,7 +194,7 @@
 
     <script>
         //Auteur JS : Maxime VALLET
-        //Version : 1.2
+        //Version : 1.5
 
 
         //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
@@ -255,61 +255,14 @@
             const button =  document.getElementById('submitButton');
             const userList = document.getElementById('userList');
 
-            //Suppression du contenu du tableau
-            userList.innerHTML = '';
-
             //Récupérration des utilisateurs
-            fetch(`https://${ServerIP}:8443/SAE52/ListUsers`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token:tokenGMAO })
-                })
-                .then(response => response.json())
-                .then(GetUsers);
-
-            function GetUsers(response){
-                console.log(response)
-
-                c = 0;
-
-                //Remplissage du tableau contenant les informations des utilisateurs
-                while(c < response.length){
-                    const login = response[c].login;
-                    const firstName = response[c].prenom;
-                    const lastName = response[c].nom;
-                    const role = response[c].droits;
-                    const row = document.createElement('tr');
-                    
-                    row.innerHTML = `
-                        <td>${login}</td>
-                        <td>${firstName}</td>
-                        <td>${lastName}</td>
-                        <td>${role}</td>
-                        <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
-                            <button 
-                                style="background: url('trash.png') no-repeat center; 
-                                        background-size: contain; 
-                                        width: 25px; 
-                                        height: 25px; 
-                                        border: none; 
-                                        padding: 0; 
-                                        cursor: pointer;" 
-                                onClick="delUser('${login}')">
-                            </button>
-                        </td>
-                    `;
-                    userList.appendChild(row);
-
-                    c = c+1;
-                }
-            }
-            
+            getUsers();
 
             //Ajout utilisateur
             button.addEventListener('click', function (e) {
-
-                //Variables formulaire
                 e.preventDefault();
+                
+                //Variables formulaire
                 const firstName = document.getElementById('first_name').value;
                 const lastName = document.getElementById('last_name').value;
                 const role = document.getElementById('role').value;
@@ -326,21 +279,77 @@
                 .then(response => response.json())
                 .then(CheckAddition);
 
-                //Reset formulaire
-                userForm.reset();
 
                 function CheckAddition(response){
+                    //Reset formulaire
+                    userForm.reset();
+
                     //si le login existe dans la DB
                     if(response.result === "Login exist"){
-                        window.alert("Le login existe déjà");
+                        alert("Le login existe déjà");
                     }
                     else{
                         //Rafraichissement tableau
-                        ShowData();
-                    }    
+                        getUsers();
+                    }
                 }
             });
         }
+
+
+        //Récupère les utilisateurs auprès du Servlet
+        function getUsers(){
+                fetch(`https://${ServerIP}:8443/SAE52/ListUsers`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO })
+                })
+                .then(response => response.json())
+                .then(createTable);
+        }
+
+
+        //Rempli le tableau contenant les utilisateurs
+        function createTable(response){
+            console.log(response)
+
+            //Suppression du contenu du tableau
+            userList.innerHTML = '';
+
+            c = 0;
+
+            //Remplissage du tableau contenant les informations des utilisateurs
+            while(c < response.length){
+                const login = response[c].login;
+                const firstName = response[c].prenom;
+                const lastName = response[c].nom;
+                const role = response[c].droits;
+                const row = document.createElement('tr');
+                    
+                row.innerHTML = `
+                    <td>${login}</td>
+                    <td>${firstName}</td>
+                    <td>${lastName}</td>
+                    <td>${role}</td>
+                    <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
+                        <button 
+                            style="background: url('trash.png') no-repeat center; 
+                                    background-size: contain; 
+                                    width: 25px; 
+                                    height: 25px; 
+                                    border: none; 
+                                    padding: 0; 
+                                    cursor: pointer;" 
+                            onClick="delUser('${login}')">
+                        </button>
+                    </td>
+                `;
+                userList.appendChild(row);
+
+                c = c+1;
+            }
+        }
+
 
 
         //Supression utilisateur
@@ -370,10 +379,10 @@
                     function CheckDeletion(response){
                         if(response.result === "Login doesn't exist"){
                             alert("Le login donné n'existe pas");
-                        }
+                        }                            
                         else{
                             //Actualisation tableau
-                            ShowData();
+                            getUsers();
                         }
                     }
                 }

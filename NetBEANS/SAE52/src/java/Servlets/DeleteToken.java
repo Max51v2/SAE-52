@@ -67,7 +67,7 @@ public class DeleteToken extends HttpServlet {
         
         try { 
             //Suppression du token
-            DAO.DeleteToken(token);
+            DAO.DeleteToken(token, false);
             
             //JSON renvoyé
             jsonString = "{\"result\":\"Fait\"}";

@@ -68,12 +68,12 @@ public class ListUsers extends HttpServlet {
         
         try {
             //verif droits utilisateur demande
-            String userRights = DAO.GetUserRightsFromToken(token);
+            String userRights = DAO.GetUserRightsFromToken(token, false);
                 
             //Verification si l'utilisateur a les droits Admin
             if(userRights.equals("Admin")){
                 //JSON renvoyé | récuppération des données
-                jsonString = DAO.getUsers();
+                jsonString = DAO.getUsers(false);
             }
             
         } catch (Exception e) {

@@ -83,7 +83,7 @@ public class PasswordCheck extends HttpServlet {
         
         try { 
             //Récuperation du hash
-            String hashDB = DAO.GetUserPasswordHash(login);
+            String hashDB = DAO.GetUserPasswordHash(login, false);
             
             
             //si il n'y a pas de hash, utilisateur inexistant
@@ -107,7 +107,7 @@ public class PasswordCheck extends HttpServlet {
                 //si le hash de la DB est identique au hash envoyé 
                 if(hashDB.equals(hashtext)){
                     //Récupération des droits utilisateur
-                    rights = DAO.GetUserRightsFromLogin(login);
+                    rights = DAO.GetUserRightsFromLogin(login, false);
                     
                     //Génération d'une chaine de 32 caractères (token)
                     byte[] array = new byte[32];
@@ -115,7 +115,7 @@ public class PasswordCheck extends HttpServlet {
                     token = RandomStringUtils.randomAlphanumeric(32);
                     
                     //Enregistrement du token dans la DB
-                    DAO.SetToken(token, login);
+                    DAO.SetToken(token, login, false);
                 }
             }
             

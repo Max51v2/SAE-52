@@ -1,5 +1,8 @@
 --Auteur : Maxime VALLET
---Version : 0.4
+--Version : 0.8
+
+
+--####################### BD sae_52 #######################
 
 --Base de données du projet
 CREATE DATABASE sae_52;
@@ -27,7 +30,6 @@ INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Utilisateur1'
 GRANT ALL ON users TO administrateur;
 GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO administrateur;
 
---Autres tables à faire
 
 -- table pc
 CREATE TABLE pc (
@@ -68,6 +70,70 @@ CREATE TABLE cable (
     serial_number text,
     status text
 );
+
+
+
+--######################## BD test ########################
+DROP DATABASE test;
+
+--identique à sae_52 hormis qu'il n'y a pas de contenu dans les tables !!!
+
+--Base de données test
+CREATE DATABASE test;
+\c test
+
+--Table contenant les informations sur les utilisateurs (MDP hash : MD5)
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    login text,
+    nom text,
+    prenom text,
+    role text,
+    hash text,
+    token text
+);
+
+-- table pc
+CREATE TABLE pc (
+    processor text,
+    ram text,
+    mac_address text,
+    vlan text,
+    name text,
+    serial_number text,
+    status text
+);
+
+
+-- table routeur
+CREATE TABLE routeur (
+    router_ports text,
+    mac_address text,
+    vlan text,
+    name text,
+    serial_number text,
+    status text
+);
+
+-- table switch
+CREATE TABLE switch (
+    switch_speed text,
+    mac_address text,
+    vlan text,
+    name text,
+    serial_number text,
+    status text
+);
+
+-- table cable
+CREATE TABLE cable (
+    cable_lenght text,
+    name text,
+    serial_number text,
+    status text
+);
+
+--########################## FIN ##########################
 
 --Msg fin
 \echo

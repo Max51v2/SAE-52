@@ -13,18 +13,30 @@ import java.sql.PreparedStatement;
 
 /**
  *
- * @author root
+ * @author Maxime VALLET
  */
 public class DAOSAE52 {
-    
-    /**
-     * Info de connection à la BD PostgreSQL
-     */
-    private static final String UrlBD="jdbc:postgresql://localhost:5432/sae_52";
-    
+    //Info de connection à la BD PostgreSQL
     private static final String UserPostgres="postgres";
     private static final String PasswordPostgres="leffe";
+    private static String UrlBD="";
     
+    
+    //Défini la DB sur laquelle on se connecte
+    private void changeConnection(Boolean Test){
+        if(Test == false){
+            UrlBD="jdbc:postgresql://localhost:5432/sae_52";
+        }
+        else{
+            UrlBD="jdbc:postgresql://localhost:5432/test";
+        }
+    }
+    
+    //Connection utilisateur postgres
+        private static Connection getConnectionPostgres() throws SQLException {
+            return DriverManager.getConnection(UrlBD, UserPostgres, PasswordPostgres);
+    }
+        
     
     //Demarrage du driver postgresql
     static {
@@ -38,27 +50,20 @@ public class DAOSAE52 {
     
     
     /**
-     * Connection utilisateur postgres
-     * @return
-     * @throws SQLException 
-     */
-    public static Connection getConnectionPostgres() throws SQLException {
-        return DriverManager.getConnection(UrlBD, UserPostgres, PasswordPostgres);
-    }
-    
-    
-    /**
      * Récupération du hash dans la table users en fonction du login donné par l'utilisateur
      * 
      * @param login     login donné par l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @var RequeteSQL    Requête pour obtenir le hash associé au login
      * @var hashDB      hash stocké dans la table
      * @return      hash stocké dans la table
      */
-    public String GetUserPasswordHash(String login){
+    public String GetUserPasswordHash(String login, Boolean Test){
         String RequeteSQL="SELECT * FROM users WHERE login = ?";
         String hashDB="";
         
+        //Selection de la BD
+        changeConnection(Test);
         
         //Connection BD sae_52 en tant que postgres
         try (Connection connection =
@@ -91,14 +96,17 @@ public class DAOSAE52 {
      * Récupération des droits de l'utilisateur à partir du login
      * 
      * @param login     login donné par l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @var RequeteSQL    Requête pour obtenir le hash associé au login
      * @var rights      role utilisateur stocké dans la table
      * @return      hash stocké dans la table
      */
-    public String GetUserRightsFromLogin(String login){
+    public String GetUserRightsFromLogin(String login, Boolean Test){
         String RequeteSQL="SELECT * FROM users WHERE login = ?";
         String rights="";
         
+        //Selection de la BD
+        changeConnection(Test);
         
         //Connection BD sae_52 en tant que postgres
         try (Connection connection =
@@ -130,14 +138,17 @@ public class DAOSAE52 {
      * Récupération des droits de l'utilisateur à partir du token
      * 
      * @param token     token stocké dans le navigateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @var RequeteSQL    Requête pour obtenir le hash associé au login
      * @var rights      role utilisateur stocké dans la table
      * @return      hash stocké dans la table
      */
-    public String GetUserRightsFromToken(String token){
+    public String GetUserRightsFromToken(String token, Boolean Test){
         String RequeteSQL="SELECT * FROM users WHERE token = ?";
         String rights="";
         
+        //Selection de la BD
+        changeConnection(Test);
         
         //Connection BD sae_52 en tant que postgres
         try (Connection connection =
@@ -171,11 +182,14 @@ public class DAOSAE52 {
      * 
      * @param login     login donné par l'utilisateur
      * @param token     token généré par le servlet
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @var RequeteSQL    Requête pour mettre à jour le token pour un login donné
      */
-    public void SetToken(String token, String login){
+    public void SetToken(String token, String login, Boolean Test){
         String RequeteSQL="UPDATE users SET token = ? WHERE login = ?";
         
+        //Selection de la BD
+        changeConnection(Test);
         
         //Connection BD sae_52 en tant que postgres
         try (Connection connection =
@@ -189,7 +203,7 @@ public class DAOSAE52 {
             preparedStatement.setString(2, login);
             
             // Exécution de la requête
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {}
+            int affectedRows = preparedStatement.executeUpdate();
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -203,12 +217,16 @@ public class DAOSAE52 {
      * Vérification du token
      * 
      * @param token     token donné par l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @var RequeteSQL    Requête pour obtenir l(utilisateur correspondant au token
      * @return      login stocké dans la table
      */
-    public String CheckToken(String token){
+    public String CheckToken(String token, Boolean Test){
         String RequeteSQL="SELECT * FROM users WHERE token = ?";
         String login="";
+        
+        //Selection de la BD
+        changeConnection(Test);
         
         //Connection BD sae_52 en tant que postgres
         try (Connection connection =
@@ -241,11 +259,14 @@ public class DAOSAE52 {
      * Supression du token
      * 
      * @param token     token stocké dans le navigateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @var RequeteSQL    Requête pour mettre à jour le token donné (par du vide)
      */
-    public void DeleteToken(String token){
+    public void DeleteToken(String token, Boolean Test){
         String RequeteSQL="UPDATE users SET token = ? WHERE token = ?";
         
+        //Selection de la BD
+        changeConnection(Test);
         
         //Connection BD sae_52 en tant que postgres
         try (Connection connection =
@@ -259,7 +280,7 @@ public class DAOSAE52 {
             preparedStatement.setString(2, token);
             
             // Exécution de la requête
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {}
+            int affectedRows = preparedStatement.executeUpdate();
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -268,14 +289,26 @@ public class DAOSAE52 {
     
     
     
-    
-    public void addUser(String login, String nom, String prenom, String role, String hashedPassword){
+    /**
+     * Ajout d'un utilisateur
+     * 
+     * @param login     login de l'utilisateur
+     * @param nom     nom de l'utilisateur
+     * @param prenom     prenom de l'utilisateur
+     * @param role     droits de l'utilisateur
+     * @param hashedPassword      MDP hashé de l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @var RequeteSQL    Requête pour mettre à jour le token donné (par du vide)
+     */
+    public void addUser(String login, String nom, String prenom, String role, String hashedPassword, Boolean Test){
         String RequeteSQL="INSERT INTO users (login, nom, prenom, role, hash, token) VALUES (?, ?, ?, ?, ?,'')";
         
+        //Selection de la BD
+        changeConnection(Test);
         
         //Connection BD sae_52 en tant que postgres
         try (Connection connection =
-                DAOSAE52.getConnectionPostgres();
+            DAOSAE52.getConnectionPostgres();
                 
             //Requête SQL
             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
@@ -288,7 +321,7 @@ public class DAOSAE52 {
             preparedStatement.setString(5, hashedPassword);
             
             // Exécution de la requête
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {}
+            int affectedRows = preparedStatement.executeUpdate();
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -301,15 +334,18 @@ public class DAOSAE52 {
      * Vérifie l'existance du login dans la base de données
      * 
      * @param login     login donné par l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @var RequeteSQL    Requête pour obtenir le hash associé au login
      * @var rights      role utilisateur stocké dans la table
      * @return loginExist       éxsitance du login (booléen)
      */
-    public Boolean doLoginExist(String login){
+    public Boolean doLoginExist(String login, Boolean Test){
         String RequeteSQL="SELECT * FROM users WHERE login = ?";
         String loginDB="";
         Boolean loginExist = false;
         
+        //Selection de la BD
+        changeConnection(Test);
         
         //Connection BD sae_52 en tant que postgres
         try (Connection connection =
@@ -345,17 +381,21 @@ public class DAOSAE52 {
     /**
      * Renvoi les utilisateurs contenu dans la BD
      * 
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @var RequeteSQL    Requête pour obtenir le hash associé au login
      * @var rights      role utilisateur stocké dans la table
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
-    public String getUsers(){
+    public String getUsers(Boolean Test){
         String RequeteSQL="SELECT * FROM users ORDER BY role ASC, login ASC";
         String login="";
         String prenom="";
         String nom="";
         String droits="";
         String JSONString="";
+        
+        //Selection de la BD
+        changeConnection(Test);
         
         
         //Connection BD sae_52 en tant que postgres
@@ -408,12 +448,16 @@ public class DAOSAE52 {
     /**
      * Suppression d'un utilisateur
      * 
+     * @param login     login utilisateur à supprimer
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      * @var RequeteSQL    Requête pour obtenir le hash associé au login
      * @var rights      role utilisateur stocké dans la table
-     * @param login     login utilisateur à supprimer
      */
-    public void deleteUser(String login){
+    public void deleteUser(String login, Boolean Test){
         String RequeteSQL="DELETE FROM users WHERE login = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
         
         //Connection BD sae_52 en tant que postgres
         try (Connection connection =
@@ -426,9 +470,7 @@ public class DAOSAE52 {
             preparedStatement.setString(1, login);
             
             // Exécution de la requête
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-               //Rien
-            }
+            int affectedRows = preparedStatement.executeUpdate();
             
         } catch (SQLException e) {
             e.printStackTrace();
