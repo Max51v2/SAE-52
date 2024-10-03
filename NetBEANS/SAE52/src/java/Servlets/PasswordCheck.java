@@ -48,7 +48,7 @@ public class PasswordCheck extends HttpServlet {
      * entrées : MDP utilisateur et login
      * Récupération du hash associé au login
      * hashage du MDP utilisateur et comparaison
-     * si bon : envoi des droits de l'utilsateur + token
+     * si bon : envoi des droits de l'utilsateur + token + login
      *
      * @param request       servlet request
      * @param response      servlet response
@@ -121,7 +121,7 @@ public class PasswordCheck extends HttpServlet {
             
             
             //JSON renvoyé
-            jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\"}";
+            jsonString = "{\"droits\":\""+rights+"\", \"token\":\""+token+"\", \"login\":\""+login+"\"}";
             
         } catch (Exception e) {
             e.printStackTrace();

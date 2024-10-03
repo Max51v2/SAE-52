@@ -1,3 +1,9 @@
+<!-- 
+    Auteur : Ishac HAMDANI
+    Version : ?
+-->
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -210,7 +216,12 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
+        //Auteur JS : Maxime VALLET
+        //Version : 0.2
+
+
         //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
         window.onunload = function(){reload()};
 
@@ -221,11 +232,17 @@
         const ServerIP = url.hostname;
 
 
-        //check si le token existe et l'envoi au servlet (à compier sur chaque page et modif les pages de redirection)
+        //Données session
         var tokenGMAO = sessionStorage['tokenGMAO'];
+        let userLogin = sessionStorage['userLogin'];
+        let userRole = sessionStorage['userRole'];
 
         if(typeof tokenGMAO !== 'undefined'){
             console.log("token : "+tokenGMAO)
+            console.log("###### informatif !!! ######")
+            console.log("login : "+userLogin)
+            console.log("droits : "+userRole)
+            console.log("############################")
 
             //Vérification du token
             fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO})}).then(r => r.json()).then(TokenCheck)
@@ -239,10 +256,6 @@
         function TokenCheck(r){
             //JSON obtenu
             console.log(r)
-
-            //si besoin
-            const login = r["login"]
-            const role = r["droits"]
 
             //redirection selon les droits
             if(r["droits"] === 'Admin'){

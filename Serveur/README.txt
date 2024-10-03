@@ -1,9 +1,6 @@
 Auteur : Maxime VALLET
-Version : 1.5
+Version : 1.6
 
-à faire : 
-    - Servlets + BD
-    - Web
 
 +--------------------------VM-----------------------------
 |
@@ -111,6 +108,14 @@ Version : 1.5
 |    |        </IfModule>
 |    |
 |    |   sudo systemctl restart apache2
+|    |
+|    |   
+|    |   *Redirection local (valentin)
+|    |   Aller dans le fichier : /etc/hosts
+|    |   -> modifier "127.0.0.1   localhost" par "127.0.0.1   gmaovim.local"
+|    |   save
+|    |   
+|    |   Dans le navigateur -> https://gmaovim.local/ ou https://gmaovim.local/login.html et pour tomcat -> http://gmaovim.local:8443/
 |    |
 |    +---------------------------------------------------------
 |

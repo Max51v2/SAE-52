@@ -1,3 +1,9 @@
+<!-- 
+    Auteur : Ishac HAMDANI
+    Version : ?
+-->
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -30,6 +36,10 @@
     </div>
 
     <script>
+        //Auteur JS : Maxime VALLET
+        //Version : 1.2
+
+
         // Rafraîchit la page en arrière
         window.onunload = function() { reload(); };
 
@@ -55,8 +65,10 @@
                 .then(response => response.json())
                 .then(CheckDeletion);
 
-                //Suppression du token du navigateur
+                //Suppression des données de session
                 sessionStorage.removeItem("tokenGMAO")
+                sessionStorage.removeItem("userRole")
+                sessionStorage.removeItem("userLogin")
             } else {
                 console.log("no token");
 

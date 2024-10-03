@@ -9,8 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -26,15 +24,6 @@ public class DAOSAE52 {
     
     private static final String UserPostgres="postgres";
     private static final String PasswordPostgres="leffe";
-    
-    private static final String UserAdministrateur="administrateur";
-    private static final String PasswordAdministrateur="Administrateur";
-    
-    private static final String UserTechnicien="technicien";
-    private static final String PasswordTechnicien="Technicien";
-    
-    private static final String UserUtilisateur="utilisateur";
-    private static final String PasswordUtilisateur="Utilisateur";
     
     
     //Demarrage du driver postgresql
@@ -56,34 +45,6 @@ public class DAOSAE52 {
     public static Connection getConnectionPostgres() throws SQLException {
         return DriverManager.getConnection(UrlBD, UserPostgres, PasswordPostgres);
     }
-    
-    /**
-     * Connection utilisateur administrateur
-     * @return
-     * @throws SQLException 
-     */
-    public static Connection getConnectionAdministrateur() throws SQLException {
-        return DriverManager.getConnection(UrlBD, UserAdministrateur, PasswordAdministrateur);
-    }
-    
-    /**
-     * Connection utilisateur technicien
-     * @return
-     * @throws SQLException 
-     */
-    public static Connection getConnectionTechnicien() throws SQLException {
-        return DriverManager.getConnection(UrlBD, UserTechnicien, PasswordTechnicien);
-    }
-    
-    /**
-     * Connection utilisateur utilisateur
-     * @return
-     * @throws SQLException 
-     */
-    public static Connection getConnectionUtilisateur() throws SQLException {
-        return DriverManager.getConnection(UrlBD, UserUtilisateur, PasswordUtilisateur);
-    }
-    
     
     
     /**
@@ -382,14 +343,14 @@ public class DAOSAE52 {
     
     
     /**
-     * Renvoi les utilisateurs
+     * Renvoi les utilisateurs contenu dans la BD
      * 
      * @var RequeteSQL    Requête pour obtenir le hash associé au login
      * @var rights      role utilisateur stocké dans la table
-     * @return JSONString       contenu de la table au format JSON
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
     public String getUsers(){
-        String RequeteSQL="SELECT * FROM users";
+        String RequeteSQL="SELECT * FROM users ORDER BY role ASC, login ASC";
         String login="";
         String prenom="";
         String nom="";
@@ -439,6 +400,39 @@ public class DAOSAE52 {
         }
         
         return JSONString;
+    }
+    
+    
+    
+    
+    /**
+     * Suppression d'un utilisateur
+     * 
+     * @var RequeteSQL    Requête pour obtenir le hash associé au login
+     * @var rights      role utilisateur stocké dans la table
+     * @param login     login utilisateur à supprimer
+     */
+    public void deleteUser(String login){
+        String RequeteSQL="DELETE FROM users WHERE login = ?";
+        
+        //Connection BD sae_52 en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, login);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+               //Rien
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

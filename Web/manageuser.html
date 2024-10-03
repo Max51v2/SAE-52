@@ -1,3 +1,9 @@
+<!-- 
+    Auteur : Ishac HAMDANI
+    Version : ?
+-->
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -120,6 +126,12 @@
         .tab-content.active {
             display: block;
         }
+        #trashCol {
+            width: 10px;
+        }
+        #userListTab {
+            padding-top: 50px;
+        }
     </style>
 </head>    
 <body>
@@ -163,7 +175,7 @@
         </form>
 
 
-        <h2>Liste des utilisateurs</h2>
+        <h2 id="userListTab">Liste des utilisateurs</h2>
         <table>
             <thead>
                 <tr>
@@ -171,6 +183,7 @@
                     <th>Prénom</th>
                     <th>Nom</th>
                     <th>Droits</th>
+                    <th id="trashCol"></th>
                 </tr>
             </thead>
             <tbody id="userList">
@@ -178,7 +191,12 @@
         </table>
     </div>
 
+
     <script>
+        //Auteur JS : Maxime VALLET
+        //Version : 1.2
+
+
         //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
         window.onunload = function(){reload()};
 
@@ -189,11 +207,17 @@
         const ServerIP = url.hostname;
 
 
-        //check si le token existe et l'envoi au servlet
+        //Données session
         var tokenGMAO = sessionStorage['tokenGMAO'];
+        let userLogin = sessionStorage['userLogin'];
+        let userRole = sessionStorage['userRole'];
 
         if(typeof tokenGMAO !== 'undefined'){
             console.log("token : "+tokenGMAO)
+            console.log("###### informatif !!! ######")
+            console.log("login : "+userLogin)
+            console.log("droits : "+userRole)
+            console.log("############################")
 
             //Vérification du token
             fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO})}).then(r => r.json()).then(TokenCheck)
@@ -201,37 +225,40 @@
         else{
             console.log("no token")
 
-            window.location.href = 'login.html'; // Redirection vers la page login si pas de token
+            // Redirection vers la page login si pas de token
+            window.location.href = 'login.html';
         }
 
+        //Vérification du token
         function TokenCheck(r){
             //JSON obtenu
             console.log(r)
 
-            //si besoin
-            const login = r["login"]
-            const role = r["droits"]
-
             //redirection selon les droits
             if(r["droits"] === 'Admin'){
+                //Affichage des données utilisateur si droits admin
                 ShowData();
             }
             else if(r["droits"] === 'Technicien' || r["droits"] === 'Utilisateur'){
-                window.location.href = 'secretaire.html'; // Redirection vers la page principale pour le technicien
+                //Redirection vers la page principale pour le technicien
+                window.location.href = 'secretaire.html';
             }
-            //si aucun droit
             else{
-                window.location.href = 'login.html'; // Redirection vers la page login si mauvais token
+                //Redirection vers la page login si mauvais token ou pas de droits
+                window.location.href = 'login.html';
             } 
         }
-        //fin check token
 
+
+        //Affichage des données sur les utilisateurs
         function ShowData(){
             const button =  document.getElementById('submitButton');
             const userList = document.getElementById('userList');
 
+            //Suppression du contenu du tableau
+            userList.innerHTML = '';
 
-            //Récupérration des utilisateurs (Servlet ?)
+            //Récupérration des utilisateurs
             fetch(`https://${ServerIP}:8443/SAE52/ListUsers`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -245,6 +272,7 @@
 
                 c = 0;
 
+                //Remplissage du tableau contenant les informations des utilisateurs
                 while(c < response.length){
                     const login = response[c].login;
                     const firstName = response[c].prenom;
@@ -252,12 +280,23 @@
                     const role = response[c].droits;
                     const row = document.createElement('tr');
                     
-                    console.log(login);
                     row.innerHTML = `
                         <td>${login}</td>
                         <td>${firstName}</td>
                         <td>${lastName}</td>
                         <td>${role}</td>
+                        <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
+                            <button 
+                                style="background: url('trash.png') no-repeat center; 
+                                        background-size: contain; 
+                                        width: 25px; 
+                                        height: 25px; 
+                                        border: none; 
+                                        padding: 0; 
+                                        cursor: pointer;" 
+                                onClick="delUser('${login}')">
+                            </button>
+                        </td>
                     `;
                     userList.appendChild(row);
 
@@ -266,10 +305,10 @@
             }
             
 
-            //Clique boutton ajout utilisateur
+            //Ajout utilisateur
             button.addEventListener('click', function (e) {
 
-                //Var form
+                //Variables formulaire
                 e.preventDefault();
                 const firstName = document.getElementById('first_name').value;
                 const lastName = document.getElementById('last_name').value;
@@ -287,7 +326,7 @@
                 .then(response => response.json())
                 .then(CheckAddition);
 
-                //Reset form
+                //Reset formulaire
                 userForm.reset();
 
                 function CheckAddition(response){
@@ -297,12 +336,50 @@
                     }
                     else{
                         //Rafraichissement tableau
-                        location.reload();
+                        ShowData();
                     }    
                 }
             });
         }
-        
+
+
+        //Supression utilisateur
+        function delUser(login){
+            var str = "Êtes-vous sûr de vouloir supprimer "+login+" ?";
+
+            //Demande de confirmation
+            if (confirm(str)) {
+
+                //Vérification si l'utilisateur essaye de del son compte
+                if(login === userLogin){
+                    alert("Vous ne pouvez pas supprimer votre compte");
+                }
+                else{
+                    console.log("retrait : ",login);
+
+                    //Suppression utilisateur BD
+                    fetch(`https://${ServerIP}:8443/SAE52/DeleteUser`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token:tokenGMAO, login: login })
+                    })
+                    .then(response => response.json())
+                    .then(CheckDeletion);
+
+                    //Vérification de la suppression de l'utilisateur
+                    function CheckDeletion(response){
+                        if(response.result === "Login doesn't exist"){
+                            alert("Le login donné n'existe pas");
+                        }
+                        else{
+                            //Actualisation tableau
+                            ShowData();
+                        }
+                    }
+                }
+            }
+        }
     </script>
+
 </body>
 </html>

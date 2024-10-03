@@ -1,3 +1,9 @@
+<!-- 
+    Auteur : Ishac HAMDANI
+    Version : ?
+-->
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -111,6 +117,10 @@
     </div>
 
     <script>
+        //Auteur JS : Maxime VALLET
+        //Version : 1.5
+
+
         // Rafraîchit la page en arrière
         window.onunload = function() { reload(); };
 
@@ -140,6 +150,11 @@
 
         function TokenCheck(response) {
             console.log(response);
+
+            //Enregistrement login + droits
+            sessionStorage.setItem('userLogin',response.login);
+            sessionStorage.setItem('userRole', response.droits);
+
             const role = response.droits;
 
             if (role === 'Admin') {
@@ -171,6 +186,8 @@
                 loginError.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
             } else {
                 sessionStorage.setItem('tokenGMAO', response.token);
+                sessionStorage.setItem('userRole', response.droits);
+                sessionStorage.setItem('userLogin', response.login);
 
                 if (response.droits === 'Admin') {
                     window.location.href = 'admin.html';

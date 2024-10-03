@@ -1,6 +1,6 @@
 #!/bin/bash
 # Auteur : Maxime VALLET
-# Version : 1.4
+# Version : 1.5
 
 
 #Récupperation de la version de Java (lancement NetBEANS)
@@ -37,6 +37,7 @@ sudo cp $GitRep"admin.html" $ApacheRep"/admin.html"
 sudo cp $GitRep"secretaire.html" $ApacheRep"/secretaire.html"
 sudo cp $GitRep"LogoVIM.jpg" $ApacheRep"/LogoVIM.jpg"
 sudo cp $GitRep"LogoVIM.png" $ApacheRep"/LogoVIM.png"
+sudo cp $GitRep"trash.png" $ApacheRep"/trash.png"
 
 #Récupération du status du daemon apache2
 apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`

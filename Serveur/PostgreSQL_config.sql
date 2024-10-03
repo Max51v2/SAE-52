@@ -17,11 +17,11 @@ CREATE TABLE users (
 );
 
 --Compte admin par défaut (MDP "Admin")
-INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Admin1', 'Admin', 'Originel', 'Admin', 'e3afed0047b08059d0fada10f400c1e5','');
+INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Admin1', 'Originel', 'Admin', 'Admin', 'e3afed0047b08059d0fada10f400c1e5','');
 --Compte admin par défaut (MDP "Technicien")
-INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Technicien1', 'Technicien', 'Originel', 'Technicien', '61c42e9e5647205c90235b3361be8ad7','');
+INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Technicien1', 'Originel', 'Technicien', 'Technicien', '61c42e9e5647205c90235b3361be8ad7','');
 --Compte admin par défaut (MDP "Utilisateur")
-INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Utilisateur1', 'Utilisateur', 'Originel', 'Utilisateur', 'f628ae7eac054bc61babf042677832ee','');
+INSERT INTO users (login, nom, prenom, role, hash, token) VALUES ('Utilisateur1', 'Originel', 'Utilisateur', 'Utilisateur', 'f628ae7eac054bc61babf042677832ee','');
 
 --Droits table contenant les MDP hashés des utilisateurs
 GRANT ALL ON users TO administrateur;
