@@ -19,41 +19,40 @@ import java.security.*;
 import java.util.Random;
 import org.apache.commons.lang3.RandomStringUtils;
 
+
 /**
- *
- * @author root
+ * Servlet Vérification MDP
+ * 
+ * @author Maxime VALLET
  */
 @WebServlet(name = "PasswordCheck", urlPatterns = {"/PasswordCheck"})
 public class PasswordCheck extends HttpServlet {
 
-    /*
-    * classe permettant de stocker le contenu du JSON de la requête
-    * @param login      login utilisateur
-    * @param password       MDP utilisateur
-    */
+    //classe permettant de stocker le contenu du JSON de la requête
     private class User{
         private String login;
         private String password;
+        private String Test;
         
-        private User(String login, String password){
+        private User(String login, String password, String Test){
             this.login=login;
             this.password=password;
+            this.Test = Test;
         }
     }
     
     
     
     /**
-     * Hash le MDP envoyé et le compare à celui dans la base de données puis renvoi un token avec les droits de l'utilisateur si tout est bon
-     * entrées : MDP utilisateur et login
-     * Récupération du hash associé au login
-     * hashage du MDP utilisateur et comparaison
-     * si bon : envoi des droits de l'utilsateur + token + login
-     *
+     * Vérifie si le MDP+login donnés sont OK<br><br>
+     * 
+     * Variables à envoyer au servlet (POST)<br>
+     * String login       &emsp;&emsp;        login de l'utilisateur <br>
+     * String password       &emsp;&emsp;        MDP de l'utilisateur (clair) <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
+     * 
      * @param request       servlet request
      * @param response      servlet response
-     * @var login       login envoyé par l'utilsateur (requête POST)
-     * @var password        MDP envoyé par l'utilsateur (requête POST)
      * @throws      ServletException if a servlet-specific error occurs
      * @throws      IOException if an I/O error occurs
      */
@@ -75,6 +74,7 @@ public class PasswordCheck extends HttpServlet {
         //Données
         String login = user.login;
         String password = user.password;
+        Boolean TestBoolean = Boolean.valueOf(user.Test);
         String rights = "Aucun";
         String token = "";
         
@@ -83,7 +83,7 @@ public class PasswordCheck extends HttpServlet {
         
         try { 
             //Récuperation du hash
-            String hashDB = DAO.GetUserPasswordHash(login, false);
+            String hashDB = DAO.GetUserPasswordHash(login, TestBoolean);
             
             
             //si il n'y a pas de hash, utilisateur inexistant
@@ -107,7 +107,7 @@ public class PasswordCheck extends HttpServlet {
                 //si le hash de la DB est identique au hash envoyé 
                 if(hashDB.equals(hashtext)){
                     //Récupération des droits utilisateur
-                    rights = DAO.GetUserRightsFromLogin(login, false);
+                    rights = DAO.GetUserRightsFromLogin(login, TestBoolean);
                     
                     //Génération d'une chaine de 32 caractères (token)
                     byte[] array = new byte[32];
@@ -115,7 +115,7 @@ public class PasswordCheck extends HttpServlet {
                     token = RandomStringUtils.randomAlphanumeric(32);
                     
                     //Enregistrement du token dans la DB
-                    DAO.SetToken(token, login, false);
+                    DAO.SetToken(token, login, TestBoolean);
                 }
             }
             

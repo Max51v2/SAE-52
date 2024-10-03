@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import DAO.DAOSAE52;
@@ -15,35 +11,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /**
- *
- * @author root
+ * Servlet suppression token
+ * 
+ * @author Maxime VALLET
  */
 @WebServlet(name = "DeleteToken", urlPatterns = {"/DeleteToken"})
 public class DeleteToken extends HttpServlet {
     
-    /*
-    * classe permettant de stocker le contenu du JSON de la requête
-    * @param token      token utilisateur
-    */
+    //classe permettant de stocker le contenu du JSON de la requête
     private class Token{
         private String token;
+        private String Test;
         
-        private Token(String token){
+        private Token(String token, String Test){
             this.token=token;
+            this.Test=Test;
         }
     }
     
     
 
     /**
-     * Retire le token envoyé de la BD
+     * Retire le token envoyé de la BD<br><br>
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @var token       token stocké dans le navigateur (requête POST)
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Variables à envoyer au servlet (POST)<br>
+     * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,13 +61,14 @@ public class DeleteToken extends HttpServlet {
         
         //Données
         String token = deleteToken.token;
+        Boolean TestBoolean = Boolean.valueOf(deleteToken.Test);
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
         
         try { 
             //Suppression du token
-            DAO.DeleteToken(token, false);
+            DAO.DeleteToken(token, TestBoolean);
             
             //JSON renvoyé
             jsonString = "{\"result\":\"Fait\"}";

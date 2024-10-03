@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
 import java.sql.Connection;
@@ -12,7 +8,8 @@ import java.sql.PreparedStatement;
 
 
 /**
- *
+ * DAO SAE52
+ * 
  * @author Maxime VALLET
  */
 public class DAOSAE52 {
@@ -54,8 +51,6 @@ public class DAOSAE52 {
      * 
      * @param login     login donné par l'utilisateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour obtenir le hash associé au login
-     * @var hashDB      hash stocké dans la table
      * @return      hash stocké dans la table
      */
     public String GetUserPasswordHash(String login, Boolean Test){
@@ -97,8 +92,6 @@ public class DAOSAE52 {
      * 
      * @param login     login donné par l'utilisateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour obtenir le hash associé au login
-     * @var rights      role utilisateur stocké dans la table
      * @return      hash stocké dans la table
      */
     public String GetUserRightsFromLogin(String login, Boolean Test){
@@ -139,8 +132,6 @@ public class DAOSAE52 {
      * 
      * @param token     token stocké dans le navigateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour obtenir le hash associé au login
-     * @var rights      role utilisateur stocké dans la table
      * @return      hash stocké dans la table
      */
     public String GetUserRightsFromToken(String token, Boolean Test){
@@ -183,7 +174,6 @@ public class DAOSAE52 {
      * @param login     login donné par l'utilisateur
      * @param token     token généré par le servlet
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour mettre à jour le token pour un login donné
      */
     public void SetToken(String token, String login, Boolean Test){
         String RequeteSQL="UPDATE users SET token = ? WHERE login = ?";
@@ -218,7 +208,6 @@ public class DAOSAE52 {
      * 
      * @param token     token donné par l'utilisateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour obtenir l(utilisateur correspondant au token
      * @return      login stocké dans la table
      */
     public String CheckToken(String token, Boolean Test){
@@ -260,7 +249,6 @@ public class DAOSAE52 {
      * 
      * @param token     token stocké dans le navigateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour mettre à jour le token donné (par du vide)
      */
     public void DeleteToken(String token, Boolean Test){
         String RequeteSQL="UPDATE users SET token = ? WHERE token = ?";
@@ -298,7 +286,6 @@ public class DAOSAE52 {
      * @param role     droits de l'utilisateur
      * @param hashedPassword      MDP hashé de l'utilisateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour mettre à jour le token donné (par du vide)
      */
     public void addUser(String login, String nom, String prenom, String role, String hashedPassword, Boolean Test){
         String RequeteSQL="INSERT INTO users (login, nom, prenom, role, hash, token) VALUES (?, ?, ?, ?, ?,'')";
@@ -335,8 +322,6 @@ public class DAOSAE52 {
      * 
      * @param login     login donné par l'utilisateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour obtenir le hash associé au login
-     * @var rights      role utilisateur stocké dans la table
      * @return loginExist       éxsitance du login (booléen)
      */
     public Boolean doLoginExist(String login, Boolean Test){
@@ -382,8 +367,6 @@ public class DAOSAE52 {
      * Renvoi les utilisateurs contenu dans la BD
      * 
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour obtenir le hash associé au login
-     * @var rights      role utilisateur stocké dans la table
      * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
      */
     public String getUsers(Boolean Test){
@@ -450,8 +433,6 @@ public class DAOSAE52 {
      * 
      * @param login     login utilisateur à supprimer
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @var RequeteSQL    Requête pour obtenir le hash associé au login
-     * @var rights      role utilisateur stocké dans la table
      */
     public void deleteUser(String login, Boolean Test){
         String RequeteSQL="DELETE FROM users WHERE login = ?";

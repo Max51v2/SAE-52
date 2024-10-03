@@ -118,7 +118,7 @@
 
     <script>
         //Auteur JS : Maxime VALLET
-        //Version : 1.5
+        //Version : 1.6
 
 
         // Rafraîchit la page en arrière
@@ -140,7 +140,7 @@
             fetch(`https://${ServerIP}:8443/SAE52/TokenCheck`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: tokenGMAO })
+                body: JSON.stringify({ token: tokenGMAO, Test: false })
             })
             .then(response => response.json())
             .then(TokenCheck);
@@ -173,7 +173,7 @@
             fetch(`https://${ServerIP}:8443/SAE52/PasswordCheck`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ login: username, password: password })
+                body: JSON.stringify({ login: username, password: password, Test: false })
             })
             .then(response => response.json())
             .then(PasswordCheck);

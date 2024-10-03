@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 1.6
+Version : 1.7
 
 
 +--------------------------VM-----------------------------
@@ -44,20 +44,33 @@ Version : 1.6
 |    |
 |    |   Tomcat se lance lorsqu'on lance le projet dans NetBEANS (ne JAMAIS le lancer manuellement sinon le serveur Tomcat ne fonctonnera PAS)
 |    |
+|    |   *Interface administration (accessible depuis localhost uniquement)
+|    |   login : "admin"
+|    |   MDP : "leffe"
+|    |
 |    +---------------------------------------------------------
 |
 |    +------------------------NetBEANS------------------------- 
 |    |
-|    |   *Lancer NetBEANS (obligatoire / commande donnée par Start.sh)
+|    |   *NetBEANS est lancé par Start.sh sur demande
+|    |
+|    |   *commande
 |    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
 |    |   
 |    |   *Au lancement du projet, si la fenêtre requesting keyreing apparait mais que NetBEANS ne demande pas de MDP, il faut redémarrer NetBEANS
+|    |
+|    |   *MDP projet : "leffe"
+|    |
+|    |   *Interface administration (accessible depuis localhost uniquement)
+|    |   login : "admin"
+|    |   MDP : "leffe"
 |    |
 |    +---------------------------------------------------------
 |
 |    +-------------------CONCLUSION A LIRE--------------------- 
 |    |
 |    |   Pour lancer les daemons, actualiser les fichiers Web et reconstruire la DB, lancez Start.sh (cf. section VM > Général)
+|    |   => les identifiants et MDP pour NetBEANS sont dispo dans VM > NetNEANS
 |    |
 |    |   Se connecter à GitHub dans VSCode :
 |    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
@@ -72,19 +85,20 @@ Version : 1.6
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Changes" > cliquer sur le + pour ajouter tous les fichiers (tt dans être dans "staged changes")
 |    |   => menu détaillé bouton commit > commit and push > Ajouter un commentaire (non commenté) > valider (en haut à droite)
 |    |
-|    |   *Ajouter le certificat de l'authorité de certification
+|    |   *Certificat de l'authorité de certification
 |    |   => *Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé (mais ça marche)
-|    |   => Pour ajouter un certificat, merci de regarder la section "procédure d'installation", rubrique "Ajout certificat"
 |    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
 |    |   => Web et Serveur > VSCode | Servlets (dossier NetBEANS) > NetBEANS
-|    |   => Il n'y a besoin du terminal que pour lancer Start.sh et NetBEANS
+|    |   => Il n'y a besoin du terminal que pour lancer Start.sh
 |    |
 |    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM) :
 |    |   => Apache : https://[@IP VM]/[NomPage]
 |    |   => Tomcat (administration) : http://[@IP VM]:8443
 |    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
+|    |   => Javadoc : https://[@IP VM]/Javadoc/index.html
+|    |   ==> déjà enregistré dans les marques page sur la VM
 |    |
 |    |   *Cartes réseau :
 |    |   => il y'a deux cartes réseaux : une en mode bridge et une en mode NAT

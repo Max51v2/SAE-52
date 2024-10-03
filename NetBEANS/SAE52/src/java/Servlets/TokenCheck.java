@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import DAO.DAOSAE52;
@@ -16,21 +12,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author root
+ * Servlet Vérification token
+ * 
+ * @author Maxime VALLET
  */
 @WebServlet(name = "TokenCheck", urlPatterns = {"/TokenCheck"})
 public class TokenCheck extends HttpServlet {
     
-    /*
-    * classe permettant de stocker le contenu du JSON de la requête
-    * @param token      token utilisateur
-    */
+    //classe permettant de stocker le contenu du JSON de la requête
     private class Token{
         private String token;
+        private String Test;
         
-        private Token(String token){
-            this.token=token;
+        private Token(String token, String Test){
+            this.token = token;
+            this.Test = Test;
         }
     }
     
@@ -38,11 +34,14 @@ public class TokenCheck extends HttpServlet {
     
 
     /**
-     * Récupère le login correspondant au token et les droit de l'utilisateur (par rapport au login)
+     * Récupère le login correspondant au token et les droit de l'utilisateur (par rapport au login)<br><br>
      *
+     * Variables à envoyer au servlet (POST)<br>
+     * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
+     * 
      * @param request       servlet request
      * @param response      servlet response
-     * @var token       token stocké dans le navigateur (requête POST)
      * @throws      ServletException if a servlet-specific error occurs
      * @throws      IOException if an I/O error occurs
      */
@@ -64,13 +63,14 @@ public class TokenCheck extends HttpServlet {
         String login = "";
         String rights = "Aucun";
         String token = tokenRequest.token;
+        Boolean TestBoolean = Boolean.valueOf(tokenRequest.Test);
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
         
         try { 
             //Récuperation du login correspondant au token
-            login = DAO.CheckToken(token, false);
+            login = DAO.CheckToken(token, TestBoolean);
             
             //si il n'y a pas de hash, utilisateur inexistant
             if(login.equals("")){
@@ -79,7 +79,7 @@ public class TokenCheck extends HttpServlet {
             //l'utilisateur existe mais il faut vérifier le MDP
             else{
                 //Récupération des droits de l'utilisateur
-                rights = DAO.GetUserRightsFromLogin(login, false);
+                rights = DAO.GetUserRightsFromLogin(login, TestBoolean);
             }
             
             

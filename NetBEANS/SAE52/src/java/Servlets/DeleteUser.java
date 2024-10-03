@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import DAO.DAOSAE52;
@@ -15,23 +11,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /**
+ * Servlet suppression utilisateur
+ * 
  * @author Maxime VALLET
  */
 @WebServlet(name = "DeleteUser", urlPatterns = {"/DeleteUser"})
 public class DeleteUser extends HttpServlet {
 
-    /*
-    * classe permettant de stocker le contenu du JSON de la requête
-    * @param token      token utilisateur
-    */
+    //classe permettant de stocker le contenu du JSON de la requête
     private class user{
         private String token;
         private String login;
+        private String Test;
         
-        private user(String token, String login){
+        private user(String token, String login, String Test){
             this.token = token;
             this.login = login;
+            this.Test = Test;
         }
     }
     
@@ -39,14 +37,17 @@ public class DeleteUser extends HttpServlet {
     
     
     /**
-     * Suppression d'un utilisateur à partir de son login
+     * Suppression d'un utilisateur à partir de son login<br><br>
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @var token token utilisateur
-     * @var login login utilisateur à supprimer
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Variables à envoyer au servlet (POST)<br>
+     * String login       &emsp;&emsp;        login de l'utilisateur à supprimer <br>
+     * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,22 +66,23 @@ public class DeleteUser extends HttpServlet {
         //Données
         String token = user.token;
         String login = user.login;
+        Boolean TestBoolean = Boolean.valueOf(user.Test);
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
             
         try { 
             //VERIF si login en doublon
-            Boolean loginExist = DAO.doLoginExist(login, false);
+            Boolean loginExist = DAO.doLoginExist(login, TestBoolean);
             
             if(loginExist == true){
                 //verif droits utilisateur demande
-                String userRights = DAO.GetUserRightsFromToken(token, false);
+                String userRights = DAO.GetUserRightsFromToken(token, TestBoolean);
                 
                 //Verification si l'utilisateur a les droits Admin
                 if(userRights.equals("Admin")){
                     //Suppression utilisateur
-                    DAO.deleteUser(login, false);
+                    DAO.deleteUser(login, TestBoolean);
 
                     //JSON renvoyé
                     jsonString = "{\"result\":\"Fait\"}";

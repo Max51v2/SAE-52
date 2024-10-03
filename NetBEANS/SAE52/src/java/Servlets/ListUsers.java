@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import DAO.DAOSAE52;
@@ -15,22 +11,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /**
- *
- * @author root
+ * Servlet Récuppération utilisateurs
+ * 
+ * @author Maxime VALLET
  */
 @WebServlet(name = "ListUsers", urlPatterns = {"/ListUsers"})
 public class ListUsers extends HttpServlet {
     
-    /*
-    * classe permettant de stocker le contenu du JSON de la requête
-    * @param token      token utilisateur
-    */
+    //classe permettant de stocker le contenu du JSON de la requête
     private class user{
         private String token;
+        private String Test;
         
         private user(String token){
             this.token = token;
+            this.Test = Test;
         }
     }
     
@@ -38,13 +35,16 @@ public class ListUsers extends HttpServlet {
     
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Renvoi la liste des utilisateurs dans la DB au format JSON<br><br>
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Variables à envoyer au servlet (POST)<br>
+     * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,18 +62,19 @@ public class ListUsers extends HttpServlet {
         
         //Données
         String token = user.token;
+        Boolean TestBoolean = Boolean.valueOf(user.Test);
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
         
         try {
             //verif droits utilisateur demande
-            String userRights = DAO.GetUserRightsFromToken(token, false);
+            String userRights = DAO.GetUserRightsFromToken(token, TestBoolean);
                 
             //Verification si l'utilisateur a les droits Admin
             if(userRights.equals("Admin")){
                 //JSON renvoyé | récuppération des données
-                jsonString = DAO.getUsers(false);
+                jsonString = DAO.getUsers(TestBoolean);
             }
             
         } catch (Exception e) {

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import DAO.DAOSAE52;
@@ -19,17 +15,16 @@ import java.security.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 /**
- *
- * @author root
+ * Servlet ajout utilisateur
+ * 
+ * @author Maxime VALLET
  */
 @WebServlet(name = "AddUser", urlPatterns = {"/AddUser"})
 public class AddUser extends HttpServlet {
     
-    /*
-    * classe permettant de stocker le contenu du JSON de la requête
-    * @param token      token utilisateur
-    */
+    //classe permettant de stocker le contenu du JSON de la requête
     private class user{
         private String firstName;
         private String lastName;
@@ -37,27 +32,37 @@ public class AddUser extends HttpServlet {
         private String password;
         private String role;
         private String token;
+        private String Test;
         
-        private user(String token, String lastName, String firstName, String login, String password, String role){
+        private user(String token, String lastName, String firstName, String login, String password, String role, String Test){
             this.firstName = firstName;
             this.lastName = lastName;
             this.login = login;
             this.password = password;
             this.role = role;
             this.token = token;
+            this.Test = Test;
         }
     }
     
     
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Ajoute un utilisateur<br><br>
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Variables à envoyer au servlet (POST)<br>
+     * String prenom       &emsp;&emsp;        prénom de l'utilisateur <br>
+     * String nom       &emsp;&emsp;       nom de l'utilisateur <br>
+     * String login       &emsp;&emsp;         login de l'utilisateur <br>
+     * String password       &emsp;&emsp;      MDP de l'utilisateur (clair) <br>
+     * String role       &emsp;&emsp;      droits de l'utilisateur <br>
+     * String token       &emsp;&emsp;     token de l'utilisateur connecté <br>
+     * String Test       &emsp;&emsp;      BD à utiliser (true : test | false : sae_52) <br>
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -80,6 +85,7 @@ public class AddUser extends HttpServlet {
         String password = user.password;
         String role = user.role;
         String token = user.token;
+        Boolean TestBoolean = Boolean.valueOf(user.Test);
         
         //génération du hash du MDP donné par l'utilisateur
         MessageDigest m;
@@ -104,15 +110,15 @@ public class AddUser extends HttpServlet {
         
         try { 
             //VERIF si login en doublon
-            Boolean loginExist = DAO.doLoginExist(login, false);
+            Boolean loginExist = DAO.doLoginExist(login, TestBoolean);
             
             if(loginExist == false){
                 //verif droits utilisateur demande
-                String userRights = DAO.GetUserRightsFromToken(token, false);
+                String userRights = DAO.GetUserRightsFromToken(token, TestBoolean);
                 
                 //Verification si l'utilisateur a les droits Admin
                 if(userRights.equals("Admin")){
-                    DAO.addUser(login, nom, prenom, role, hashedPassword, false);
+                    DAO.addUser(login, nom, prenom, role, hashedPassword, TestBoolean);
                 }
                 
                 //JSON renvoyé

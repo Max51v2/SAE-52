@@ -37,7 +37,7 @@
 
     <script>
         //Auteur JS : Maxime VALLET
-        //Version : 1.2
+        //Version : 1.3
 
 
         // Rafraîchit la page en arrière
@@ -60,7 +60,7 @@
                 fetch(`https://${ServerIP}:8443/SAE52/DeleteToken`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ token: tokenGMAO })
+                    body: JSON.stringify({ token: tokenGMAO, Test: false })
                 })
                 .then(response => response.json())
                 .then(CheckDeletion);

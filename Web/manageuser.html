@@ -194,7 +194,7 @@
 
     <script>
         //Auteur JS : Maxime VALLET
-        //Version : 1.5
+        //Version : 1.6
 
 
         //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
@@ -220,7 +220,7 @@
             console.log("############################")
 
             //Vérification du token
-            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO})}).then(r => r.json()).then(TokenCheck)
+            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
         }
         else{
             console.log("no token")
@@ -274,7 +274,7 @@
                 fetch(`https://${ServerIP}:8443/SAE52/AddUser`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ firstName: firstName, lastName: lastName, role: role, login: login, password: password, token:tokenGMAO })
+                body: JSON.stringify({ firstName: firstName, lastName: lastName, role: role, login: login, password: password, token:tokenGMAO, Test: false })
                 })
                 .then(response => response.json())
                 .then(CheckAddition);
@@ -302,7 +302,7 @@
                 fetch(`https://${ServerIP}:8443/SAE52/ListUsers`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token:tokenGMAO })
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
                 })
                 .then(response => response.json())
                 .then(createTable);
@@ -370,7 +370,7 @@
                     fetch(`https://${ServerIP}:8443/SAE52/DeleteUser`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ token:tokenGMAO, login: login })
+                    body: JSON.stringify({ token:tokenGMAO, login: login, Test: false })
                     })
                     .then(response => response.json())
                     .then(CheckDeletion);

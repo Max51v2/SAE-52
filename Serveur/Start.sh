@@ -1,6 +1,6 @@
 #!/bin/bash
 # Auteur : Maxime VALLET
-# Version : 1.5
+# Version : 1.7
 
 
 #Récupperation de la version de Java (lancement NetBEANS)
@@ -27,17 +27,22 @@ then
 fi
 
 
-#Copie des fichiers dans le répertoire d'Apache2 (à modifier si nouveaux fichiers)
+#Copie des fichiers dans le répertoire d'Apache2 (NE PAS TOUCHER)
 GitRep="/home/"$USER"/Bureau/SAE-52/Web/"
 ApacheRep="/var/www/gmao"
-sudo cp $GitRep"login.html" $ApacheRep"/login.html"
-sudo cp $GitRep"logout.html" $ApacheRep"/logout.html"
-sudo cp $GitRep"manageuser.html" $ApacheRep"/manageuser.html"
-sudo cp $GitRep"admin.html" $ApacheRep"/admin.html"
-sudo cp $GitRep"secretaire.html" $ApacheRep"/secretaire.html"
-sudo cp $GitRep"LogoVIM.jpg" $ApacheRep"/LogoVIM.jpg"
-sudo cp $GitRep"LogoVIM.png" $ApacheRep"/LogoVIM.png"
-sudo cp $GitRep"trash.png" $ApacheRep"/trash.png"
+
+#Vidage du Répertoire Apache
+sudo rm -rf $ApacheRep"/"*
+
+#Création répertoire Javadoc
+sudo mkdir -p /var/www/gmao/Javadoc
+
+#Copie des fichiers
+sudo cp -r $GitRep* $ApacheRep"/"
+sudo cp -r "/home/sae-52/Bureau/SAE-52/NetBEANS/SAE52/dist/javadoc/"* $ApacheRep"/Javadoc"
+
+# Fin NE PAS TOUCHER
+
 
 #Récupération du status du daemon apache2
 apache2=`systemctl status apache2 | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
@@ -157,5 +162,9 @@ then
 else
     echo "Status NetBEANS : active"
 fi
+
+echo
+
+echo "Javadoc disponible ici : https://[@IP VM]/Javadoc/index.html"
 
 echo
