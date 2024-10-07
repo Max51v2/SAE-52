@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Hebdomadaire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Police Roboto -->
+    <style>
+        body, input, button, h1, label {
+            font-family: 'Roboto', sans-serif; /* Application de la police Roboto */
+        }
+        html, body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .planning-container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .nav-button {
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 0 10px;
+        }
+        .nav-button:hover {
+            background-color: #333;
+        }
+        .week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .day {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            position: relative;
+            text-align: center;
+            min-height: 100px; /* Hauteur minimale pour les jours */
+            box-sizing: border-box; /* Assurer que le padding et la bordure sont inclus dans la largeur totale */
+            overflow: hidden; /* Évite le débordement */
+        }
+        .day strong {
+            display: block; /* Affiche le jour de la semaine en tant qu'élément de bloc */
+            margin-bottom: 5px; /* Espace entre le jour et la date */
+        }
+        .add-intervention {
+            margin-top: 10px;
+            padding: 5px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block; /* Affiche le bouton en tant qu'élément de bloc */
+            width: 100%; /* Prend toute la largeur du bloc */
+        }
+        .add-intervention:hover {
+            background-color: #333;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 100%;
+            text-align: left;
+        }
+        .modal-content h2 {
+            margin: 0 0 10px;
+        }
+        .modal-content input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .modal-content button {
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal-content button:hover {
+            background-color: #333;
+        }
+        .interventions {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        #weekDisplay {
+            flex-grow: 1;
+            text-align: center; /* Centre le texte de la semaine */
+        }
+    </style>
+</head>
+<body>
+    <div class="planning-container">
+        <h1>Planning Hebdomadaire</h1>
+        <div class="navigation">
+            <button id="prevWeek" class="nav-button">Semaine Précédente</button>
+            <span id="weekDisplay">Semaine de <span id="startDate"></span> à <span id="endDate"></span></span>
+            <button id="nextWeek" class="nav-button">Semaine Suivante</button>
+        </div>
+        <div class="week" id="weekGrid"></div>
+        <div id="interventionModal" class="modal">
+            <div class="modal-content">
+                <h2>Ajouter une Intervention</h2>
+                <label for="interventionDesc">Description :</label>
+                <input type="text" id="interventionDesc" required>
+                <button id="addIntervention">Ajouter</button>
+                <button id="closeModal">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const weekGrid = document.getElementById('weekGrid');
+        const weekDisplay = document.getElementById('weekDisplay');
+        const startDateDisplay = document.getElementById('startDate');
+        const endDateDisplay = document.getElementById('endDate');
+        const interventionModal = document.getElementById('interventionModal');
+        const interventionDesc = document.getElementById('interventionDesc');
+        
+        let currentDate = new Date();
+        const interventions = {}; // Pour stocker les interventions par date
+
+        function renderWeek() {
+            weekGrid.innerHTML = '';
+            const startOfWeek = new Date(currentDate);
+            // Commencer la semaine à lundi
+            startOfWeek.setDate(currentDate.getDate() - (currentDate.getDay() + 6) % 7);
+            const endOfWeek = new Date(currentDate);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+            startDateDisplay.textContent = startOfWeek.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            endDateDisplay.textContent = endOfWeek.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            for (let i = 0; i < 7; i++) {
+                const day = new Date(startOfWeek);
+                day.setDate(startOfWeek.getDate() + i);
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day';
+                dayDiv.innerHTML = `<strong>${day.toLocaleDateString('fr-FR', { weekday: 'long' })}</strong><br>${day.getDate()} ${day.toLocaleDateString('fr-FR', { month: 'long' })}`;
+                
+                // Afficher les interventions pour la journée
+                const dateKey = day.toISOString().split('T')[0]; // YYYY-MM-DD
+                if (interventions[dateKey]) {
+                    const comments = interventions[dateKey].map(comment => `<div>${comment}</div>`).join('');
+                    dayDiv.innerHTML += `<div class="interventions">${comments}</div>`;
+                }
+
+                const addButton = document.createElement('button');
+                addButton.className = 'add-intervention';
+                addButton.textContent = 'Ajouter Intervention';
+                addButton.onclick = () => openModal(dateKey);
+                dayDiv.appendChild(addButton);
+
+                weekGrid.appendChild(dayDiv);
+            }
+        }
+
+        function openModal(date) {
+            interventionModal.style.display = 'flex';
+            interventionModal.setAttribute('data-date', date);
+        }
+
+        document.getElementById('closeModal').addEventListener('click', () => {
+            interventionModal.style.display = 'none';
+            interventionDesc.value = '';
+        });
+
+        document.getElementById('addIntervention').addEventListener('click', () => {
+            const date = interventionModal.getAttribute('data-date');
+            const description = interventionDesc.value;
+
+            // Ajouter l'intervention à l'objet
+            if (!interventions[date]) {
+                interventions[date] = [];
+            }
+            interventions[date].push(description);
+
+            // Rafraîchir le planning pour afficher la nouvelle intervention
+            renderWeek();
+
+            interventionModal.style.display = 'none';
+                 interventionDesc.value = '';
+        });
+
+        document.getElementById('prevWeek').addEventListener('click', () => {
+            currentDate.setDate(currentDate.getDate() - 7);
+            renderWeek();
+        });
+
+        document.getElementById('nextWeek').addEventListener('click', () => {
+            currentDate.setDate(currentDate.getDate() + 7);
+            renderWeek();
+        });
+
+        // Initialisation
+        renderWeek();
+    </script>
+</body>
+</html>
