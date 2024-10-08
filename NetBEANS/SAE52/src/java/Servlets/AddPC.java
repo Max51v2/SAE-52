@@ -1,45 +1,50 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package Servlets;
 
 import DAO.DAOSAE52;
+import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.math.BigInteger;
-import java.security.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 /**
- * Servlet ajout utilisateur
+ * Servlet ajout d'un PC
  * 
  * @author Maxime VALLET
  */
-@WebServlet(name = "AddUser", urlPatterns = {"/AddUser"})
-public class AddUser extends HttpServlet {
-    
+@WebServlet(name = "AddPC", urlPatterns = {"/AddPC"})
+public class AddPC extends HttpServlet {
+
     //classe permettant de stocker le contenu du JSON de la requête
-    private class user{
-        private String firstName;
-        private String lastName;
-        private String login;
-        private String password;
-        private String role;
+    private class pc{
+        private String processor;
+        private String RAM;
+        private String macAddress;
+        private String VLAN;
+        private String name;
+        private String serialNumber;
+        private String status;
+        private String other;
         private String token;
         private String Test;
         
-        private user(String token, String lastName, String firstName, String login, String password, String role, String Test){
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.login = login;
-            this.password = password;
-            this.role = role;
+        private pc(String processor, String lastName, String RAM, String macAddress, String VLAN, String name, String serialNumber, String status, String other, String token, String Test){
+            this.processor = processor;
+            this.RAM = RAM;
+            this.macAddress = macAddress;
+            this.VLAN = VLAN;
+            this.name = name;
+            this.serialNumber = serialNumber;
+            this.status = status;
+            this.other = other;
             this.token = token;
             this.Test = Test;
         }
@@ -51,13 +56,21 @@ public class AddUser extends HttpServlet {
      * Ajoute un utilisateur<br><br>
      *
      * Variables à envoyer au servlet (POST)<br>
-     * String prenom       &emsp;&emsp;        prénom de l'utilisateur <br>
-     * String nom       &emsp;&emsp;       nom de l'utilisateur <br>
-     * String login       &emsp;&emsp;         login de l'utilisateur <br>
-     * String password       &emsp;&emsp;      MDP de l'utilisateur (clair) <br>
-     * String role       &emsp;&emsp;      droits de l'utilisateur <br>
+     * 
+     * String processor       &emsp;&emsp;        processeur de l'appareil <br>
+     * String RAM       &emsp;&emsp;        Quantité de RAM (Go) <br>
+     * String macAddress       &emsp;&emsp;        @MAC de la carte réseau <br>
+     * String VLAN       &emsp;&emsp;        VLAN auquel il a accès <br>
+     * String name       &emsp;&emsp;        nom de l'appareil <br>
+     * String serialNumber       &emsp;&emsp;        Numéro de série de l'appareil <br>
+     * String status       &emsp;&emsp;        Status de la machine (maintenance...) <br>
+     * String other       &emsp;&emsp;        inutilisé (clé USB ?) <br>
      * String token       &emsp;&emsp;     token de l'utilisateur connecté <br>
-     * String Test       &emsp;&emsp;      BD à utiliser (true : test | false : sae_52) <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br><br>
+     * 
+     * Renvoi : <br>
+     * &emsp;   - "Fait" si OK
+     * &emsp;   - "Name exist" si le nom exite déjà dans la BD
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -76,49 +89,35 @@ public class AddUser extends HttpServlet {
         Gson gsonRequest = new Gson();
         
         // Convertion du JSON en objet Java
-        AddUser.user user = gsonRequest.fromJson(reader, AddUser.user.class);
+        AddPC.pc pc = gsonRequest.fromJson(reader, AddPC.pc.class);
         
         //Données
-        String prenom = user.firstName;
-        String nom = user.lastName;
-        String login = user.login;
-        String password = user.password;
-        String role = user.role;
-        String token = user.token;
-        Boolean TestBoolean = Boolean.valueOf(user.Test);
+        String processor = pc.processor;
+        String RAM = pc.RAM;
+        String macAddress = pc.macAddress;
+        String VLAN = pc.VLAN;
+        String name = pc.name;
+        String serialNumber = pc.serialNumber;
+        String status = pc.status;
+        String other = pc.other;
+        String token = pc.token;
+        Boolean TestBoolean = Boolean.valueOf(pc.Test);
         
-        //génération du hash du MDP donné par l'utilisateur
-        MessageDigest m;
-        String hashedPassword="";
-        try {
-            m = MessageDigest.getInstance("MD5");
-            m.reset();
-            m.update(password.getBytes());
-            byte[] digest = m.digest();
-            BigInteger bigInt = new BigInteger(1,digest);
-            hashedPassword = bigInt.toString(16);
-
-            while(hashedPassword.length() < 32 ){
-                hashedPassword = "0"+hashedPassword;
-            }
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
         
         try { 
-            //VERIF si login en doublon
-            Boolean loginExist = DAO.doLoginExist(login, TestBoolean);
+            //VERIF si nom en doublon
+            Boolean nameExist = DAO.doNameExist(name, TestBoolean);
             
-            if(loginExist == false){
+            if(nameExist == false){
                 //verif droits utilisateur demande
                 String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
                 //Verification si l'utilisateur a les droits Admin
                 if(userRights.equals("Admin")){
-                    DAO.addUser(login, nom, prenom, role, hashedPassword, TestBoolean);
+                    DAO.addPC(processor, RAM, macAddress, VLAN, name, serialNumber, status, other, nameExist);
                 }
                 
                 //JSON renvoyé
@@ -126,7 +125,7 @@ public class AddUser extends HttpServlet {
             }
             else{
                 //JSON renvoyé
-                jsonString = "{\"result\":\"Login exist\"}";
+                jsonString = "{\"result\":\"Name exist\"}";
             }
             
         } catch (Exception e) {
@@ -138,7 +137,6 @@ public class AddUser extends HttpServlet {
             out.print(jsonString);
             out.flush();
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

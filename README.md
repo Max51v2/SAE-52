@@ -1,10 +1,16 @@
 A faire :
-- faire un menu déroulant (ça doit être mieux), + afficher le nom du compte connecté
-//- faire la page pour le planning
+- faire un menu déroulant (ça doit être mieux)
+- afficher le nom du compte connecté
+- faire la page pour le planning
 - administrateur doit pouvoir créer des rôles (C'est le JS qui check le rôle envoyé par le servlet donc modif JS quand tu ajoute un rôle !!!)
-- test servlets (Servlets)
+    => réponse ?
 - page technicien à faire, il doit pouvoir voir les demandes d'équipements (uniquement les voir) + pareil pour les demandes support mais sous forme de listing
-
+- DAO : ajouter + lister + supprimer => SW + Routeur + cable + PC (ajout fait)
+- Servlet : ajouter + lister + supprimer => SW + Routeur + cable + PC
+- tests :
+    - Servlets : tout
+    - DAO : addPC
+    
 
 Fait :
 - Mise à jour de la page principale d'apache (voir rubrique "VM" > "Modifications A LIRE" du README Serveur)

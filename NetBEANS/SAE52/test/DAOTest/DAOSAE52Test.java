@@ -39,7 +39,7 @@ public final class DAOSAE52Test {
         instance.addUser(login, nom, prenom, role, hash, Test);
         
         //Test méthode
-        String result = instance.GetUserPasswordHash(login, Test);
+        String result = instance.getUserPasswordHash(login, Test);
         
         //Supression utilisateur
         instance.deleteUser(login, Test);
@@ -74,7 +74,7 @@ public final class DAOSAE52Test {
         instance.addUser(login, nom, prenom, role, hash, Test);
         
         //Test méthode
-        String result = instance.GetUserRightsFromLogin(login, Test);
+        String result = instance.getUserRightsFromLogin(login, Test);
         
         //Supression utilisateur
         instance.deleteUser(login, Test);
@@ -110,10 +110,10 @@ public final class DAOSAE52Test {
         instance.addUser(login, nom, prenom, role, hash, Test);
         
         //Ajout token
-        instance.SetToken(token, login, Test);
+        instance.setToken(token, login, Test);
         
         //Test méthode
-        String result = instance.GetUserRightsFromToken(token, Test);
+        String result = instance.getUserRightsFromToken(token, Test);
         
         //Supression utilisateur
         instance.deleteUser(login, Test);
@@ -150,10 +150,10 @@ public final class DAOSAE52Test {
         instance.addUser(login, nom, prenom, role, hash, Test);
         
         //Ajout token
-        instance.SetToken(token, login, Test);
+        instance.setToken(token, login, Test);
         
         //Test méthode
-        String result = instance.GetUserRightsFromToken(token, Test);
+        String result = instance.getUserRightsFromToken(token, Test);
         
         //Supression utilisateur
         instance.deleteUser(login, Test);
@@ -189,10 +189,10 @@ public final class DAOSAE52Test {
         instance.addUser(login, nom, prenom, role, hash, Test);
         
         //Ajout token
-        instance.SetToken(token, login, Test);
+        instance.setToken(token, login, Test);
         
         //Test méthode
-        String result = instance.CheckToken(token, Test);
+        String result = instance.checkToken(token, Test);
         
         //Supression utilisateur
         instance.deleteUser(login, Test);
@@ -228,11 +228,11 @@ public final class DAOSAE52Test {
         instance.addUser(login, nom, prenom, role, hash, Test);
         
         //Ajout token
-        instance.SetToken(token, login, Test);
+        instance.setToken(token, login, Test);
         
         //Test méthode
-        instance.DeleteToken(token, Test);
-        String result = instance.CheckToken(token, Test);
+        instance.deleteToken(token, Test);
+        String result = instance.checkToken(token, Test);
         
         //Supression utilisateur
         instance.deleteUser(login, Test);

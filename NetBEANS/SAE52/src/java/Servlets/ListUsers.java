@@ -69,7 +69,7 @@ public class ListUsers extends HttpServlet {
         
         try {
             //verif droits utilisateur demande
-            String userRights = DAO.GetUserRightsFromToken(token, TestBoolean);
+            String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
             //Verification si l'utilisateur a les droits Admin
             if(userRights.equals("Admin")){

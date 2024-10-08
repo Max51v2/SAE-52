@@ -49,18 +49,18 @@ public class DAOSAE52 {
     /**
      * Récupération du hash dans la table users en fonction du login donné par l'utilisateur
      * 
-     * @param login     login donné par l'utilisateur
-     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @return      hash stocké dans la table
+     * @param login       &emsp;&emsp;        login donné par l'utilisateur
+     * @param Test       &emsp;&emsp;        Utilisation de la BD test (true si test sinon false !!!)
+     * @return        hash stocké dans la table
      */
-    public String GetUserPasswordHash(String login, Boolean Test){
+    public String getUserPasswordHash(String login, Boolean Test){
         String RequeteSQL="SELECT * FROM users WHERE login = ?";
         String hashDB="";
         
         //Selection de la BD
         changeConnection(Test);
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
                 DAOSAE52.getConnectionPostgres();
                 
@@ -90,18 +90,18 @@ public class DAOSAE52 {
     /**
      * Récupération des droits de l'utilisateur à partir du login
      * 
-     * @param login     login donné par l'utilisateur
-     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @return      hash stocké dans la table
+     * @param login       &emsp;&emsp;        login donné par l'utilisateur
+     * @param Test       &emsp;&emsp;        Utilisation de la BD test (true si test sinon false !!!)
+     * @return        droits de l'utilisateur
      */
-    public String GetUserRightsFromLogin(String login, Boolean Test){
+    public String getUserRightsFromLogin(String login, Boolean Test){
         String RequeteSQL="SELECT * FROM users WHERE login = ?";
         String rights="";
         
         //Selection de la BD
         changeConnection(Test);
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
                 DAOSAE52.getConnectionPostgres();
                 
@@ -130,18 +130,18 @@ public class DAOSAE52 {
     /**
      * Récupération des droits de l'utilisateur à partir du token
      * 
-     * @param token     token stocké dans le navigateur
-     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
-     * @return      hash stocké dans la table
+     * @param token       &emsp;&emsp;        token stocké dans le navigateur
+     * @param Test       &emsp;&emsp;        Utilisation de la BD test (true si test sinon false !!!)
+     * @return        droits de l'utilisateur
      */
-    public String GetUserRightsFromToken(String token, Boolean Test){
+    public String getUserRightsFromToken(String token, Boolean Test){
         String RequeteSQL="SELECT * FROM users WHERE token = ?";
         String rights="";
         
         //Selection de la BD
         changeConnection(Test);
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
                 DAOSAE52.getConnectionPostgres();
                 
@@ -171,17 +171,17 @@ public class DAOSAE52 {
     /**
      * Enregistrement du token
      * 
-     * @param login     login donné par l'utilisateur
-     * @param token     token généré par le servlet
-     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @param login       &emsp;&emsp;        login donné par l'utilisateur
+     * @param token       &emsp;&emsp;        token généré par le servlet
+     * @param Test       &emsp;&emsp;        Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void SetToken(String token, String login, Boolean Test){
+    public void setToken(String token, String login, Boolean Test){
         String RequeteSQL="UPDATE users SET token = ? WHERE login = ?";
         
         //Selection de la BD
         changeConnection(Test);
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
                 DAOSAE52.getConnectionPostgres();
                 
@@ -206,18 +206,18 @@ public class DAOSAE52 {
     /**
      * Vérification du token
      * 
-     * @param token     token donné par l'utilisateur
-     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @param token       &emsp;&emsp;        token donné par l'utilisateur
+     * @param Test       &emsp;&emsp;        Utilisation de la BD test (true si test sinon false !!!)
      * @return      login stocké dans la table
      */
-    public String CheckToken(String token, Boolean Test){
+    public String checkToken(String token, Boolean Test){
         String RequeteSQL="SELECT * FROM users WHERE token = ?";
         String login="";
         
         //Selection de la BD
         changeConnection(Test);
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
                 DAOSAE52.getConnectionPostgres();
                 
@@ -250,13 +250,13 @@ public class DAOSAE52 {
      * @param token     token stocké dans le navigateur
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void DeleteToken(String token, Boolean Test){
+    public void deleteToken(String token, Boolean Test){
         String RequeteSQL="UPDATE users SET token = ? WHERE token = ?";
         
         //Selection de la BD
         changeConnection(Test);
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
                 DAOSAE52.getConnectionPostgres();
                 
@@ -293,7 +293,7 @@ public class DAOSAE52 {
         //Selection de la BD
         changeConnection(Test);
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
             DAOSAE52.getConnectionPostgres();
                 
@@ -332,7 +332,7 @@ public class DAOSAE52 {
         //Selection de la BD
         changeConnection(Test);
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
                 DAOSAE52.getConnectionPostgres();
                 
@@ -381,7 +381,7 @@ public class DAOSAE52 {
         changeConnection(Test);
         
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
                 DAOSAE52.getConnectionPostgres();
                 
@@ -440,7 +440,7 @@ public class DAOSAE52 {
         //Selection de la BD
         changeConnection(Test);
         
-        //Connection BD sae_52 en tant que postgres
+        //Connection BD en tant que postgres
         try (Connection connection =
                 DAOSAE52.getConnectionPostgres();
                 
@@ -457,5 +457,96 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
+    
+    
+    /**
+     * Ajout d'un ordinateur
+     * 
+     * @param processor     processeur de l'appareil
+     * @param RAM     Quantité de RAM (Go)
+     * @param macAddress     @MAC de la carte réseau
+     * @param VLAN     VLAN auquel il a accès
+     * @param name      nom de l'appareil
+     * @param serialNumber     Numéro de série de l'appareil
+     * @param status     Status de la machine (maintenance...)
+     * @param other     inutilisé (clé USB ?)
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void addPC(String processor, String RAM, String macAddress, String VLAN, String name, String serialNumber, String status, String other, Boolean Test){
+        String RequeteSQL="INSERT INTO pc (processor, ram, mac_address, vlan, name, serial_number, status, other) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+            DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, processor);
+            preparedStatement.setString(2, RAM);
+            preparedStatement.setString(3, macAddress);
+            preparedStatement.setString(4, VLAN);
+            preparedStatement.setString(5, name);
+            preparedStatement.setString(3, serialNumber);
+            preparedStatement.setString(4, status);
+            preparedStatement.setString(5, other);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    
+    
+    /**
+     * Vérifie l'existance du nom du PC dans la base de données
+     * 
+     * @param name     nom du PC
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return nameExist       éxsitance du login (booléen)
+     */
+    public Boolean doNameExist(String name, Boolean Test){
+        String RequeteSQL="SELECT * FROM pc WHERE name = ?";
+        String nameDB="";
+        Boolean nameExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, name);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    nameDB = resultSet.getString("login");
+                }
+            }
+            
+            //Vérification du nom renvoyé
+            if(name.equals(nameDB)){
+                nameExist = true;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return nameExist;
+    }
 }

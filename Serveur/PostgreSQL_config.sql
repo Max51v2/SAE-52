@@ -1,5 +1,5 @@
 --Auteur : Maxime VALLET
---Version : 0.8
+--Version : 0.9
 
 
 --####################### BD sae_52 #######################
@@ -33,18 +33,21 @@ GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO administrateur;
 
 -- table pc
 CREATE TABLE pc (
+    id SERIAL PRIMARY KEY,
     processor text,
     ram text,
     mac_address text,
     vlan text,
     name text,
     serial_number text,
-    status text
+    status text,
+    other text
 );
 
 
 -- table routeur
-CREATE TABLE routeur (
+CREATE TABLE router (
+    id SERIAL PRIMARY KEY,
     router_ports text,
     mac_address text,
     vlan text,
@@ -55,6 +58,7 @@ CREATE TABLE routeur (
 
 -- table switch
 CREATE TABLE switch (
+    id SERIAL PRIMARY KEY,
     switch_speed text,
     mac_address text,
     vlan text,
@@ -65,6 +69,7 @@ CREATE TABLE switch (
 
 -- table cable
 CREATE TABLE cable (
+    id SERIAL PRIMARY KEY,
     cable_lenght text,
     name text,
     serial_number text,
@@ -95,18 +100,21 @@ CREATE TABLE users (
 
 -- table pc
 CREATE TABLE pc (
+    id SERIAL PRIMARY KEY,
     processor text,
     ram text,
     mac_address text,
     vlan text,
     name text,
     serial_number text,
-    status text
+    status text,
+    other text
 );
 
 
 -- table routeur
-CREATE TABLE routeur (
+CREATE TABLE router (
+    id SERIAL PRIMARY KEY,
     router_ports text,
     mac_address text,
     vlan text,
@@ -117,6 +125,7 @@ CREATE TABLE routeur (
 
 -- table switch
 CREATE TABLE switch (
+    id SERIAL PRIMARY KEY,
     switch_speed text,
     mac_address text,
     vlan text,
@@ -127,6 +136,7 @@ CREATE TABLE switch (
 
 -- table cable
 CREATE TABLE cable (
+    id SERIAL PRIMARY KEY,
     cable_lenght text,
     name text,
     serial_number text,
