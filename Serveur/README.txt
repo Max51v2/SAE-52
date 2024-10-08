@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 1.7
+Version : 1.8
 
 
 +--------------------------VM-----------------------------
@@ -305,7 +305,7 @@ Version : 1.7
 |    |
 |    |   sudo netbeans --jdkhome /usr/java/[version jdk]
 |    |
-|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/sae-52/Bureau/SAE-52/NetBEANS/SAE52  
+|    |   *Ouvrir le projet (il faut cloner le projet avant) : /home/$USER/Bureau/SAE-52/NetBEANS/SAE52  
 |    |
 |    |   *Ajout serveur Tomcat
 |    |   Tools > Server > Apache Tomcat or TomEE > Server location : "/opt/tomcat/" | username : "admin | login : "leffe"
@@ -314,7 +314,10 @@ Version : 1.7
 |    |   => File > projet properties > libraries > add library > PostgreSQL JDBC library
 |    |
 |    |   *Lancer NetBEANS (obligatoire)
-|    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
+|    |   => "sudo netbeans --jdkhome /usr/java/[version JDK]" ou Start.sh
+|    |   
+|    |   *Importer les librairies manquantes du projet
+|    |   => pour les librairies manquantes aller sur "https://mvnrepository.com/" et chercher la librairie => version dans le projet => files => view all => dl la jar => ajouter dans NetBEANS
 |    |
 |    +---------------------------------------------------------
 |
@@ -338,7 +341,7 @@ Version : 1.7
 |    |   sudo systemctl daemon-reload
 |    |   sudo systemctl restart apache2
 |    |
-|    |   *Tomcat (à finir)
+|    |   *Tomcat
 |    |   cd /certs
 |    |   sudo openssl pkcs12 -export -in SAE52.crt -inkey SAE52.key -out SAE52.p12 -name tomcat
 |    |   => MDP : leffe
@@ -346,7 +349,7 @@ Version : 1.7
 |    |   sudo /usr/java/[version JDK] bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 |    |   => MDP keytool "administrateur"
 |    |
-|    |   sudo cp /home/sae-52/Bureau/SAE-52/Serveur/server.xml /opt/tomcat/conf/server.xml
+|    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/server.xml /opt/tomcat/conf/server.xml
 |    |
 |    +---------------------------------------------------------
 |

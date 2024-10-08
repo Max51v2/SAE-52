@@ -5,7 +5,8 @@ A faire :
 - administrateur doit pouvoir créer des rôles (C'est le JS qui check le rôle envoyé par le servlet donc modif JS quand tu ajoute un rôle !!!)
     => réponse ?
 - page technicien à faire, il doit pouvoir voir les demandes d'équipements (uniquement les voir) + pareil pour les demandes support mais sous forme de listing
-- DAO : ajouter + lister + supprimer => SW + Routeur + cable + PC (ajout fait)
+- page visualisation des équipements
+- DAO : ajouter + lister + supprimer => SW + Routeur + cable + PC (suppression)
 - Servlet : ajouter + lister + supprimer => SW + Routeur + cable + PC
 - tests :
     - Servlets : tout

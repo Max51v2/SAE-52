@@ -192,6 +192,9 @@
                 <label for="serial_number">Numéro de série :</label>
                 <input type="text" id="serial_number" name="serial_number" required>
 
+                <label for="other">Autre :</label>
+                <input type="text" id="other" name="other" required>
+
                 <label for="status">État de l'équipement :</label>
                 <select id="status" name="status">
                     <option value="En stock">En stock</option>
@@ -218,7 +221,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        //Auteur JS : Maxime VALLET
+        //Auteurs JS : Maxime VALLET, Ishac HAMDANI
         //Version : 0.3
 
 
@@ -272,7 +275,6 @@
                 window.location.href = 'login.html'; // Redirection vers la page login si mauvais token
             } 
         }
-        //fin check token
 
         
         // Gérer les onglets
@@ -342,6 +344,96 @@
 
         equipmentTypeSelect.addEventListener('change', toggleFields);
         toggleFields(); // Initialiser l'affichage des champs corrects
+
+
+        //Ajout équipement
+        const button =  document.getElementById('submitButton');
+
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const selectedType = equipmentTypeSelect.value;
+
+            //Redirection de la requête selon le type d'équipement
+            if (selectedType === 'pc') {
+                addPC();
+            } else if (selectedType === 'router') {
+                addRouter();
+            } else if (selectedType === 'switch') {
+                addSW();
+            } else if (selectedType === 'cable') {
+                addCable();
+            }
+        });
+
+
+        //Ajout PC
+        function addPC(){
+            //Variables formulaire
+            const processor = document.getElementById('processor').value;
+            const RAM = document.getElementById('ram').value;
+            const macAddress = document.getElementById('mac_address').value;
+            const VLAN = document.getElementById('vlan').value;
+            const name = document.getElementById('name').value;
+            const serialNumber = document.getElementById('serial_number').value;
+            const status = document.getElementById('status').value;
+            const other = document.getElementById('other').value;
+
+
+            //Ajout utilisateur BD
+            fetch(`https://${ServerIP}:8443/SAE52/AddPC`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ processor: processor, RAM: RAM, macAddress: macAddress, VLAN: VLAN, name: name, serialNumber: serialNumber, status: status, other: other, token:tokenGMAO, Test: false })
+            })
+            .then(response => response.json())
+            .then(CheckAdditionPC);
+
+
+            function CheckAdditionPC(response){
+                //Reset formulaire
+                equipmentForm.reset();
+
+                //si le login existe dans la DB
+                if(response.result === "Name exist"){
+                    alert("Le nom existe déjà");
+                }
+                else{
+                    //fait
+                }
+            }
+        }
+
+
+        //Ajout SW
+        function addSW(response){
+            //à faire
+        }
+
+
+        //Ajout routeur
+        function addRouter(response){
+            //à faire
+        }
+
+
+        //Ajout câble
+        function addCable (response){
+            //à faire
+        }
+
+        //Ajout utilisateur BD
+        fetch(`https://${ServerIP}:8443/SAE52/ListPC`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token:tokenGMAO, Test: false })
+            })
+            .then(response => response.json())
+            .then(test)
+
+        function test(response){
+            console.log(response);
+        }
     </script>
 </body>
 </html>

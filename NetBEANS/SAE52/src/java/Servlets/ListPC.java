@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package Servlets;
 
 import DAO.DAOSAE52;
@@ -12,19 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet Vérification token
- * 
- * @author Maxime VALLET
+ *
+ * @author root
  */
-@WebServlet(name = "TokenCheck", urlPatterns = {"/TokenCheck"})
-public class TokenCheck extends HttpServlet {
-    
+@WebServlet(name = "ListPC", urlPatterns = {"/ListPC"})
+public class ListPC extends HttpServlet {
+
     //classe permettant de stocker le contenu du JSON de la requête
-    private class Token{
+    private class pc{
         private String token;
         private String Test;
         
-        private Token(String token, String Test){
+        private pc(String token){
             this.token = token;
             this.Test = Test;
         }
@@ -32,9 +35,9 @@ public class TokenCheck extends HttpServlet {
     
     
     
-
+    
     /**
-     * Récupère le login correspondant au token et les droit de l'utilisateur (par rapport au login)<br><br>
+     * Renvoi la liste des PC dans la DB au format JSON<br><br>
      *
      * Variables à envoyer au servlet (POST)<br>
      * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
@@ -57,39 +60,24 @@ public class TokenCheck extends HttpServlet {
         Gson gsonRequest = new Gson();
         
         // Convertion du JSON en objet Java
-        TokenCheck.Token tokenRequest = gsonRequest.fromJson(reader, TokenCheck.Token.class);
+        ListPC.pc pc = gsonRequest.fromJson(reader, ListPC.pc.class);
         
         //Données
-        String login = "";
-        String rights = "Aucun";
-        String token = tokenRequest.token;
-        Boolean TestBoolean = Boolean.valueOf(tokenRequest.Test);
+        String token = pc.token;
+        Boolean TestBoolean = Boolean.valueOf(pc.Test);
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
         
-        try { 
-            //Récuperation du login correspondant au token
-            login = DAO.checkToken(token, TestBoolean);
-            
-            //si il n'y a pas de hash, utilisateur inexistant
-            if(login.equals("")){
-                //rien
+        try {
+            //verif droits utilisateur demande
+            String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
+                
+            //Verification si l'utilisateur a les droits Admin
+            if(userRights.equals("Admin")){
+                //JSON renvoyé | récuppération des données
+                jsonString = DAO.getPC(TestBoolean);
             }
-            //l'utilisateur existe mais il faut vérifier le token
-            else{
-                if(token.equals("")){
-                    //token vide = pas de token dans la DB
-                }
-                else{
-                    //Récupération des droits de l'utilisateur
-                    rights = DAO.getUserRightsFromLogin(login, TestBoolean);
-                }
-            }
-            
-            
-            //JSON renvoyé
-            jsonString = "{\"login\":\""+login+"\", \"droits\":\""+rights+"\"}";
             
         } catch (Exception e) {
             e.printStackTrace();

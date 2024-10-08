@@ -492,9 +492,9 @@ public class DAOSAE52 {
             preparedStatement.setString(3, macAddress);
             preparedStatement.setString(4, VLAN);
             preparedStatement.setString(5, name);
-            preparedStatement.setString(3, serialNumber);
-            preparedStatement.setString(4, status);
-            preparedStatement.setString(5, other);
+            preparedStatement.setString(6, serialNumber);
+            preparedStatement.setString(7, status);
+            preparedStatement.setString(8, other);
             
             // Exécution de la requête
             int affectedRows = preparedStatement.executeUpdate();
@@ -534,7 +534,7 @@ public class DAOSAE52 {
             // Exécution de la requête
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    nameDB = resultSet.getString("login");
+                    nameDB = resultSet.getString("name");
                 }
             }
             
@@ -548,5 +548,77 @@ public class DAOSAE52 {
         }
         
         return nameExist;
+    }
+    
+    
+    
+    /**
+     * Renvoi les utilisateurs contenu dans la BD
+     * 
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     */
+    public String getPC(Boolean Test){
+        String RequeteSQL="SELECT * FROM pc ORDER BY name ASC";
+        String processor="";
+        String RAM="";
+        String macAddress="";
+        String VLAN="";
+        String name="";
+        String serialNumber="";
+        String status="";
+        String other="";
+        String JSONString="";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Integer c = 1;
+                
+                // Ouvrir le tableau JSON
+                JSONString += "[";
+
+                while (resultSet.next()) {
+                    processor = resultSet.getString("processor");
+                    RAM = resultSet.getString("ram");
+                    macAddress = resultSet.getString("mac_address");
+                    VLAN = resultSet.getString("vlan");
+                    name = resultSet.getString("name");
+                    serialNumber = resultSet.getString("serial_number");
+                    status = resultSet.getString("status");
+                    other = resultSet.getString("other");
+
+                    // Ajouter une virgule avant chaque entrée sauf la première
+                    if (c > 1) {
+                        JSONString += ",";
+                    }
+
+                    // Ajouter l'objet JSON
+                    JSONString += "{\"name\":\"" + name + "\", \"processor\":\"" + processor + "\", \"RAM\":\"" + RAM + "\", \"macAddress\":\"" + macAddress + "\", \"VLAN\":\"" + VLAN + "\", \"macAddress\":\"" + macAddress + "\", \"serialNumber\":\"" + serialNumber + "\", \"status\":\"" + status + "\", \"other\":\"" + other + "\"}";
+
+                    c += 1;
+                }
+
+                // Fermer le tableau JSON
+                JSONString += "]";
+
+            }
+            
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return JSONString;
     }
 }
