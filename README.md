@@ -1,3 +1,4 @@
+!!! Nouvelle VM disponible (facultatif) !!!
 A faire :
 - faire un menu déroulant (ça doit être mieux)
 - afficher le nom du compte connecté
