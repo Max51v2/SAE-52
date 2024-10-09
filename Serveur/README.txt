@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 1.8
+Version : 1.9
 
 
 +--------------------------VM-----------------------------
@@ -110,26 +110,10 @@ Version : 1.8
 |
 |    +------------------Modifications A LIRE-------------------
 |    |
-|    |   *Modifications à faire sur la VM si téléchargé après 22 septembre
-|    |
-|    |   *Modification page index
-|    |   sudo nano /etc/apache2/sites-available/gmao.conf
-|    |
-|    |   *coller le texte ci-dessous (retirer les "|")
-|    |   #Directory index
-|    |        <IfModule dir_module>
-|    |                DirectoryIndex login.html
-|    |        </IfModule>
-|    |
-|    |   sudo systemctl restart apache2
-|    |
-|    |   
-|    |   *Redirection local (valentin)
-|    |   Aller dans le fichier : /etc/hosts
-|    |   -> modifier "127.0.0.1   localhost" par "127.0.0.1   gmaovim.local"
-|    |   save
-|    |   
-|    |   Dans le navigateur -> https://gmaovim.local/ ou https://gmaovim.local/login.html et pour tomcat -> http://gmaovim.local:8443/
+|    |   *une nouvelle VM a été publiée
+|    |   => retrait de programmes et plugin VSCode inutilisé
+|    |   => suppression de fichiers inutilisés
+|    |   => redirection en local et page par défaut
 |    |
 |    +---------------------------------------------------------
 |
