@@ -178,13 +178,15 @@ Version : 2.0
 |    |
 |    |   \q
 |    |
-|    |   sudo -u postgres psql template1
+|    |   psql -U postgres -h localhost -d template1
 |    |   
 |    |   create role Administrateur WITH LOGIN PASSWORD 'Administrateur';
 |    |   create role Technicien WITH LOGIN PASSWORD 'Technicien';
 |    |   create role Utilisateur WITH LOGIN PASSWORD 'Utilisateur';
 |    |
 |    |   \i /home/[nom session]/Bureau/SAE-52/Serveur/PostgreSQL_config.sql
+|    |
+|    |   \q
 |    |
 |    +---------------------------------------------------------
 |
@@ -244,11 +246,11 @@ Version : 2.0
 |    |   sudo groupadd tomcat
 |    |   sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 |    |   cd /tmp
-|    |   wget -c https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.94/bin/apache-tomcat-9.0.94.tar.gz
+|    |   wget -c https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.94/bin/apache-tomcat-9.0.96.tar.gz
 |    |
 |    |   sudo mkdir /opt/tomcat
 |    |   cd /opt/tomcat
-|    |   sudo tar xzvf /tmp/apache-tomcat-9.0.94.tar.gz -C /opt/tomcat --strip-components=1
+|    |   sudo tar xzvf /tmp/apache-tomcat-9.0.96.tar.gz -C /opt/tomcat --strip-components=1
 |    |
 |    |   cd /opt
 |    |   sudo chown -R tomcat: tomcat
@@ -258,7 +260,7 @@ Version : 2.0
 |    |
 |    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/tomcat.service /etc/systemd/system/tomcat.service
 |    |   sudo nano /etc/systemd/system/tomcat.service
-|    |   *Modifier cette ligne "Environment=JAVA_HOME=/usr/java[VERSION JDK]" en changeant "[VERSION JDK]"
+|    |   *Modifier cette ligne "Environment=JAVA_HOME=/usr/java/[VERSION JDK]" en changeant "[VERSION JDK]"
 |    |   => vous pouvez trouver la version en tapant les commandes suivantes :
 |    |   ==> cd /usr/java
 |    |   ==> ls                                                               (prendre le nom du dossier)
