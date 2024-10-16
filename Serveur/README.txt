@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 1.9
+Version : 2.0
 
 
 +--------------------------VM-----------------------------
@@ -330,7 +330,7 @@ Version : 1.9
 |    |   sudo openssl pkcs12 -export -in SAE52.crt -inkey SAE52.key -out SAE52.p12 -name tomcat
 |    |   => MDP : leffe
 |    |   
-|    |   sudo /usr/java/[version JDK] bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
+|    |   sudo /usr/java/[version JDK]/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 |    |   => MDP keytool "administrateur"
 |    |
 |    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/server.xml /opt/tomcat/conf/server.xml
