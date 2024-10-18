@@ -39,7 +39,7 @@ sudo mkdir -p /var/www/gmao/Javadoc
 
 #Copie des fichiers
 sudo cp -r $GitRep* $ApacheRep"/"
-sudo cp -r "/home/sae-52/Bureau/SAE-52/NetBEANS/SAE52/dist/javadoc/"* $ApacheRep"/Javadoc"
+sudo cp -r "/home/"$USER"/Bureau/SAE-52/NetBEANS/SAE52/dist/javadoc/"* $ApacheRep"/Javadoc"
 
 # Fin NE PAS TOUCHER
 
