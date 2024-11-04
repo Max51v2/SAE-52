@@ -407,19 +407,98 @@
 
         //Ajout SW
         function addSW(response){
-            //à faire
+            // Variables du formulaire
+            const switchSpeed = document.getElementById('switch_speed').value;
+            const macAddress = document.getElementById('mac_address').value;
+            const VLAN = document.getElementById('vlan').value;
+            const name = document.getElementById('name').value;
+            const serialNumber = document.getElementById('serial_number').value;
+            const status = document.getElementById('status').value;
+
+            // Ajout du switch dans la BD
+            fetch(`https://${ServerIP}:8443/SAE52/AddSwitch`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ switchSpeed: switchSpeed, macAddress: macAddress, VLAN: VLAN, name: name, serialNumber: serialNumber, status: status, token: tokenGMAO, Test: false })
+            })
+            .then(response => response.json())
+            .then(CheckAdditionSW);
+
+            function CheckAdditionSW(response) {
+                // Reset formulaire
+                equipmentForm.reset();
+
+                // Si le nom existe déjà dans la DB
+                if(response.result === "Name exist") {
+                    alert("Le nom existe déjà");
+                } else {
+                    // Autres actions à réaliser
+                }
+            }
         }
+
 
 
         //Ajout routeur
         function addRouter(response){
-            //à faire
+            const routerPorts = document.getElementById('router_ports').value;
+            const macAddress = document.getElementById('mac_address').value;
+            const VLAN = document.getElementById('vlan').value;
+            const name = document.getElementById('name').value;
+            const serialNumber = document.getElementById('serial_number').value;
+            const status = document.getElementById('status').value;
+
+            // Ajout du routeur dans la BD
+            fetch(`https://${ServerIP}:8443/SAE52/AddRouter`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({routerPorts: routerPorts, macAddress: macAddress, VLAN: VLAN, name: name, serialNumber: serialNumber, status: status, token: tokenGMAO, Test: false })
+            })
+            .then(response => response.json())
+            .then(CheckAdditionRouter);
+
+            function CheckAdditionRouter(response) {
+                // Reset formulaire
+                equipmentForm.reset();
+
+                // Si le nom existe déjà dans la DB
+                if(response.result === "Name exist") {
+                    alert("Le nom existe déjà");
+                } else {
+                    // Autres actions à réaliser
+                }
+            }
         }
 
 
         //Ajout câble
         function addCable (response){
-            //à faire
+            // Variables du formulaire
+            const cableLength = document.getElementById('cable_length').value;
+            const name = document.getElementById('name').value;
+            const serialNumber = document.getElementById('serial_number').value;
+            const status = document.getElementById('status').value;
+
+            // Ajout du câble dans la BD
+            fetch(`https://${ServerIP}:8443/SAE52/AddCable`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ cableLength: cableLength, name: name, serialNumber: serialNumber, status: status, token: tokenGMAO, Test: false })
+            })
+            .then(response => response.json())
+            .then(CheckAdditionCable);
+
+            function CheckAdditionCable(response) {
+                // Reset formulaire
+                equipmentForm.reset();
+
+                // Si le nom existe déjà dans la DB
+                if(response.result === "Name exist") {
+                    alert("Le nom existe déjà");
+                } else {
+                    // Autres actions à réaliser
+                }
+            }
         }
 
         //Ajout utilisateur BD
