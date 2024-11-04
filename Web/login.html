@@ -118,7 +118,7 @@
 
     <script>
         //Auteur JS : Maxime VALLET
-        //Version : 1.6
+        //Version : 1.7
 
 
         // Rafraîchit la page en arrière
@@ -159,7 +159,9 @@
 
             if (role === 'Admin') {
                 window.location.href = 'admin.html';
-            } else if (role === 'Technicien' || role === 'Utilisateur') {
+            } else if (role === 'Technicien') {
+                window.location.href = 'tech.html';
+            } else if (role === 'Utilisateur') {
                 window.location.href = 'secretaire.html';
             }
         }
@@ -191,7 +193,9 @@
 
                 if (response.droits === 'Admin') {
                     window.location.href = 'admin.html';
-                } else if (response.droits === 'Technicien' || response.droits === 'Utilisateur') {
+                } else if (response.droits === 'Technicien') {
+                    window.location.href = 'tech.html';
+                } else if (response.droits === 'Utilisateur') {
                     window.location.href = 'secretaire.html';
                 }
             }
