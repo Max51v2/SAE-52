@@ -11,6 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet ajout d'un Routeur
+ * 
+ * @author Valentin Millot
+ */
+
 @WebServlet(name = "AddRouter", urlPatterns = {"/AddRouter"})
 public class AddRouter extends HttpServlet {
 

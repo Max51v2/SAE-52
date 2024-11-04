@@ -11,6 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet ajout d'un Cable
+ * 
+ * @author Valentin Millot
+ */
+
 @WebServlet(name = "AddCable", urlPatterns = {"/AddCable"})
 public class AddCable extends HttpServlet {
 

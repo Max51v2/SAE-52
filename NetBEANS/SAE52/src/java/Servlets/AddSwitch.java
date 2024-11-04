@@ -11,6 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet ajout d'un Switch
+ * 
+ * @author Valentin Millot
+ */
+
 @WebServlet(name = "AddSwitch", urlPatterns = {"/AddSwitch"})
 public class AddSwitch extends HttpServlet {
 
