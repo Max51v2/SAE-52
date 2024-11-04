@@ -621,4 +621,81 @@ public class DAOSAE52 {
         
         return JSONString;
     }
+    
+    public void addSwitch(String switchSpeed, String macAddress, String VLAN, String name, String serialNumber, String status, Boolean Test) {
+        String RequeteSQL = "INSERT INTO switch (switch_speed, mac_address, vlan, name, serial_number, status) VALUES (?, ?, ?, ?, ?, ?)";
+
+        // Sélection de la BD
+        changeConnection(Test);
+
+        // Connexion à la BD en tant que postgres
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+
+            // Remplacement des "?" par les variables d'entrée pour éviter les injections SQL
+            preparedStatement.setString(1, switchSpeed);
+            preparedStatement.setString(2, macAddress);
+            preparedStatement.setString(3, VLAN);
+            preparedStatement.setString(4, name);
+            preparedStatement.setString(5, serialNumber);
+            preparedStatement.setString(6, status);
+
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void addRouter(String routerPorts, String macAddress, String VLAN, String name, String serialNumber, String status, Boolean Test) {
+        String RequeteSQL = "INSERT INTO router (router_ports, mac_address, vlan, name, serial_number, status) VALUES (?, ?, ?, ?, ?, ?)";
+    
+        // Sélection de la BD
+        changeConnection(Test);
+
+        // Connexion à la BD en tant que postgres
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+
+            // Remplacement des "?" par les variables d'entrée pour éviter les injections SQL
+            preparedStatement.setString(1, routerPorts);
+            preparedStatement.setString(2, macAddress);
+            preparedStatement.setString(3, VLAN);
+            preparedStatement.setString(4, name);
+            preparedStatement.setString(5, serialNumber);
+            preparedStatement.setString(6, status);
+
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void addCable(String cableLength, String name, String serialNumber, String status, Boolean Test) {
+        String RequeteSQL = "INSERT INTO cable (cable_lenght, name, serial_number, status) VALUES (?, ?, ?, ?)";
+    
+        // Sélection de la BD
+        changeConnection(Test);
+
+        // Connexion à la BD en tant que postgres
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+
+            // Remplacement des "?" par les variables d'entrée pour éviter les injections SQL
+            preparedStatement.setString(1, cableLength);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, serialNumber);
+            preparedStatement.setString(4, status);
+
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } 
+
 }
