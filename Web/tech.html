@@ -6,7 +6,7 @@
     <title>GMAO - Gestion des équipements</title>
     <link rel="icon" type="image/x-icon" href="/LogoVIM.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
+        <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -20,15 +20,39 @@
             text-align: center;
             position: relative;
         }
-        header a {
+        header .menu {
             position: absolute;
-            top: 1em;
-            right: 1em;
+            top: 10px;
+            right: 10px;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            right: 0;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
             text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
         button {
             padding: 10px 20px;
-            background-color: #007bff;
+            background-color: #000;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -39,13 +63,7 @@
             align-items: center;
         }
         button:hover {
-            background-color: #0056b3;
-        }
-        button:active {
-            background-color: #004085;
-        }
-        button i {
-            margin-right: 8px;
+            background-color: #444;
         }
         .container {
             max-width: 1000px;
@@ -58,39 +76,13 @@
         h1, h2 {
             text-align: center;
         }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            margin: 10px 0 5px;
-        }
-        input[type="text"], input[type="number"], select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-        input[type="submit"], button {
-            padding: 10px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-        input[type="submit"]:hover, button:hover {
-            background-color: #555;
-        }
-        .hidden {
-            display: none;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         table, th, td {
             border: 1px solid #ccc;
@@ -100,14 +92,8 @@
             text-align: left;
         }
         th {
-            background-color: #f2f2f2;
-        }
-        .icon-button {
-            display: flex;
-            align-items: center;
-        }
-        .icon-button i {
-            margin-right: 8px;
+            background-color: #000; 
+            color: white; 
         }
         .tabs {
             margin: 20px 0;
@@ -117,51 +103,130 @@
         .tab-content {
             display: none;
         }
-        .tab-content.active {
-            display: block;
-        }
     </style>
 </head>    
 <body>
     <header>
         <h1>GMAO - Gestion des équipements</h1>
-        <a href="logout.html">
-            <button type="button">
-                <i class="fas fa-sign-out-alt"></i> Se déconnecter
-            </button>
-        </a>
-    </header>
-    <div class="container">
-            <div class="tabs">
-                <button class="tab-button" onclick="openTab('techlist')">Liste des équipements</button>
-                <button class="tab-button" onclick="openTab('plannig')">Planning</button>
-                <button class="tab-button" onclick="openTab('tickets')">Tickets</button>
+        <h5><strong>Page Technicien</strong></h5>
+        <div class="menu">
+            <div class="dropdown">
+                <button>Menu</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="openTab('techlist')">Liste des équipements</a>
+                    <a href="#" onclick="openTab('ticket')">Tickets</a>
+                    <a href="logout.html">Se déconnecter</a>
+                </div>
             </div>
+        </div>
+    </header>
+    
     <div class="container">
-        <h2>Liste des équipements</h2>
-        </form>
+        <!-- Section pour afficher la liste des équipements -->
+        <div id="techlist" class="tab-content">
+            <h2>Liste des équipements</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Équipement</th>
+                        <th>Quantité</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="equipmentList">
+                    <!-- Les équipements seront ajoutés ici -->
+                </tbody>
+            </table>
+        </div>
 
-        <h2></h2>
-        <table>
-            <thead>            
-                <tr>
-                    <th>Câble</th>
-                </tr>
-                <tr>
-                    <th>PC</th>
-                </tr>
-                <tr>
-                    <th>Routeur</th>
-                </tr>
-                <tr>
-                    <th>Switch</th>
-                </tr>
-            </thead>
-            <tbody id="userList">
-            </tbody>
-        </table>
+        <!-- Section pour afficher la liste des tickets -->
+        <div id="ticket" class="tab-content">
+            <h2>Tickets en Cours</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Demande</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="ticketlist">
+                    <!-- Les tickets seront ajoutés ici -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    
+    <script>
+   
+        //Auteur JS : Valentin Millot
+        //Version : 0.1
+
+
+        //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
+        window.onunload = function(){reload()};
+
+        // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Apache)
+        // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const ServerIP = url.hostname;
+
+
+        //Données session
+        var tokenGMAO = sessionStorage['tokenGMAO'];
+        let userLogin = sessionStorage['userLogin'];
+        let userRole = sessionStorage['userRole'];
+
+        if(typeof tokenGMAO !== 'undefined'){
+            console.log("token : "+tokenGMAO)
+            console.log("###### informatif !!! ######")
+            console.log("login : "+userLogin)
+            console.log("droits : "+userRole)
+            console.log("############################")
+
+            //Vérification du token
+            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
+        }
+        else{
+            console.log("no token")
+
+            window.location.href = 'login.html'; // Redirection vers la page login si pas de token
+        }
+
+        function TokenCheck(r){
+            //JSON obtenu
+            console.log(r)
+
+            //redirection selon les droits
+            if(r["droits"] === 'Admin'){
+                //Rien
+            }
+            else if(r["droits"] === 'Technicien'){
+                //Rien
+            }
+            else if(r["droits"] === 'Utilisateur'){
+                //Rien
+            }
+            //si aucun droit
+            else{
+                window.location.href = 'login.html'; // Redirection vers la page login si mauvais token
+            } 
+        }
+
+
+        // Fonction pour gérer l'affichage des onglets
+        function openTab(tabId) {
+            // Masque toutes les sections
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.style.display = 'none');
+
+            // Affiche la section sélectionnée
+            document.getElementById(tabId).style.display = 'block';
+        }
+
+        // Affiche la première section par défaut
+        openTab('techlist');
+    </script>
 </body>
 </html>
