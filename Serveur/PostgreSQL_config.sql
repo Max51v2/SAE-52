@@ -143,6 +143,14 @@ CREATE TABLE cable (
     status text
 );
 
+-- table ticket
+CREATE TABLE ticket (
+    id SERIAL PRIMARY KEY,
+    description text,
+    service text,
+    status text
+);
+
 --########################## FIN ##########################
 
 --Msg fin
