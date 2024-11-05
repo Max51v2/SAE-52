@@ -207,14 +207,14 @@
         <table>
             <thead>
                 <tr>
-                    <th>Processeur</th>
-                    <th>Ram</th>
-                    <th>AdresseMAC</th>
+                    <th>processeur</th>
+                    <th>ram</th>
+                    <th>adresseMAC</th>
                     <th>vlan</th>
-                    <th>Nom</th>
-                    <th>SN</th>
-                    <th>Status</th>
-                    <th>Autres</th>
+                    <th>nom</th>
+                    <th>sn</th>
+                    <th>status</th>
+                    <th>autres</th>
                     <th id="trashCol"></th>
                 </tr>
             </thead>
@@ -357,6 +357,10 @@
             }
         });
 
+        window.onload = function() {
+            // Code à exécuter lors du chargement de la page
+            getPC();
+        };
 
         //Ajout PC
         function addPC(){
@@ -423,27 +427,27 @@
             //Remplissage du tableau contenant les informations des pc
             while(c < response.length){
                 const processor = response[c].processeur;
-                const ram = response[c].ram;
-                const mac_address = response[c].adresseMAC;
-                const vlan = response[c].vlan;
+                const RAM = response[c].ram;
+                const macAddress = response[c].adresseMAC;
+                const VLAN = response[c].vlan;
                 const name = response[c].nom;
-                const serial_number = response[c].sn;
+                const serialNumber = response[c].sn;
                 const status = response[c].status;
                 const other = response[c].autres;
                 const row = document.createElement('tr');
                     
                 row.innerHTML = `
                     <td>${processor}</td>
-                    <td>${ram}</td>
-                    <td>${mac_address}</td>
-                    <td>${vlan}</td>
+                    <td>${RAM}</td>
+                    <td>${macAddress}</td>
+                    <td>${VLAN}</td>
                     <td>${name}</td>
-                    <td>${serial_number}</td>
+                    <td>${serialNumber}</td>
                     <td>${status}</td>
                     <td>${other}</td>
                 `;
                 PCList.appendChild(row);
-
+                
                 c = c+1;
                 
                 getPC();
