@@ -141,7 +141,6 @@
         <div class="tabs">
             <button class="tab-button" onclick="openTab('stockManagement')">Gestion des Stocks</button>
             <button class="tab-button" onclick="window.location.href='manageuser.html'">Gestion des Rôles</button>
-            <button class="tab-button" onclick="openTab('stockChartTab')">Évolution des Stocks</button>
         </div>
 
         <div id="stockManagement" class="tab-content active">
@@ -209,12 +208,6 @@
         <div id="roleManagement" class="tab-content">
             <h2>Gestion des Rôles</h2>
             <!-- Contenu de gestion des rôles ici -->
-        </div>
-
-        <!-- Graphique d'évolution des stocks -->
-        <div id="stockChartTab" class="tab-content">
-            <h2>Évolution des Stocks</h2>
-            <canvas id="stockChart" width="400" height="200"></canvas>
         </div>
     </div>
 
@@ -289,27 +282,6 @@
         // Par défaut, ouvrir l'onglet "Gestion des Stocks"
         openTab('stockManagement');
 
-        // Graphique d'évolution des stocks
-        var ctx = document.getElementById('stockChart').getContext('2d');
-        var stockChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai'], // Mois ou périodes
-                datasets: [{
-                    label: 'Stocks de câbles RJ45',
-                    data: [30, 25, 20, 15, 10], // Données de l'évolution des stocks
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
 
         // Gestion des champs d'équipement
         const equipmentTypeSelect = document.getElementById('equipment_type');
