@@ -219,7 +219,7 @@
             console.log("############################")
 
             //Vérification du token
-            fetch("https://"+SutilisateurserverIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
+            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
         }
         else{
             console.log("no token")
