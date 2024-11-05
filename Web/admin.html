@@ -203,19 +203,38 @@
                 <button type="bouton" id="submitButton">Ajouter l'équipement</button>
             </form>
         </div>
+        <h2 id="PCListTab">Liste des PC</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Processeur</th>
+                    <th>Ram</th>
+                    <th>AdresseMAC</th>
+                    <th>vlan</th>
+                    <th>Nom</th>
+                    <th>SN</th>
+                    <th>Status</th>
+                    <th>Autres</th>
+                    <th id="trashCol"></th>
+                </tr>
+            </thead>
+            <tbody id="PCList">
+            </tbody>
+        </table>
 
         <!-- Gestion des Rôles -->
         <div id="roleManagement" class="tab-content">
             <h2>Gestion des Rôles</h2>
             <!-- Contenu de gestion des rôles ici -->
         </div>
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        //Auteurs JS : Maxime VALLET, Ishac HAMDANI
-        //Version : 0.3
+        //Auteurs JS : Maxime VALLET, Ishac HAMDANI, Valentin MILLOT
+        //Version : 0.4
 
 
         //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
@@ -351,8 +370,13 @@
             const status = document.getElementById('status').value;
             const other = document.getElementById('other').value;
 
+            // Vérification des champs du formulaire
+            if (!processor|| !RAM||  !macAddress || !serialNumber || !status || !VLAN || !name ||!other) {
+                alert("Tous les champs doivent être remplis.");
+                return;
+            }
 
-            //Ajout utilisateur BD
+
             fetch(`https://${ServerIP}:8443/SAE52/AddPC`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -366,13 +390,63 @@
                 //Reset formulaire
                 equipmentForm.reset();
 
-                //si le login existe dans la DB
+                //si le pc existe dans la DB
                 if(response.result === "Name exist"){
                     alert("Le nom existe déjà");
                 }
                 else{
-                    //fait
+                    getPC();
                 }
+            }
+        }
+        //Récupère les pc auprès du Servlet
+        function getPC(){
+                fetch(`https://${ServerIP}:8443/SAE52/ListPC`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
+                })
+                .then(response => response.json())
+                .then(createTable);
+        }
+
+
+        //Rempli le tableau contenant les pc
+        function createTable(response){
+            console.log(response)
+
+            //Suppression du contenu du tableau
+            PCList.innerHTML = '';
+
+            c = 0;
+
+            //Remplissage du tableau contenant les informations des pc
+            while(c < response.length){
+                const processor = response[c].processeur;
+                const ram = response[c].ram;
+                const mac_address = response[c].adresseMAC;
+                const vlan = response[c].vlan;
+                const name = response[c].nom;
+                const serial_number = response[c].sn;
+                const status = response[c].status;
+                const other = response[c].autres;
+                const row = document.createElement('tr');
+                    
+                row.innerHTML = `
+                    <td>${processor}</td>
+                    <td>${ram}</td>
+                    <td>${mac_address}</td>
+                    <td>${vlan}</td>
+                    <td>${name}</td>
+                    <td>${serial_number}</td>
+                    <td>${status}</td>
+                    <td>${other}</td>
+                `;
+                PCList.appendChild(row);
+
+                c = c+1;
+                
+                getPC();
             }
         }
 
@@ -386,6 +460,12 @@
             const name = document.getElementById('name').value;
             const serialNumber = document.getElementById('serial_number').value;
             const status = document.getElementById('status').value;
+
+            // Vérification des champs du formulaire
+            if (!switchSpeed|| !macAddress || !serialNumber || !status || !VLAN || !name) {
+                alert("Tous les champs doivent être remplis.");
+                return;
+            }
 
             // Ajout du switch dans la BD
             fetch(`https://${ServerIP}:8443/SAE52/AddSwitch`, {
@@ -420,6 +500,12 @@
             const serialNumber = document.getElementById('serial_number').value;
             const status = document.getElementById('status').value;
 
+            // Vérification des champs du formulaire
+            if (!routerPorts|| !macAddress || !serialNumber || !status || !VLAN || !name) {
+                alert("Tous les champs doivent être remplis.");
+                return;
+            }
+
             // Ajout du routeur dans la BD
             fetch(`https://${ServerIP}:8443/SAE52/AddRouter`, {
                 method: "POST",
@@ -450,6 +536,12 @@
             const name = document.getElementById('name').value;
             const serialNumber = document.getElementById('serial_number').value;
             const status = document.getElementById('status').value;
+            
+            // Vérification des champs du formulaire
+            if (!cableLength || !name || !serialNumber || !status) {
+                alert("Tous les champs doivent être remplis.");
+                return;
+            }
 
             // Ajout du câble dans la BD
             fetch(`https://${ServerIP}:8443/SAE52/AddCable`, {
@@ -471,19 +563,6 @@
                     // Autres actions à réaliser
                 }
             }
-        }
-
-        //Ajout utilisateur BD
-        fetch(`https://${ServerIP}:8443/SAE52/ListPC`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token:tokenGMAO, Test: false })
-            })
-            .then(response => response.json())
-            .then(test)
-
-        function test(response){
-            console.log(response);
         }
     </script>
 </body>
