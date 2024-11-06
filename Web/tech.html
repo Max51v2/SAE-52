@@ -128,12 +128,17 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Équipement</th>
-                        <th>Quantité</th>
+                        <th>Processeur</th>
+                        <th>Ram</th>
+                        <th>AdresseMAC</th>
+                        <th>Vlan</th>
+                        <th>Nom</th>
+                        <th>Sn</th>
                         <th>Status</th>
+                        <th>Autres</th>
                     </tr>
                 </thead>
-                <tbody id="equipmentList">
+                <tbody id="pcList">
                     <!-- Les équipements seront ajoutés ici -->
                 </tbody>
             </table>
@@ -162,6 +167,11 @@
         //Auteur JS : Valentin Millot
         //Version : 0.1
 
+        window.onload = function() {
+            // Code à exécuter lors du chargement de la page
+            getPC();
+            const pcList = document.getElementById('pcList');
+        };
 
         //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
         window.onunload = function(){reload()};
@@ -227,6 +237,58 @@
 
         // Affiche la première section par défaut
         openTab('techlist');
+
+        
+
+        //Récupère les pc auprès du Servlet
+        function getPC(){
+                fetch(`https://${ServerIP}:8443/SAE52/ListPC`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
+                })
+                .then(response => response.json())
+                .then(createTable);
+                //Rempli le tableau contenant les pc
+                function createTable(response){
+                    console.log(response)
+
+                    //Suppression du contenu du tableau
+                    pcList.innerHTML = '';
+
+                    c = 0;
+
+                    //Remplissage du tableau contenant les informations des pc
+                    while(c < response.length){
+                        const processor = response[c].processor;
+                        const ram = response[c].RAM;
+                        const mac_address = response[c].macAddress;
+                        const vlan = response[c].VLAN;
+                        const name = response[c].name;
+                        const serial_number = response[c].serialNumber;
+                        const status = response[c].status;
+                        const other = response[c].other;
+                        const row = document.createElement('tr');
+                            
+                        row.innerHTML = `
+                            <td>${processor}</td>
+                            <td>${ram}</td>
+                            <td>${mac_address}</td>
+                            <td>${vlan}</td>
+                            <td>${name}</td>
+                            <td>${serial_number}</td>
+                            <td>${status}</td>
+                            <td>${other}</td>
+                        `;
+                        pcList.appendChild(row);
+                        
+                        c = c+1;
+                        
+                    }
+                }
+        }
+    
+
     </script>
 </body>
 </html>

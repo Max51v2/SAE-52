@@ -234,6 +234,7 @@
                         <th>Nom</th>
                         <th>Sn</th>
                         <th>Status</th>
+                        <th id="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="switchList">
@@ -251,6 +252,7 @@
                         <th>Nom</th>
                         <th>Sn</th>
                         <th>Status</th>
+                        <th id="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="routerList">
@@ -267,6 +269,7 @@
                         <th>Nom</th>
                         <th>Sn</th>
                         <th>Status</th>
+                        <th id="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="cableList">
@@ -329,7 +332,7 @@
                 //Rien
             }
             else if(r["droits"] === 'Technicien'){
-                window.location.href = 'secretaire.html'; // Redirection vers la page principale pour le technicien
+                window.location.href = 'tech.html'; // Redirection vers la page principale pour le technicien
             }
             else if(r["droits"] === 'Utilisateur'){
                 window.location.href = 'secretaire.html'; // Redirection vers la page principale pour l'utilisateur
