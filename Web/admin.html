@@ -216,6 +216,7 @@
                         <th>Sn</th>
                         <th>Status</th>
                         <th>Autres</th>
+                        <th id="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="pcList">
@@ -496,6 +497,18 @@
                             <td>${serial_number}</td>
                             <td>${status}</td>
                             <td>${other}</td>
+                            <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
+                                <button 
+                                    style="background: url('trash.png') no-repeat center; 
+                                            background-size: contain; 
+                                            width: 25px; 
+                                            height: 25px; 
+                                            border: none; 
+                                            padding: 0; 
+                                            cursor: pointer;" 
+                                    onClick="delPC('${name}')">
+                                </button>
+                            </td>
                         `;
                         pcList.appendChild(row);
                         
@@ -504,6 +517,36 @@
                     }
                 }
         }
+        //Supression PC
+        function delPC(name){
+            var str = "Êtes-vous sûr de vouloir supprimer "+name+" ?";
+
+            //Demande de confirmation
+            if (confirm(str)) {
+                console.log("retrait : ",name);
+
+                    //Suppression PC BD
+                    fetch(`https://${ServerIP}:8443/SAE52/DeletePC`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token:tokenGMAO, name: name, Test: false })
+                    })
+                    .then(response => response.json())
+                    .then(CheckDeletion);
+
+                    //Vérification de la suppression deu PC
+                    function CheckDeletion(response){
+                        if(response.result === "Name doesn't exist"){
+                            alert("Le Nom donné n'existe pas");
+                        }                            
+                        else{
+                            //Actualisation tableau
+                            getPC();
+                        }    
+                }
+            }
+        }
+
 
 
         

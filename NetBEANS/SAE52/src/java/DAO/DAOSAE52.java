@@ -944,7 +944,7 @@ public class DAOSAE52 {
      * @param name     nom du PC à supprimer
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void deletePC(String name, Boolean Test){
+    public void DeletePC(String name, Boolean Test){
         String RequeteSQL="DELETE FROM pc WHERE name = ?";
         
         //Selection de la BD
@@ -969,12 +969,56 @@ public class DAOSAE52 {
     }
     
     /**
+     * Vérifie l'existance du nom d'un PC dans la base de données
+     * 
+     * @param name     nom donné par l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return loginExist       éxsitance du login (booléen)
+     */
+    public Boolean doNamePCExist(String name, Boolean Test){
+        String RequeteSQL="SELECT * FROM pc WHERE name = ?";
+        String NameDB="";
+        Boolean NameExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, name);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    NameDB = resultSet.getString("name");
+                }
+            }
+            
+            //Vérification du login renvoyé
+            if(name.equals(NameDB)){
+                NameExist = true;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return NameExist;
+    }
+    
+    /**
      * Suppression d'un Switch
      * 
      * @param name     nom du Switch à supprimer
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void deleteSwitch(String name, Boolean Test){
+    public void DeleteSwitch(String name, Boolean Test){
         String RequeteSQL="DELETE FROM switch WHERE name = ?";
         
         //Selection de la BD
@@ -1004,7 +1048,7 @@ public class DAOSAE52 {
      * @param name     nom du Routeur à supprimer
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void deleteRouter(String name, Boolean Test){
+    public void DeleteRouter(String name, Boolean Test){
         String RequeteSQL="DELETE FROM router WHERE name = ?";
         
         //Selection de la BD
@@ -1034,7 +1078,7 @@ public class DAOSAE52 {
      * @param name     nom du Câble à supprimer
      * @param Test     Utilisation de la BD test (true si test sinon false !!!)
      */
-    public void deleteCable(String name, Boolean Test){
+    public void DeleteCable(String name, Boolean Test){
         String RequeteSQL="DELETE FROM cable WHERE name = ?";
         
         //Selection de la BD
