@@ -937,5 +937,125 @@ public class DAOSAE52 {
         
         return JSONString;
     }
+    
+    /**
+     * Suppression d'un PC
+     * 
+     * @param name     nom du PC à supprimer
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deletePC(String name, Boolean Test){
+        String RequeteSQL="DELETE FROM pc WHERE name = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, name);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Suppression d'un Switch
+     * 
+     * @param name     nom du Switch à supprimer
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteSwitch(String name, Boolean Test){
+        String RequeteSQL="DELETE FROM switch WHERE name = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, name);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Suppression d'un Router
+     * 
+     * @param name     nom du Routeur à supprimer
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteRouter(String name, Boolean Test){
+        String RequeteSQL="DELETE FROM router WHERE name = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, name);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Suppression d'un Câble
+     * 
+     * @param name     nom du Câble à supprimer
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteCable(String name, Boolean Test){
+        String RequeteSQL="DELETE FROM cable WHERE name = ?";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, name);
+            
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
