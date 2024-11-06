@@ -19,15 +19,15 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Valentin Millot
  */
-@WebServlet(name = "ListSwitch", urlPatterns = {"/ListSwitch"})
-public class ListSwitch extends HttpServlet {
+@WebServlet(name = "ListCable", urlPatterns = {"/ListCable"})
+public class ListCable extends HttpServlet {
 
     //classe permettant de stocker le contenu du JSON de la requête
-    private class Switch{
+    private class Cable{
         private String token;
         private String Test;
         
-        private Switch(String token){
+        private Cable(String token){
             this.token = token;
             this.Test = Test;
         }
@@ -37,7 +37,7 @@ public class ListSwitch extends HttpServlet {
     
     
     /**
-     * Renvoi la liste des Switch dans la DB au format JSON<br><br>
+     * Renvoi la liste des Câbles dans la DB au format JSON<br><br>
      *
      * Variables à envoyer au servlet (POST)<br>
      * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
@@ -60,11 +60,11 @@ public class ListSwitch extends HttpServlet {
         Gson gsonRequest = new Gson();
         
         // Convertion du JSON en objet Java
-        ListSwitch.Switch Switch = gsonRequest.fromJson(reader, ListSwitch.Switch.class);
+        ListCable.Cable Cable = gsonRequest.fromJson(reader, ListCable.Cable.class);
         
         //Données
-        String token = Switch.token;
-        Boolean TestBoolean = Boolean.valueOf(Switch.Test);
+        String token = Cable.token;
+        Boolean TestBoolean = Boolean.valueOf(Cable.Test);
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
@@ -76,7 +76,7 @@ public class ListSwitch extends HttpServlet {
             //Verification si l'utilisateur a les droits Admin
             if(userRights.equals("Admin")){
                 //JSON renvoyé | récuppération des données
-                jsonString = DAO.getSwitch(TestBoolean);
+                jsonString = DAO.getCable(TestBoolean);
             }
             
         } catch (Exception e) {

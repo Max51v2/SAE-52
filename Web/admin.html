@@ -412,6 +412,8 @@
             // Code à exécuter lors du chargement de la page
             getPC();
             getSwitch();
+            getRouter();
+            getCable();
         };
 
         //Ajout PC
@@ -508,7 +510,7 @@
 
 
         //Ajout SW
-        function addSW(response){
+        function addSW(){
             // Variables du formulaire
             const switchSpeed = document.getElementById('switch_speed').value;
             const macAddress = document.getElementById('mac_address').value;
@@ -565,7 +567,7 @@
 
                     //Remplissage du tableau contenant les informations des pc
                     while(c < response.length){
-                        const switch_speed = response[c].switch_speed;
+                        const switch_speed = response[c].switchSpeed;
                         const mac_address = response[c].macAddress;
                         const vlan = response[c].VLAN;
                         const name = response[c].name;
@@ -594,7 +596,7 @@
 
 
         //Ajout routeur
-        function addRouter(response){
+        function addRouter(){
             const routerPorts = document.getElementById('router_ports').value;
             const macAddress = document.getElementById('mac_address').value;
             const VLAN = document.getElementById('vlan').value;
@@ -625,14 +627,58 @@
                 if(response.result === "Name exist") {
                     alert("Le nom existe déjà");
                 } else {
-                    // Autres actions à réaliser
+                    getRouter();
                 }
             }
         }
 
+        //Récupère les routeurs auprès du Servlet
+        function getRouter(){
+                fetch(`https://${ServerIP}:8443/SAE52/ListRouter`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
+                })
+                .then(response => response.json())
+                .then(createTable);
+                //Rempli le tableau contenant les souteurs
+                function createTable(response){
+                    console.log(response)
+
+                    //Suppression du contenu du tableau
+                    routerList.innerHTML = '';
+
+                    c = 0;
+
+                    //Remplissage du tableau contenant les informations des pc
+                    while(c < response.length){
+                        const router_ports = response[c].routerPorts;
+                        const mac_address = response[c].macAddress;
+                        const vlan = response[c].VLAN;
+                        const name = response[c].name;
+                        const serial_number = response[c].serialNumber;
+                        const status = response[c].status;
+                        const row = document.createElement('tr');
+                            
+                        row.innerHTML = `
+                            <td>${router_ports}</td>
+                            <td>${mac_address}</td>
+                            <td>${vlan}</td>
+                            <td>${name}</td>
+                            <td>${serial_number}</td>
+                            <td>${status}</td>
+                        `;
+                        routerList.appendChild(row);
+                        
+                        c = c+1;
+                        
+                    }
+                }
+        }
+
 
         //Ajout câble
-        function addCable (response){
+        function addCable (){
             // Variables du formulaire
             const cableLength = document.getElementById('cable_length').value;
             const name = document.getElementById('name').value;
@@ -662,9 +708,49 @@
                 if(response.result === "Name exist") {
                     alert("Le nom existe déjà");
                 } else {
-                    // Autres actions à réaliser
+                    getCable();
                 }
             }
+        }
+
+        //Récupère les câbles auprès du Servlet
+        function getCable(){
+                fetch(`https://${ServerIP}:8443/SAE52/ListCable`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
+                })
+                .then(response => response.json())
+                .then(createTable);
+                //Rempli le tableau contenant les souteurs
+                function createTable(response){
+                    console.log(response)
+
+                    //Suppression du contenu du tableau
+                    cableList.innerHTML = '';
+
+                    c = 0;
+
+                    //Remplissage du tableau contenant les informations des pc
+                    while(c < response.length){
+                        const cable_lenght = response[c].cableLength;
+                        const name = response[c].name;
+                        const serial_number = response[c].serialNumber;
+                        const status = response[c].status;
+                        const row = document.createElement('tr');
+                            
+                        row.innerHTML = `
+                            <td>${cable_lenght}</td>
+                            <td>${name}</td>
+                            <td>${serial_number}</td>
+                            <td>${status}</td>
+                        `;
+                        cableList.appendChild(row);
+                        
+                        c = c+1;
+                        
+                    }
+                }
         }
     </script>
 </body>
