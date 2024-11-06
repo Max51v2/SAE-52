@@ -1,6 +1,6 @@
 <!-- 
-    Auteur : Ishac HAMDANI
-    Version : ?
+    Auteur : Ishac HAMDANI, Valentin Millot
+    Version : 0.2
 -->
 
 
@@ -192,7 +192,7 @@
                 <input type="text" id="serial_number" name="serial_number" required>
 
                 <label for="other">Autre :</label>
-                <input type="text" id="other" name="other" required>
+                <input type="text" id="other" name="other">
 
                 <label for="status">État de l'équipement :</label>
                 <select id="status" name="status">
@@ -216,7 +216,6 @@
                         <th>Sn</th>
                         <th>Status</th>
                         <th>Autres</th>
-                        <th id="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="pcList">
@@ -234,10 +233,42 @@
                         <th>Nom</th>
                         <th>Sn</th>
                         <th>Status</th>
-                        <th id="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="switchList">
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h2 id="routerListTab">Liste des Routeurs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombres de port</th>
+                        <th>AdresseMAC</th>
+                        <th>Vlan</th>
+                        <th>Nom</th>
+                        <th>Sn</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="routerList">
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <h2 id="cableListTab">Liste des Câbles</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Longueur</th>
+                        <th>Nom</th>
+                        <th>Sn</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="cableList">
                 </tbody>
             </table>
         </div>
@@ -254,7 +285,7 @@
 
     <script>
         //Auteurs JS : Maxime VALLET, Ishac HAMDANI, Valentin MILLOT
-        //Version : 0.4
+        //Version : 0.5
 
 
         //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
@@ -534,7 +565,7 @@
 
                     //Remplissage du tableau contenant les informations des pc
                     while(c < response.length){
-                        const switch_speed = response[c].switchSpeed;
+                        const switch_speed = response[c].switch_speed;
                         const mac_address = response[c].macAddress;
                         const vlan = response[c].VLAN;
                         const name = response[c].name;
