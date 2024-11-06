@@ -1,4 +1,3 @@
-!!! Nouvelle VM disponible (facultatif) !!!
 A faire :
 - faire un menu déroulant (ça doit être mieux)
 - afficher le nom du compte connecté
@@ -12,11 +11,9 @@ A faire :
     
 
 Fait :
-- Mise à jour de la page principale d'apache (voir rubrique "VM" > "Modifications A LIRE" du README Serveur)
-- Ajout du logo (Rappel : il faut modifier Start.sh (ligne 30) pour ajouter toute ressource sur le serveur Apache)
 - ajout utilisateur + afficher utilisateurs + suppression utilisateur
 - Redirection => gmao.local
 - les objets doivent être dans une table qui se situe dans la BD "sae_52" (4 -> 1 pour chaque type d'équipement)
--  ̶f̶a̶i̶r̶e̶ ̶l̶a̶ ̶p̶a̶g̶e̶ ̶p̶o̶u̶r̶ ̶l̶e̶ ̶p̶l̶a̶n̶n̶i̶n̶g̶   (Trop ambitieux, peur que l'on manque de temps)
+-  ̶f̶a̶i̶r̶e̶ ̶l̶a̶ ̶p̶a̶g̶e̶ ̶p̶o̶u̶r̶ ̶l̶e̶ ̶p̶l̶a̶n̶n̶i̶n̶g̶   (Trop ambitieux, peur que l'on manque de temps => oui)
 - DAO : ajouter + lister + supprimer => SW + Routeur + cable + PC (suppression)
 - Servlet : ajouter + lister + supprimer => SW + Routeur + cable + PC
