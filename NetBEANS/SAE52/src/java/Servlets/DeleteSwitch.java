@@ -13,20 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * Servlet suppression d'un PC
+ * Servlet suppression d'un Switch
  * 
  * @author Valentin Millot
  */
-@WebServlet(name = "DeletePC", urlPatterns = {"/DeletePC"})
-public class DeletePC extends HttpServlet {
+@WebServlet(name = "DeleteSwitch", urlPatterns = {"/DeleteSwitch"})
+public class DeleteSwitch extends HttpServlet {
 
     //classe permettant de stocker le contenu du JSON de la requête
-    private class pc{
+    private class Switch{
         private String token;
         private String name;
         private String Test;
         
-        private pc(String token, String name, String Test){
+        private Switch(String token, String name, String Test){
             this.token = token;
             this.name = name;
             this.Test = Test;
@@ -37,7 +37,7 @@ public class DeletePC extends HttpServlet {
     
     
     /**
-     * Suppression d'un PC à partir de son nom<br><br>
+     * Suppression d'un Switch à partir de son nom<br><br>
      *
      * Variables à envoyer au servlet (POST)<br>
      * String name       &emsp;&emsp;        nom du PC à supprimer <br>
@@ -61,19 +61,19 @@ public class DeletePC extends HttpServlet {
         Gson gsonRequest = new Gson();
         
         // Convertion du JSON en objet Java
-        DeletePC.pc pc = gsonRequest.fromJson(reader, DeletePC.pc.class);
+        DeleteSwitch.Switch Switch = gsonRequest.fromJson(reader, DeleteSwitch.Switch.class);
         
         //Données
-        String token = pc.token;
-        String name = pc.name;
-        Boolean TestBoolean = Boolean.valueOf(pc.Test);
+        String token = Switch.token;
+        String name = Switch.name;
+        Boolean TestBoolean = Boolean.valueOf(Switch.Test);
         
         //Création du JSON à renvoyer (vide)
         String jsonString = "";
             
         try { 
             //VERIF si login en doublon
-            Boolean NameExist = DAO.doNamePCExist(name, TestBoolean);
+            Boolean NameExist = DAO.doNameSwitchExist(name, TestBoolean);
             
             if(NameExist == true){
                 //verif droits utilisateur demande
@@ -82,7 +82,7 @@ public class DeletePC extends HttpServlet {
                 //Verification si l'utilisateur a les droits Admin
                 if(userRights.equals("Admin")){
                     //Suppression utilisateur
-                    DAO.DeletePC(name, TestBoolean);
+                    DAO.DeleteSwitch(name, TestBoolean);
 
                     //JSON renvoyé
                     jsonString = "{\"result\":\"Fait\"}";
