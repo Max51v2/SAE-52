@@ -1117,6 +1117,51 @@ public class DAOSAE52 {
         }
     }
     
+    
+    /**
+     * Vérifie l'existance du nom d'un Routeur dans la base de données
+     * 
+     * @param name     nom donné par l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return loginExist       éxsitance du login (booléen)
+     */
+    public Boolean doNameRouterExist(String name, Boolean Test){
+        String RequeteSQL="SELECT * FROM router WHERE name = ?";
+        String NameDB="";
+        Boolean NameExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, name);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    NameDB = resultSet.getString("name");
+                }
+            }
+            
+            //Vérification du login renvoyé
+            if(name.equals(NameDB)){
+                NameExist = true;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return NameExist;
+    }
+    
     /**
      * Suppression d'un Câble
      * 
@@ -1145,6 +1190,50 @@ public class DAOSAE52 {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Vérifie l'existance du nom d'un Câble dans la base de données
+     * 
+     * @param name     nom donné par l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return loginExist       éxsitance du login (booléen)
+     */
+    public Boolean doNameCableExist(String name, Boolean Test){
+        String RequeteSQL="SELECT * FROM cable WHERE name = ?";
+        String NameDB="";
+        Boolean NameExist = false;
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, name);
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    NameDB = resultSet.getString("name");
+                }
+            }
+            
+            //Vérification du login renvoyé
+            if(name.equals(NameDB)){
+                NameExist = true;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return NameExist;
     }
 
 }

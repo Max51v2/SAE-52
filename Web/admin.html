@@ -752,6 +752,18 @@
                             <td>${name}</td>
                             <td>${serial_number}</td>
                             <td>${status}</td>
+                            <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
+                                <button 
+                                    style="background: url('trash.png') no-repeat center; 
+                                            background-size: contain; 
+                                            width: 25px; 
+                                            height: 25px; 
+                                            border: none; 
+                                            padding: 0; 
+                                            cursor: pointer;" 
+                                    onClick="delRouter('${name}')">
+                                </button>
+                            </td>
                         `;
                         routerList.appendChild(row);
                         
@@ -760,7 +772,35 @@
                     }
                 }
         }
+        //Supression d'un Routeur
+        function delRouter(name){
+            var str = "Êtes-vous sûr de vouloir supprimer "+name+" ?";
 
+            //Demande de confirmation
+            if (confirm(str)) {
+                console.log("retrait : ",name);
+
+                    //Suppression PC BD
+                    fetch(`https://${ServerIP}:8443/SAE52/DeleteRouter`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token:tokenGMAO, name: name, Test: false })
+                    })
+                    .then(response => response.json())
+                    .then(CheckDeletion);
+
+                    //Vérification de la suppression d'un Switch'
+                    function CheckDeletion(response){
+                        if(response.result === "Name doesn't exist"){
+                            alert("Le Nom donné n'existe pas");
+                        }                            
+                        else{
+                            //Actualisation tableau
+                            getRouter();
+                        }    
+                }
+            }
+        }
 
         //Ajout câble
         function addCable (){
@@ -829,6 +869,18 @@
                             <td>${name}</td>
                             <td>${serial_number}</td>
                             <td>${status}</td>
+                            <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
+                                <button 
+                                    style="background: url('trash.png') no-repeat center; 
+                                            background-size: contain; 
+                                            width: 25px; 
+                                            height: 25px; 
+                                            border: none; 
+                                            padding: 0; 
+                                            cursor: pointer;" 
+                                    onClick="delCable('${name}')">
+                                </button>
+                            </td>
                         `;
                         cableList.appendChild(row);
                         
@@ -836,6 +888,35 @@
                         
                     }
                 }
+        }
+        //Supression d'un Câble
+        function delCable(name){
+            var str = "Êtes-vous sûr de vouloir supprimer "+name+" ?";
+
+            //Demande de confirmation
+            if (confirm(str)) {
+                console.log("retrait : ",name);
+
+                    //Suppression PC BD
+                    fetch(`https://${ServerIP}:8443/SAE52/DeleteCable`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token:tokenGMAO, name: name, Test: false })
+                    })
+                    .then(response => response.json())
+                    .then(CheckDeletion);
+
+                    //Vérification de la suppression d'un Switch'
+                    function CheckDeletion(response){
+                        if(response.result === "Name doesn't exist"){
+                            alert("Le Nom donné n'existe pas");
+                        }                            
+                        else{
+                            //Actualisation tableau
+                            getCable();
+                        }    
+                }
+            }
         }
     </script>
 </body>
