@@ -648,6 +648,75 @@ public class DAOSAE52 {
         }
 
     }
+    
+    /**
+     * Renvoi les Switch contenu dans la BD
+     * 
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     * @return JSONString       contenu de la table au format JSON (login/prenom/nom/droits)
+     */
+    public String getSwitch(Boolean Test){
+        String RequeteSQL="SELECT * FROM switch ORDER BY name ASC";
+        String switchSpeed="";
+        String macAddress="";
+        String VLAN="";
+        String name="";
+        String serialNumber="";
+        String status="";
+        String JSONString="";
+        
+        //Selection de la BD
+        changeConnection(Test);
+        
+        
+        //Connection BD en tant que postgres
+        try (Connection connection =
+                DAOSAE52.getConnectionPostgres();
+                
+            //Requête SQL
+            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Integer c = 1;
+                
+                // Ouvrir le tableau JSON
+                JSONString += "[";
+
+                while (resultSet.next()) {
+                    switchSpeed = resultSet.getString("switch_speed");
+                    macAddress = resultSet.getString("mac_address");
+                    VLAN = resultSet.getString("vlan");
+                    name = resultSet.getString("name");
+                    serialNumber = resultSet.getString("serial_number");
+                    status = resultSet.getString("status");
+
+                    // Ajouter une virgule avant chaque entrée sauf la première
+                    if (c > 1) {
+                        JSONString += ",";
+                    }
+
+                    // Ajouter l'objet JSON
+                    JSONString += "{\"name\":\"" + name + "\", \"switchSpeed\":\"" + switchSpeed + "\", \"macAddress\":\"" + macAddress + "\", \"VLAN\":\"" + VLAN + "\", \"serialNumber\":\"" + serialNumber + "\", \"status\":\"" + status + "\"}";
+
+                    c += 1;
+                }
+
+                // Fermer le tableau JSON
+                JSONString += "]";
+
+            }
+            
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return JSONString;
+    }
+    
+    
+    
     public void addRouter(String routerPorts, String macAddress, String VLAN, String name, String serialNumber, String status, Boolean Test) {
         String RequeteSQL = "INSERT INTO router (router_ports, mac_address, vlan, name, serial_number, status) VALUES (?, ?, ?, ?, ?, ?)";
     

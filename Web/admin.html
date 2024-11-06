@@ -203,24 +203,44 @@
                 <button type="bouton" id="submitButton">Ajouter l'équipement</button>
             </form>
         </div>
-        <h2 id="PCListTab">Liste des PC</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Processeur</th>
-                    <th>Ram</th>
-                    <th>AdresseMAC</th>
-                    <th>Vlan</th>
-                    <th>Nom</th>
-                    <th>Sn</th>
-                    <th>Status</th>
-                    <th>Autres</th>
-                    <th id="trashCol"></th>
-                </tr>
-            </thead>
-            <tbody id="pcList">
-            </tbody>
-        </table>
+        <div>
+            <h2 id="PCListTab">Liste des PC</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Processeur</th>
+                        <th>Ram</th>
+                        <th>AdresseMAC</th>
+                        <th>Vlan</th>
+                        <th>Nom</th>
+                        <th>Sn</th>
+                        <th>Status</th>
+                        <th>Autres</th>
+                        <th id="trashCol"></th>
+                    </tr>
+                </thead>
+                <tbody id="pcList">
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h2 id="switchListTab">Liste des Switch</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Débit</th>
+                        <th>AdresseMAC</th>
+                        <th>Vlan</th>
+                        <th>Nom</th>
+                        <th>Sn</th>
+                        <th>Status</th>
+                        <th id="trashCol"></th>
+                    </tr>
+                </thead>
+                <tbody id="switchList">
+                </tbody>
+            </table>
+        </div>
 
         <!-- Gestion des Rôles -->
         <div id="roleManagement" class="tab-content">
@@ -360,6 +380,7 @@
         window.onload = function() {
             // Code à exécuter lors du chargement de la page
             getPC();
+            getSwitch();
         };
 
         //Ajout PC
@@ -405,7 +426,6 @@
         }
         //Récupère les pc auprès du Servlet
         function getPC(){
-                const pcList = document.getElementById('pcList');
                 fetch(`https://${ServerIP}:8443/SAE52/ListPC`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -413,46 +433,47 @@
                 })
                 .then(response => response.json())
                 .then(createTable);
+                //Rempli le tableau contenant les pc
+                function createTable(response){
+                    console.log(response)
+
+                    //Suppression du contenu du tableau
+                    pcList.innerHTML = '';
+
+                    c = 0;
+
+                    //Remplissage du tableau contenant les informations des pc
+                    while(c < response.length){
+                        const processor = response[c].processor;
+                        const ram = response[c].RAM;
+                        const mac_address = response[c].macAddress;
+                        const vlan = response[c].VLAN;
+                        const name = response[c].name;
+                        const serial_number = response[c].serialNumber;
+                        const status = response[c].status;
+                        const other = response[c].other;
+                        const row = document.createElement('tr');
+                            
+                        row.innerHTML = `
+                            <td>${processor}</td>
+                            <td>${ram}</td>
+                            <td>${mac_address}</td>
+                            <td>${vlan}</td>
+                            <td>${name}</td>
+                            <td>${serial_number}</td>
+                            <td>${status}</td>
+                            <td>${other}</td>
+                        `;
+                        pcList.appendChild(row);
+                        
+                        c = c+1;
+                        
+                    }
+                }
         }
 
 
-        //Rempli le tableau contenant les pc
-        function createTable(response){
-            console.log(response)
-
-            //Suppression du contenu du tableau
-            pcList.innerHTML = '';
-
-            c = 0;
-
-            //Remplissage du tableau contenant les informations des pc
-            while(c < response.length){
-                const processor = response[c].processor;
-                const ram = response[c].RAM;
-                const mac_address = response[c].macAddress;
-                const vlan = response[c].VLAN;
-                const name = response[c].name;
-                const serial_number = response[c].serialNumber;
-                const status = response[c].status;
-                const other = response[c].other;
-                const row = document.createElement('tr');
-                    
-                row.innerHTML = `
-                    <td>${processor}</td>
-                    <td>${ram}</td>
-                    <td>${mac_address}</td>
-                    <td>${vlan}</td>
-                    <td>${name}</td>
-                    <td>${serial_number}</td>
-                    <td>${status}</td>
-                    <td>${other}</td>
-                `;
-                pcList.appendChild(row);
-                
-                c = c+1;
-                
-            }
-        }
+        
 
 
         //Ajout SW
@@ -488,11 +509,57 @@
                 if(response.result === "Name exist") {
                     alert("Le nom existe déjà");
                 } else {
-                    // Autres actions à réaliser
+                    getSwitch();
                 }
             }
         }
 
+        //Récupère les switch auprès du Servlet
+        function getSwitch(){
+                fetch(`https://${ServerIP}:8443/SAE52/ListSwitch`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
+                })
+                .then(response => response.json())
+                .then(createTable);
+                //Rempli le tableau contenant les switch
+                function createTable(response){
+                    console.log(response)
+
+                    //Suppression du contenu du tableau
+                    switchList.innerHTML = '';
+
+                    c = 0;
+
+                    //Remplissage du tableau contenant les informations des pc
+                    while(c < response.length){
+                        const switch_speed = response[c].switchSpeed;
+                        const mac_address = response[c].macAddress;
+                        const vlan = response[c].VLAN;
+                        const name = response[c].name;
+                        const serial_number = response[c].serialNumber;
+                        const status = response[c].status;
+                        const row = document.createElement('tr');
+                            
+                        row.innerHTML = `
+                            <td>${switch_speed}</td>
+                            <td>${mac_address}</td>
+                            <td>${vlan}</td>
+                            <td>${name}</td>
+                            <td>${serial_number}</td>
+                            <td>${status}</td>
+                        `;
+                        switchList.appendChild(row);
+                        
+                        c = c+1;
+                        
+                    }
+                }
+        }
+
+
+        
 
 
         //Ajout routeur
