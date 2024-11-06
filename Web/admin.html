@@ -207,18 +207,18 @@
         <table>
             <thead>
                 <tr>
-                    <th>processeur</th>
-                    <th>ram</th>
-                    <th>adresseMAC</th>
-                    <th>vlan</th>
-                    <th>nom</th>
-                    <th>sn</th>
-                    <th>status</th>
-                    <th>autres</th>
+                    <th>Processeur</th>
+                    <th>Ram</th>
+                    <th>AdresseMAC</th>
+                    <th>Vlan</th>
+                    <th>Nom</th>
+                    <th>Sn</th>
+                    <th>Status</th>
+                    <th>Autres</th>
                     <th id="trashCol"></th>
                 </tr>
             </thead>
-            <tbody id="PCList">
+            <tbody id="pcList">
             </tbody>
         </table>
 
@@ -405,6 +405,7 @@
         }
         //Récupère les pc auprès du Servlet
         function getPC(){
+                const pcList = document.getElementById('pcList');
                 fetch(`https://${ServerIP}:8443/SAE52/ListPC`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -420,37 +421,36 @@
             console.log(response)
 
             //Suppression du contenu du tableau
-            PCList.innerHTML = '';
+            pcList.innerHTML = '';
 
             c = 0;
 
             //Remplissage du tableau contenant les informations des pc
             while(c < response.length){
-                const processor = response[c].processeur;
-                const RAM = response[c].ram;
-                const macAddress = response[c].adresseMAC;
-                const VLAN = response[c].vlan;
-                const name = response[c].nom;
-                const serialNumber = response[c].sn;
+                const processor = response[c].processor;
+                const ram = response[c].RAM;
+                const mac_address = response[c].macAddress;
+                const vlan = response[c].VLAN;
+                const name = response[c].name;
+                const serial_number = response[c].serialNumber;
                 const status = response[c].status;
-                const other = response[c].autres;
+                const other = response[c].other;
                 const row = document.createElement('tr');
                     
                 row.innerHTML = `
                     <td>${processor}</td>
-                    <td>${RAM}</td>
-                    <td>${macAddress}</td>
-                    <td>${VLAN}</td>
+                    <td>${ram}</td>
+                    <td>${mac_address}</td>
+                    <td>${vlan}</td>
                     <td>${name}</td>
-                    <td>${serialNumber}</td>
+                    <td>${serial_number}</td>
                     <td>${status}</td>
                     <td>${other}</td>
                 `;
-                PCList.appendChild(row);
+                pcList.appendChild(row);
                 
                 c = c+1;
                 
-                getPC();
             }
         }
 
