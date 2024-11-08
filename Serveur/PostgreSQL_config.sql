@@ -44,6 +44,14 @@ CREATE TABLE pc (
     other text
 );
 
+CREATE TABLE tickets (
+    ticket_id SERIAL PRIMARY KEY,
+    description TEXT,
+    status VARCHAR(20) DEFAULT 'en attente',  -- 'en attente', 'accepté', 'refusé'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
 
 -- table routeur
 CREATE TABLE router (
