@@ -46,10 +46,13 @@ CREATE TABLE pc (
 
 CREATE TABLE tickets (
     ticket_id SERIAL PRIMARY KEY,
-    description TEXT,
-    status VARCHAR(20) DEFAULT 'en attente',  -- 'en attente', 'accepté', 'refusé'
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP
+    titre VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    utilisateur_secretaire_id INT NOT NULL,
+    utilisateur_admin_id INT,
+    statut VARCHAR(50) DEFAULT 'en attente',
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_resolution TIMESTAMP
 );
 
 
