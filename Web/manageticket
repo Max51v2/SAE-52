@@ -3,6 +3,7 @@
     Version : 0.2
 -->
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -46,6 +47,12 @@
         button:hover {
             background-color: #0056b3;
         }
+        button:active {
+            background-color: #004085;
+        }
+        button i {
+            margin-right: 8px;
+        }
         .container {
             max-width: 1000px;
             margin: 20px auto;
@@ -70,6 +77,44 @@
             border-radius: 4px;
             margin-bottom: 15px;
         }
+        input[type="submit"], button {
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        input[type="submit"]:hover, button:hover {
+            background-color: #555;
+        }
+        .hidden {
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .icon-button {
+            display: flex;
+            align-items: center;
+        }
+        .icon-button i {
+            margin-right: 8px;
+        }
         .tabs {
             margin: 20px 0;
             display: flex;
@@ -81,66 +126,51 @@
         .tab-content.active {
             display: block;
         }
-
-        /* Styles du tableau */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        #trashCol {
+            width: 10px;
         }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        .actions button {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        .actions button:hover {
-            background-color: #218838;
+        #userListTab {
+            padding-top: 50px;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>GMAO - Gestion des équipements</h1>
-        <a href="logout.html">
+        <a href="file:///C:/Users/ishac/OneDrive/Bureau/logout.html">
             <button type="button">
                 <i class="fas fa-sign-out-alt"></i> Se déconnecter
             </button>
         </a>
     </header>
-
     <div class="container">
         <div class="tabs">
-            <button class="tab-button" onclick="openTab('stockManagement')">Gestion des Stocks</button>
-            <button class="tab-button" onclick="window.location.href='manageuser.html'">Gestion des Rôles</button>
-            <button class="tab-button" onclick="window.location.href='manageticket'">Gestion des Tickets</button>
+            <button class="tab-button" onclick="openTab(&#39;stockManagement&#39;)">Gestion des Stocks</button>
+            <button class="tab-button" onclick="window.location.href=&#39;manageuser.html&#39;">Gestion des Rôles</button>
+            <button class="tab-button" onclick="openTab(&#39;ticketManagement&#39;)">Gestion des Tickets</button>
         </div>
 
+        <!-- Contenu des onglets -->
         <div id="stockManagement" class="tab-content">
-            <h2>Gestion des Stocks</h2>
-            <!-- Votre contenu pour la gestion des stocks -->
+            <h2>Ajouter un équipement</h2>
+            <form id="stockForm">
+                <label for="equipName">Nom de l'équipement:</label>
+                <input type="text" id="equipName" name="equipName" required="">
+
+                <label for="equipModel">Modèle:</label>
+                <input type="text" id="equipModel" name="equipModel" required="">
+
+                <label for="equipSerial">Numéro de série:</label>
+                <input type="text" id="equipSerial" name="equipSerial" required="">
+
+                <label for="equipVlan">VLAN:</label>
+                <input type="number" id="equipVlan" name="equipVlan" required="">
+
+                <input type="submit" value="Ajouter l&#39;équipement">
+            </form>
         </div>
 
-        <div id="manageticket" class="tab-content">
+        <div id="ticketManagement" class="tab-content active">
             <h2>Gestion des Tickets</h2>
             <h3>Tickets en attente</h3>
             <table id="ticketTable">
@@ -153,50 +183,117 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Problème de connexion</td>
-                        <td>Réseau</td>
-                        <td>En attente</td>
-                        <td class="actions">
-                            <button>Résoudre</button>
-                            <button>Refuser</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Problème de câblage</td>
-                        <td>Câbles</td>
-                        <td>En attente</td>
-                        <td class="actions">
-                            <button>Résoudre</button>
-                            <button>Refuser</button>
-                        </td>
-                    </tr>
+                <tbody id="ticketList">
+                    <!-- Les tickets seront ajoutés ici par JavaScript -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
-        // Fonction pour ouvrir l'onglet
+        // Fonction pour ouvrir un onglet spécifique
         function openTab(tabId) {
-            // Masquer tous les onglets
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
 
-            // Afficher l'onglet sélectionné
-            const activeTab = document.getElementById(tabId);
-            activeTab.classList.add('active');
+            if (tabId === 'ticketManagement') {
+                fetchTicketsForAdmin();
+            }
         }
 
-        // Par défaut, ouvrir l'onglet de gestion des stocks
-        openTab('stockManagement');
+        // Fonction pour récupérer les tickets depuis le backend
+        function fetchTicketsForAdmin() {
+            fetch('/api/tickets')
+                .then(response => response.json())
+                .then(data => {
+                    const ticketList = document.getElementById('ticketList');
+                    ticketList.innerHTML = '';  // Effacer les tickets existants
+
+                    // Ajouter chaque ticket dans le tableau
+                    data.tickets.forEach(ticket => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${ticket.id}</td>
+                            <td>${ticket.probleme}</td>
+                            <td>${ticket.categorie}</td>
+                            <td>${ticket.status}</td>
+                            <td>
+                                <button onclick="acceptTicket(${ticket.id})">Accepter</button>
+                                <button onclick="rejectTicket(${ticket.id})">Refuser</button>
+                            </td>
+                        `;
+                        ticketList.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des tickets:', error);
+                    alert('Erreur lors de la récupération des tickets');
+                });
+        }
+
+        // Accepter un ticket
+        function acceptTicket(ticketId) {
+            fetch(`/api/tickets/accept/${ticketId}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Ticket accepté');
+                    fetchTicketsForAdmin();
+                } else {
+                    alert('Erreur lors de l\'acceptation du ticket');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'acceptation du ticket:', error);
+                alert('Erreur lors de l\'acceptation du ticket');
+            });
+        }
+
+        // Refuser un ticket
+        function rejectTicket(ticketId) {
+            fetch(`/api/tickets/reject/${ticketId}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Ticket refusé');
+                    fetchTicketsForAdmin();
+                } else {
+                    alert('Erreur lors du refus du ticket');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors du refus du ticket:', error);
+                alert('Erreur lors du refus du ticket');
+            });
+        }
+
+        // Ajouter un nouvel équipement dans la gestion des stocks
+        document.getElementById('stockForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const equipName = document.getElementById('equipName').value;
+            const equipModel = document.getElementById('equipModel').value;
+            const equipSerial = document.getElementById('equipSerial').value;
+            const equipVlan = document.getElementById('equipVlan').value;
+
+            // Vous pouvez envoyer ces données à votre API ici pour les enregistrer dans la base de données
+            console.log({
+                equipName,
+                equipModel,
+                equipSerial,
+                equipVlan
+            });
+
+            alert('Équipement ajouté avec succès');
+            // Réinitialiser le formulaire après ajout
+            document.getElementById('stockForm').reset();
+        });
     </script>
-</body>
-</html>
+
+
+</body></html>
