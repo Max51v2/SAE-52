@@ -145,11 +145,11 @@
     </header>
     <div class="container">
         <div class="tabs">
-            <button class="tab-button" onclick="openTab(&#39;stockManagement&#39;)">Gestion des Stocks</button>
-            <button class="tab-button" onclick="window.location.href=&#39;manageuser.html&#39;">Gestion des Rôles</button>
-            <button class="tab-button" onclick="openTab(&#39;ticketManagement&#39;)">Gestion des Tickets</button>
-        </div>
+            <button class="tab-button" onclick="window.location.href='admin.html'">Gestion des Stocks</button>
+            <button class="tab-button" onclick="window.location.href='manageuser.html'">Gestion des Rôles</button>
+            <button class="tab-button" onclick="window.location.href='manageticket'">Gestion des Tickets</button>
 
+        </div>
         <!-- Contenu des onglets -->
         <div id="stockManagement" class="tab-content">
             <h2>Ajouter un équipement</h2>
