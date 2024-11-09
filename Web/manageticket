@@ -3,7 +3,6 @@
     Version : 0.2
 -->
 
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -232,7 +231,6 @@
             document.getElementById(tabName).classList.add("active");
         }
 </script>
-                
-                        
+                                      
 </body>
 </html>
