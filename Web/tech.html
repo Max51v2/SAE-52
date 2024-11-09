@@ -1,7 +1,9 @@
 <!-- 
     Auteur : Ishac HAMDANI
-    Version : 0.1
+    Version : 0.2
 -->
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -24,51 +26,11 @@
             text-align: center;
             position: relative;
         }
-        header h1, header h5 {
-            margin: 0;
-        }
-        .menu {
+        header a {
             position: absolute;
             top: 1em;
             right: 1em;
-        }
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        .dropdown button:hover {
-            background-color: #0056b3;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #333;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            min-width: 200px;
-        }
-        .dropdown-content a {
-            color: white;
-            padding: 12px 16px;
             text-decoration: none;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            background-color: #555;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
         }
         button {
             padding: 10px 20px;
@@ -164,24 +126,30 @@
         .tab-content.active {
             display: block;
         }
+        #trashCol {
+            width: 10px;
+        }
+        #userListTab {
+            padding-top: 50px;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>GMAO - Gestion des équipements</h1>
-        <h5><strong>Page Technicien</strong></h5>
-        <div class="menu">
-            <div class="dropdown">
-                <button>Menu</button>
-                <div class="dropdown-content">
-                    <a href="#" onclick="openTab('techlist')">Liste des équipements</a>
-                    <a href="#" onclick="openTab('ticket')">Tickets</a>
-                    <a href="logout.html">Se déconnecter</a>
-                </div>
-            </div>
-        </div>
+        <a href="logout.html">
+            <button type="button">
+                <i class="fas fa-sign-out-alt"></i> Se déconnecter
+            </button>
+        </a>
     </header>
-    
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-button" onclick="openTab('techlist')">Liste des équipements</button>
+            <button class="tab-button" onclick="window.location.href='manageuser.html'">Gestion des Rôles</button>
+
+        </div>
+<body>
     <div class="container">
         <!-- Section pour afficher la liste des équipements -->
         <div id="techlist" class="tab-content">
