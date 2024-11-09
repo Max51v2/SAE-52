@@ -43,15 +43,8 @@
             display: inline-flex;
             align-items: center;
         }
-        
         button:hover {
             background-color: #0056b3;
-        }
-        button:active {
-            background-color: #004085;
-        }
-        button i {
-            margin-right: 8px;
         }
         .container {
             max-width: 1000px;
@@ -77,44 +70,6 @@
             border-radius: 4px;
             margin-bottom: 15px;
         }
-        input[type="submit"], button {
-            padding: 10px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-        input[type="submit"]:hover, button:hover {
-            background-color: #555;
-        }
-        .hidden {
-            display: none;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .icon-button {
-            display: flex;
-            align-items: center;
-        }
-        .icon-button i {
-            margin-right: 8px;
-        }
         .tabs {
             margin: 20px 0;
             display: flex;
@@ -127,7 +82,7 @@
             display: block;
         }
     </style>
-</head>    
+</head>
 <body>
     <header>
         <h1>GMAO - Gestion des équipements</h1>
@@ -137,6 +92,7 @@
             </button>
         </a>
     </header>
+
     <div class="container">
         <div class="tabs">
             <button class="tab-button" onclick="openTab('stockManagement')">Gestion des Stocks</button>
@@ -157,80 +113,61 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-            
-            </div>
-        
+            </table>
+        </div>
     </div>
 
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
-        //Auteurs JS : Maxime VALLET, Ishac HAMDANI, Valentin MILLOT
-        //Version : 0.5
+        // Auteurs JS : Maxime VALLET, Ishac HAMDANI, Valentin MILLOT
+        // Version : 0.5
 
-
-        //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
         window.onunload = function(){reload()};
 
-        // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs on la mm adresse, on récupere celle entrée pour acceder au serv Apache)
-        // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
         const currentUrl = window.location.href;
         const url = new URL(currentUrl);
         const ServerIP = url.hostname;
 
-
-        //Données session
         var tokenGMAO = sessionStorage['tokenGMAO'];
         let userLogin = sessionStorage['userLogin'];
         let userRole = sessionStorage['userRole'];
 
-        if(typeof tokenGMAO !== 'undefined'){
-            console.log("token : "+tokenGMAO)
-            console.log("###### informatif !!! ######")
-            console.log("login : "+userLogin)
-            console.log("droits : "+userRole)
-            console.log("############################")
+        if (typeof tokenGMAO !== 'undefined') {
+            console.log("token : " + tokenGMAO);
+            console.log("###### informatif !!! ######");
+            console.log("login : " + userLogin);
+            console.log("droits : " + userRole);
+            console.log("############################");
 
-            //Vérification du token
-            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
+            fetch("https://" + ServerIP + ":8443/SAE52/TokenCheck", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ token: tokenGMAO, Test: false })
+            }).then(r => r.json()).then(TokenCheck);
+        } else {
+            console.log("no token");
+            window.location.href = 'login.html';
         }
-        else{
-            console.log("no token")
 
-            window.location.href = 'login.html'; // Redirection vers la page login si pas de token
-        }
-
-        function TokenCheck(r){
-            //JSON obtenu
-            console.log(r)
-
-            //redirection selon les droits
-            if(r["droits"] === 'Admin'){
-                //Rien
-            }
-            else if(r["droits"] === 'Technicien'){
-                window.location.href = 'tech.html'; // Redirection vers la page principale pour le technicien
-            }
-            else if(r["droits"] === 'Utilisateur'){
-                window.location.href = 'secretaire.html'; // Redirection vers la page principale pour l'utilisateur
-            }
-            //si aucun droit
-            else{
-                window.location.href = 'login.html'; // Redirection vers la page login si mauvais token
+        function TokenCheck(r) {
+            if (r["droits"] === 'Admin') {
+                // Access permitted for Admin
+            } else if (r["droits"] === 'Technicien') {
+                window.location.href = 'tech.html';
+            } else if (r["droits"] === 'Utilisateur') {
+                window.location.href = 'secretaire.html';
+            } else {
+                window.location.href = 'login.html';
             } 
         }
 
-        
-        // Gérer les onglets
         function openTab(tabName) {
-            var tabContent = document.getElementsByClassName("tab-content");
-            for (var i = 0; i < tabContent.length; i++) {
+            const tabContent = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContent.length; i++) {
                 tabContent[i].classList.remove("active");
             }
             document.getElementById(tabName).classList.add("active");
         }
-</script>
-                                      
+    </script>
 </body>
 </html>
