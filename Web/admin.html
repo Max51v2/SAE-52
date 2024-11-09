@@ -3,7 +3,6 @@
     Version : 0.2
 -->
 
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -136,12 +135,12 @@
                 <i class="fas fa-sign-out-alt"></i> Se déconnecter
             </button>
         </a>
-
     </header>
     <div class="container">
         <div class="tabs">
             <button class="tab-button" onclick="openTab('stockManagement')">Gestion des Stocks</button>
             <button class="tab-button" onclick="window.location.href='manageuser.html'">Gestion des Rôles</button>
+            <button class="tab-button" onclick="openTab('ticketManagement')">Gestion des Tickets</button>
         </div>
 
         <div id="stockManagement" class="tab-content active">
@@ -201,81 +200,43 @@
                     <option value="Sur site">Sur site</option>
                     <option value="En maintenance">En maintenance</option>
                 </select>
-                <button type="bouton" id="submitButton">Ajouter l'équipement</button>
+                <button type="button" id="submitButton">Ajouter l'équipement</button>
             </form>
         </div>
 
-        <div>
-            <h2 id="PCListTab">Liste des PC</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Processeur</th>
-                        <th>Ram</th>
-                        <th>AdresseMAC</th>
-                        <th>Vlan</th>
-                        <th>Nom</th>
-                        <th>Sn</th>
-                        <th>Status</th>
-                        <th>Autres</th>
-                        <th id="trashCol"></th>
-                    </tr>
-                </thead>
-                <tbody id="pcList">
-                </tbody>
-            </table>
-        </div>
+        <div id="ticketManagement" class="tab-content">
+            <h2>Gestion des Tickets</h2>
 
-        <div>
-            <h2 id="switchListTab">Liste des Switch</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Débit</th>
-                        <th>AdresseMAC</th>
-                        <th>Vlan</th>
-                        <th>Nom</th>
-                        <th>Sn</th>
-                        <th>Status</th>
-                        <th id="trashCol"></th>
-                    </tr>
-                </thead>
-                <tbody id="switchList">
-                </tbody>
-            </table>
-        </div>
-        <div>
-            <h2 id="routerListTab">Liste des Routeurs</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombres de port</th>
-                        <th>AdresseMAC</th>
-                        <th>Vlan</th>
-                        <th>Nom</th>
-                        <th>Sn</th>
-                        <th>Status</th>
-                        <th id="trashCol"></th>
-                    </tr>
-                </thead>
-                <tbody id="routerList">
-                </tbody>
-            </table>
-        </div>
+            <!-- Envoi d'un ticket -->
+            <h3>Envoyer un Ticket de Support</h3>
+            <form id="ticketForm">
+                <label for="issue">Problème :</label>
+                <textarea id="issue" name="issue" rows="4" placeholder="Décrire le problème..." required></textarea>
 
-        <div>
-            <h2 id="cableListTab">Liste des Câbles</h2>
+                <label for="category">Catégorie :</label>
+                <select id="category" name="category" required>
+                    <option value="réseau">Réseau</option>
+                    <option value="équipement">Équipement</option>
+                    <option value="logiciel">Logiciel</option>
+                </select>
+
+                <input type="submit" value="Envoyer le Ticket">
+            </form>
+
+            <!-- Liste des tickets envoyés -->
+            <h3>Tickets Envoyés</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Longueur</th>
-                        <th>Nom</th>
-                        <th>Sn</th>
-                        <th>Status</th>
-                        <th id="trashCol"></th>
+                        <th>ID</th>
+                        <th>Problème</th>
+                        <th>Catégorie</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="cableList">
+                <tbody id="ticketList">
+                    <!-- Les tickets seront affichés ici -->
                 </tbody>
             </table>
         </div>
@@ -285,8 +246,56 @@
             <h2>Gestion des Rôles</h2>
             <!-- Contenu de gestion des rôles ici -->
         </div>
-        
     </div>
+
+    <script>
+        function openTab(tabName) {
+            var i, tabContent, tabButtons;
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].classList.remove("active");
+            }
+            tabButtons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+        }
+
+        document.getElementById("ticketForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let ticket = {
+                id: new Date().getTime(),  // Utilise l'heure actuelle pour générer un ID unique
+                issue: document.getElementById("issue").value,
+                category: document.getElementById("category").value,
+                status: "En attente"
+            };
+
+            // Ajouter le ticket à la liste
+            let ticketList = document.getElementById("ticketList");
+            let row = ticketList.insertRow();
+            row.innerHTML = `
+                <td>${ticket.id}</td>
+                <td>${ticket.issue}</td>
+                <td>${ticket.category}</td>
+                <td>${ticket.status}</td>
+                <td><button onclick="resolveTicket(${ticket.id})">Résoudre</button></td>
+            `;
+            document.getElementById("ticketForm").reset();
+        });
+
+        function resolveTicket(ticketId) {
+            let rows = document.getElementById("ticketList").getElementsByTagName("tr");
+            for (let i = 0; i < rows.length; i++) {
+                let row = rows[i];
+                if (row.cells[0].textContent == ticketId) {
+                    row.cells[3].textContent = "Résolu";
+                    row.cells[4].innerHTML = "<button disabled>Résolu</button>";
+                    break;
+                }
+            }
+        }
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
