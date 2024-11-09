@@ -137,7 +137,7 @@
 <body>
     <header>
         <h1>GMAO - Gestion des équipements</h1>
-        <a href="file:///C:/Users/ishac/OneDrive/Bureau/logout.html">
+        <a href="logout.html">
             <button type="button">
                 <i class="fas fa-sign-out-alt"></i> Se déconnecter
             </button>
