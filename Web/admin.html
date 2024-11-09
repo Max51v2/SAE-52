@@ -144,24 +144,6 @@
             <button class="tab-button" onclick="window.location.href='manageuser.html'">Gestion des Rôles</button>
             <button class="tab-button" onclick="openTab('ticketManagement')">Gestion des Tickets</button>
         </div>
-        <div id="ticketManagement" class="tab-content">
-            <h2>Gestion des Tickets</h2>
-            <h3>Tickets en attente</h3>
-            <table id="ticketTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Problème</th>
-                        <th>Catégorie</th>
-                        <th>Statut</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="ticketList">
-                    <!-- Les tickets seront ajoutés ici par JavaScript -->
-                </tbody>
-            </table>
-        </div>
 
         <div id="stockManagement" class="tab-content active">
             <h2>Ajouter un équipement</h2>
@@ -222,6 +204,24 @@
                 </select>
                 <button type="bouton" id="submitButton">Ajouter l'équipement</button>
             </form>
+        </div>
+        <div id="ticketManagement" class="tab-content">
+            <h2>Gestion des Tickets</h2>
+            <h3>Tickets en attente</h3>
+            <table id="ticketTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Problème</th>
+                        <th>Catégorie</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ticketList">
+                    <!-- Les tickets seront ajoutés ici par JavaScript -->
+                </tbody>
+            </table>
         </div>
         <div>
             <h2 id="PCListTab">Liste des PC</h2>
