@@ -1235,5 +1235,51 @@ public class DAOSAE52 {
         
         return NameExist;
     }
+    
+   /**
+ * Ajout d'un ticket
+ * 
+ * @param title        Titre du ticket
+ * @param description  Description du ticket
+ * @param status       Statut initial du ticket (par ex., "Nouveau")
+ * @param senderToken  Token de l'utilisateur qui envoie le ticket
+ * @param Test         Utilisation de la BD test (true si test, sinon false)
+ */
+public void createTicket(String title, String description, String status, String senderToken, Boolean Test) {
+    String RequeteSQL = "INSERT INTO tickets (title, description, status, sender_id) "
+                      + "VALUES (?, ?, ?, (SELECT id FROM users WHERE token = ?))";
+    
+    // Sélection de la BD
+    changeConnection(Test);
+
+    // Connexion à la BD en tant que postgres
+    try (Connection connection = DAOSAE52.getConnectionPostgres();
+         // Préparation de la requête SQL
+         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+        
+        // Remplacement des "?" par les variables d'entrée pour éviter les injections SQL
+        preparedStatement.setString(1, title);
+        preparedStatement.setString(2, description);
+        preparedStatement.setString(3, status);
+        preparedStatement.setString(4, senderToken);
+        
+        // Exécution de la requête
+        int affectedRows = preparedStatement.executeUpdate();
+        
+        // Optionnel : vérifier que la création du ticket a réussi
+        if (affectedRows > 0) {
+            System.out.println("Ticket créé avec succès !");
+        } else {
+            System.out.println("Erreur lors de la création du ticket.");
+        }
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+    public void createTicket(String title, String description, String status, String senderToken) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 }
