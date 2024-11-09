@@ -145,6 +145,39 @@
             <button class="tab-button" onclick="openTab('stockManagement')">Gestion des Tickets</button>
         </div>
 
+        <div id="ticketManagement" class="tab-content">
+            <h2>Gestion des Tickets</h2>
+            <form id="ticketForm">
+                <label for="issue">Problème :</label>
+                <textarea id="issue" name="issue" rows="4" placeholder="Décrire le problème..." required></textarea>
+        
+                <label for="category">Catégorie :</label>
+                <select id="category" name="category" required>
+                    <option value="réseau">Réseau</option>
+                    <option value="équipement">Équipement</option>
+                    <option value="logiciel">Logiciel</option>
+                </select>
+        
+                <input type="submit" value="Envoyer le Ticket">
+            </form>
+        
+            <h2>Tickets Envoyés</h2>
+            <table id="ticketTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Problème</th>
+                        <th>Catégorie</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ticketList">
+                    <!-- Les tickets seront ajoutés ici -->
+                </tbody>
+            </table>
+        </div>
+        
         <div id="stockManagement" class="tab-content active">
             <h2>Ajouter un équipement</h2>
             <form id="equipmentForm">
