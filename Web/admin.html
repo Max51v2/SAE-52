@@ -147,21 +147,7 @@
 
         <div id="ticketManagement" class="tab-content">
             <h2>Gestion des Tickets</h2>
-            <form id="ticketForm">
-                <label for="issue">Problème :</label>
-                <textarea id="issue" name="issue" rows="4" placeholder="Décrire le problème..." required></textarea>
-        
-                <label for="category">Catégorie :</label>
-                <select id="category" name="category" required>
-                    <option value="réseau">Réseau</option>
-                    <option value="équipement">Équipement</option>
-                    <option value="logiciel">Logiciel</option>
-                </select>
-        
-                <input type="submit" value="Envoyer le Ticket">
-            </form>
-        
-            <h2>Tickets Envoyés</h2>
+            <h3>Tickets en attente</h3>
             <table id="ticketTable">
                 <thead>
                     <tr>
@@ -320,6 +306,83 @@
         
     </div>
 
+    <script>
+        // Fonction pour ouvrir un onglet spécifique
+        function openTab(tabName) {
+            let tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            let buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+
+            let button = Array.from(buttons).find(button => button.textContent.includes(tabName));
+            button.classList.add('active');
+        }
+
+        // Fonction pour marquer un ticket comme résolu
+        function resolveTicket(ticketID) {
+            let row = document.getElementById("ticket-" + ticketID);
+            let statusCell = row.getElementsByClassName("status")[0];
+
+            statusCell.textContent = "Résolu";
+            statusCell.classList.remove("pending");
+            statusCell.classList.add("resolved");
+
+            let actionsCell = row.getElementsByClassName("actions")[0];
+            actionsCell.innerHTML = "<button disabled>Résolu</button>"; // Désactiver les actions après résolution
+        }
+
+        // Fonction pour marquer un ticket comme en attente
+        function setTicketPending(ticketID) {
+            let row = document.getElementById("ticket-" + ticketID);
+            let statusCell = row.getElementsByClassName("status")[0];
+
+            statusCell.textContent = "En attente";
+            statusCell.classList.remove("resolved");
+            statusCell.classList.add("pending");
+
+            let actionsCell = row.getElementsByClassName("actions")[0];
+            actionsCell.innerHTML = `
+                <button onclick="resolveTicket(${ticketID})">Marquer comme Résolu</button>
+                <button onclick="deleteTicket(${ticketID})">Supprimer</button>
+            `;
+        }
+
+        // Fonction pour supprimer un ticket
+        function deleteTicket(ticketID) {
+            let row = document.getElementById("ticket-" + ticketID);
+            row.remove();
+        }
+
+        // Ajouter des tickets simulés pour la gestion (les tickets sont ajoutés manuellement ou via une API)
+        document.addEventListener("DOMContentLoaded", function() {
+            let tickets = [
+                { id: 1, issue: "Problème de réseau", category: "Réseau", status: "En attente" },
+                { id: 2, issue: "Erreur sur l'équipement", category: "Équipement", status: "En attente" },
+                { id: 3, issue: "Application ne démarre pas", category: "Logiciel", status: "En attente" },
+            ];
+
+            // Ajouter les tickets dans le tableau
+            let ticketList = document.getElementById("ticketList");
+            tickets.forEach(ticket => {
+                let row = ticketList.insertRow();
+                row.setAttribute("id", "ticket-" + ticket.id);
+                row.innerHTML = `
+                    <td>${ticket.id}</td>
+                    <td>${ticket.issue}</td>
+                    <td>${ticket.category}</td>
+                    <td class="status ${ticket.status === 'Résolu' ? 'resolved' : 'pending'}">${ticket.status}</td>
+                    <td class="actions">
+                        <button onclick="resolveTicket(${ticket.id})">Marquer comme Résolu</button>
+                        <button onclick="deleteTicket(${ticket.id})">Supprimer</button>
+                    </td>
+                `;
+            });
+        });
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
