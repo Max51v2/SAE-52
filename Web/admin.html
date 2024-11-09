@@ -136,7 +136,6 @@
                 <i class="fas fa-sign-out-alt"></i> Se déconnecter
             </button>
         </a>
-
     </header>
     <div class="container">
         <div class="tabs">
@@ -204,7 +203,6 @@
                 <button type="bouton" id="submitButton">Ajouter l'équipement</button>
             </form>
         </div>
-
         <div>
             <h2 id="PCListTab">Liste des PC</h2>
             <table>
@@ -225,7 +223,6 @@
                 </tbody>
             </table>
         </div>
-
         <div>
             <h2 id="switchListTab">Liste des Switch</h2>
             <table>
@@ -245,80 +242,6 @@
             </table>
         </div>
         <div>
-            <h2>Tickets Envoyés</h2>
-        <table id="ticketTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Problème</th>
-                    <th>Catégorie</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="ticketList">
-                <!-- Les tickets seront ajoutés ici -->
-            </tbody>
-        </table>
-    </div>
-
-    <script>
-        // Fonction pour envoyer un ticket
-        document.getElementById("ticketForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            // Récupération des données du formulaire
-            let issue = document.getElementById("issue").value;
-            let category = document.getElementById("category").value;
-            let ticketID = new Date().getTime();  // Générer un ID unique pour chaque ticket
-            let status = "En attente";
-
-            // Création d'un objet ticket
-            let ticket = {
-                id: ticketID,
-                issue: issue,
-                category: category,
-                status: status
-            };
-
-            // Ajouter le ticket à la table
-            let ticketList = document.getElementById("ticketList");
-            let row = ticketList.insertRow();
-            row.setAttribute("id", "ticket-" + ticketID);
-            row.innerHTML = `
-                <td>${ticket.id}</td>
-                <td>${ticket.issue}</td>
-                <td>${ticket.category}</td>
-                <td class="status pending">${ticket.status}</td>
-                <td class="actions">
-                    <button onclick="resolveTicket(${ticket.id})">Résoudre</button>
-                    <button onclick="deleteTicket(${ticket.id})">Supprimer</button>
-                </td>
-            `;
-
-            // Réinitialisation du formulaire
-            document.getElementById("ticketForm").reset();
-        });
-
-        // Fonction pour marquer un ticket comme résolu
-        function resolveTicket(ticketID) {
-            let row = document.getElementById("ticket-" + ticketID);
-            let statusCell = row.getElementsByClassName("status")[0];
-
-            statusCell.textContent = "Résolu";
-            statusCell.classList.remove("pending");
-            statusCell.classList.add("resolved");
-
-            let actionsCell = row.getElementsByClassName("actions")[0];
-            actionsCell.innerHTML = "<button disabled>Résolu</button>";
-        }
-
-        // Fonction pour supprimer un ticket
-        function deleteTicket(ticketID) {
-            let row = document.getElementById("ticket-" + ticketID);
-            row.remove();
-        }
-    </script>
             <h2 id="routerListTab">Liste des Routeurs</h2>
             <table>
                 <thead>
