@@ -1,9 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
+import DAO.DAOSAE52;
+import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -12,76 +11,79 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author root
- */
 @WebServlet(name = "DeleteTicket", urlPatterns = {"/DeleteTicket"})
 public class DeleteTicket extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DeleteTicket</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DeleteTicket at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+    private class Ticket {
+        private String token;
+        private String id;
+        private String Test;
+        
+        private Ticket(String token, String id, String Test){
+            this.token = token;
+            this.id = id;
+            this.Test = Test;
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Type de la réponse
+        response.setContentType("application/json;charset=UTF-8");
+        
+        DAOSAE52 DAO = new DAOSAE52();  
+
+        // Récupération du JSON envoyé
+        BufferedReader reader = request.getReader();
+        Gson gsonRequest = new Gson();
+        
+        // Conversion du JSON en objet Java
+        DeleteTicket.Ticket ticket = gsonRequest.fromJson(reader, DeleteTicket.Ticket.class);
+        
+        // Données
+        String token = ticket.token;
+        String id = ticket.id;
+        Boolean TestBoolean = Boolean.valueOf(ticket.Test);
+        
+        // Création du JSON à renvoyer
+        String jsonString = "";
+        
+        try {
+            // Vérification des droits de l'utilisateur
+            String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
+            
+            // Vérification si l'utilisateur a les droits Admin
+            if(userRights.equals("Admin")) {
+                DAO.deleteTicket(id, TestBoolean);
+                jsonString = "{\"result\":\"Ticket supprimé avec succès\"}";
+            } else {
+                jsonString = "{\"result\":\"Droits insuffisants\"}";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        // Envoi des données
+        try (PrintWriter out = response.getWriter()) {
+            out.print(jsonString);
+            out.flush();
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Servlet de suppression d'un ticket";
+    }
 }

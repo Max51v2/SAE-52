@@ -12,40 +12,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet ajout d'un ticket
- * 
- * @author HAMDANI Ishac
+ *
+ * @author root
  */
-@WebServlet(name = "AddTicket", urlPatterns = {"/AddTicket"})
-public class AddTicket extends HttpServlet {
+@WebServlet(name = "ListTicket", urlPatterns = {"/ListTicket"})
+public class ListTicket extends HttpServlet {
 
-    //classe permettant de stocker le contenu du JSON de la requête
-    private class ticket{
-        private String description;
-        private String service;
-        private String status;
+    // Classe permettant de stocker le contenu du JSON de la requête
+    private class Ticket {
         private String token;
         private String Test;
         
-        private ticket(String description, String service, String status, String token, String Test){
-            this.description = description;
-            this.service = service;
-            this.status = status;
+        private Ticket(String token){
             this.token = token;
             this.Test = Test;
         }
     }
     
-    
-
     /**
-     * Ajout d'un ticket<br><br>
+     * Renvoi la liste des tickets dans la DB au format JSON<br><br>
      *
      * Variables à envoyer au servlet (POST)<br>
-     * String description       &emsp;&emsp;        description du ticket <br>
-     * String service       &emsp;&emsp;       type de service <br>
-     * String status       &emsp;&emsp;         statut du ticket <br>
-     * String Test       &emsp;&emsp;      BD à utiliser (true : test | false : sae_52) <br>
+     * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
+     * String Test        &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
@@ -54,55 +43,40 @@ public class AddTicket extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Type de la réponse
+        // Type de la réponse
         response.setContentType("application/json;charset=UTF-8");
         
         DAOSAE52 DAO = new DAOSAE52();
         
-        //Récuperation du JSON envoyé
+        // Récupération du JSON envoyé
         BufferedReader reader = request.getReader();
         Gson gsonRequest = new Gson();
         
-        // Convertion du JSON en objet Java
-        AddTicket.ticket ticket = gsonRequest.fromJson(reader, AddTicket.ticket.class);
+        // Conversion du JSON en objet Java
+        ListTicket.Ticket ticket = gsonRequest.fromJson(reader, ListTicket.Ticket.class);
         
-        //Données
-        String description = ticket.description;
-        String service = ticket.service;
-        String status = ticket.status;
+        // Données
         String token = ticket.token;
         Boolean TestBoolean = Boolean.valueOf(ticket.Test);
         
-        
-        //Création du JSON à renvoyer (vide)
+        // Création du JSON à renvoyer (vide)
         String jsonString = "";
         
-        try { 
-            //VERIF si nom en doublon
-            Boolean nameExist = DAO.doNameExist(description, TestBoolean);
-            
-            if(nameExist == false){
-                //verif droits utilisateur demande
-                String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
+        try {
+            // Vérification des droits utilisateur
+            String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
-                //Verification si l'utilisateur a les droits Admin
-                if(userRights.equals("Admin")){
-                    DAO.addTicket(description, service, status, nameExist);
-                }
-                
-                //JSON renvoyé
-                jsonString = "{\"result\":\"Fait\"}";
-            }
-            else{
-                //JSON renvoyé
-                jsonString = "{\"result\":\"Name exist\"}";
+            // Vérification si l'utilisateur a les droits Admin
+            if(userRights.equals("Admin")){
+                // JSON renvoyé | Récupération des tickets
+                jsonString = DAO.getTicket(TestBoolean);
             }
             
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        //Envoi des données
+        // Envoi des données
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonString);
             out.flush();
@@ -145,7 +119,7 @@ public class AddTicket extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Renvoi la liste des tickets";
     }// </editor-fold>
 
 }
