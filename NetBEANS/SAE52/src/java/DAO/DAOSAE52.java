@@ -1282,5 +1282,56 @@ public class DAOSAE52 {
     }
 }
 
+    public String getTicket(Boolean Test) {
+    // Requête SQL modifiée pour correspondre à la structure de la table 'ticket'
+    String RequeteSQL = "SELECT id, description, service, status, sent_to_admin, admin_status FROM ticket ORDER BY id ASC";
+    String JSONString = "";
+    
+    // Sélection de la BD
+    changeConnection(Test);
+    
+    // Connexion à la BD en tant que Postgres
+    try (Connection connection = DAOSAE52.getConnectionPostgres();
+         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+        
+        // Exécution de la requête
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            Integer c = 1;
+            
+            // Ouvrir le tableau JSON
+            JSONString += "[";
+            
+            while (resultSet.next()) {
+                // Récupération des colonnes spécifiques de la table ticket
+                int id = resultSet.getInt("id");
+                String description = resultSet.getString("description");
+                String service = resultSet.getString("service");
+                String status = resultSet.getString("status");
+                boolean sentToAdmin = resultSet.getBoolean("sent_to_admin");
+                String adminStatus = resultSet.getString("admin_status");
+
+                // Ajouter une virgule avant chaque entrée sauf la première
+                if (c > 1) {
+                    JSONString += ",";
+                }
+
+                // Ajouter l'objet JSON avec les données récupérées
+                JSONString += "{\"id\":" + id + ", \"description\":\"" + description + 
+                              "\", \"service\":\"" + service + "\", \"status\":\"" + status + 
+                              "\", \"sent_to_admin\":" + sentToAdmin + ", \"admin_status\":\"" + adminStatus + "\"}";
+                
+                c += 1;
+            }
+
+            // Fermer le tableau JSON
+            JSONString += "]";
+        }
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    return JSONString;
+}
 
 }
