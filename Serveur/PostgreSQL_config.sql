@@ -77,6 +77,17 @@ CREATE TABLE cable (
 );
 
 
+CREATE TABLE ticket (
+    id SERIAL PRIMARY KEY,  -- id unique et auto-incrémenté
+    description TEXT NOT NULL,
+    service TEXT NOT NULL,
+    status TEXT DEFAULT 'En attente'  -- Valeur par défaut pour le statut
+);
+-- Ajouter les colonnes supplémentaires
+ALTER TABLE ticket
+ADD COLUMN sent_to_admin BOOLEAN DEFAULT FALSE,
+ADD COLUMN admin_status VARCHAR(20) DEFAULT 'PENDING';
+
 
 --######################## BD test ########################
 DROP DATABASE test;
@@ -104,6 +115,10 @@ CREATE TABLE ticket (
     service TEXT NOT NULL,
     status TEXT DEFAULT 'En attente'  -- Valeur par défaut pour le statut
 );
+-- Ajouter les colonnes supplémentaires
+ALTER TABLE ticket
+ADD COLUMN sent_to_admin BOOLEAN DEFAULT FALSE,
+ADD COLUMN admin_status VARCHAR(20) DEFAULT 'PENDING';
 
 
 -- table pc
