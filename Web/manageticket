@@ -201,77 +201,6 @@
                 fetchTicketsForAdmin();
             }
         }
-
-        // Fonction pour récupérer les tickets depuis le backend
-        function fetchTicketsForAdmin() {
-            fetch('/api/tickets')
-                .then(response => response.json())
-                .then(data => {
-                    const ticketList = document.getElementById('ticketList');
-                    ticketList.innerHTML = '';  // Effacer les tickets existants
-
-                    // Ajouter chaque ticket dans le tableau
-                    data.tickets.forEach(ticket => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${ticket.id}</td>
-                            <td>${ticket.probleme}</td>
-                            <td>${ticket.categorie}</td>
-                            <td>${ticket.status}</td>
-                            <td>
-                                <button onclick="acceptTicket(${ticket.id})">Accepter</button>
-                                <button onclick="rejectTicket(${ticket.id})">Refuser</button>
-                            </td>
-                        `;
-                        ticketList.appendChild(row);
-                    });
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la récupération des tickets:', error);
-                    alert('Erreur lors de la récupération des tickets');
-                });
-        }
-
-        // Accepter un ticket
-        function acceptTicket(ticketId) {
-            fetch(`/api/tickets/accept/${ticketId}`, {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Ticket accepté');
-                    fetchTicketsForAdmin();
-                } else {
-                    alert('Erreur lors de l\'acceptation du ticket');
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de l\'acceptation du ticket:', error);
-                alert('Erreur lors de l\'acceptation du ticket');
-            });
-        }
-
-        // Refuser un ticket
-        function rejectTicket(ticketId) {
-            fetch(`/api/tickets/reject/${ticketId}`, {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Ticket refusé');
-                    fetchTicketsForAdmin();
-                } else {
-                    alert('Erreur lors du refus du ticket');
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors du refus du ticket:', error);
-                alert('Erreur lors du refus du ticket');
-            });
-        }
-
         // Ajouter un nouvel équipement dans la gestion des stocks
         document.getElementById('stockForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -361,7 +290,182 @@
         document.getElementById(tabName).classList.add("active");
     }
     </script>
-
-
+    
+       <script>
+        // Auteur JS : HAMDANI Ishac
+        // Version : 1.6
+    
+        // Refresh la page quand on revient en arrière sinon le script ne tourne pas
+        window.onunload = function(){reload()};
+    
+        // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs ont la même adresse, on récupère celle entrée pour accéder au serveur Apache)
+        // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const ServerIP = url.hostname;
+    
+        // Données session
+        var tokenGMAO = sessionStorage['tokenGMAO'];
+        let userLogin = sessionStorage['userLogin'];
+        let userRole = sessionStorage['userRole'];
+    
+        if(typeof tokenGMAO !== 'undefined'){
+            console.log("token : "+tokenGMAO)
+            console.log("###### informatif !!! ######")
+            console.log("login : "+userLogin)
+            console.log("droits : "+userRole)
+            console.log("############################")
+    
+            // Vérification du token
+            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})})
+            .then(r => r.json())
+            .then(TokenCheck)
+        }
+        else{
+            console.log("no token")
+            // Redirection vers la page login si pas de token
+            window.location.href = 'login.html';
+        }
+    
+        // Vérification du token
+        function TokenCheck(r){
+            // JSON obtenu
+            console.log(r)
+    
+            // Redirection selon les droits
+            if(r["droits"] === 'Admin'){
+                // Affichage des tickets si droits admin
+                ShowData();
+            }
+            else if(r["droits"] === 'Technicien' || r["droits"] === 'Utilisateur'){
+                // Redirection vers la page principale pour le technicien
+                window.location.href = 'secretaire.html';
+            }
+            else{
+                // Redirection vers la page login si mauvais token ou pas de droits
+                window.location.href = 'login.html';
+            } 
+        }
+    
+        // Affichage des tickets pour l'admin
+        function ShowData(){
+            const button =  document.getElementById('submitButton');
+            const ticketList = document.getElementById('ticketList');
+    
+            // Récupération des tickets
+            getTickets();
+    
+            // Ajout ticket
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+    
+                // Variables formulaire
+                const description= document.getElementById('description').value;
+                const service = document.getElementById('service').value;
+                const status = document.getElementById('status').value;
+    
+                // Ajout ticket dans la BD
+                fetch(`https://${ServerIP}:8443/SAE52/AddTicket`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ description: description, service: service, status: status, token:tokenGMAO, Test: false })
+                })
+                .then(response => response.json())
+                .then(CheckAddition);
+    
+                function CheckAddition(response){
+                    // Reset formulaire
+                    userForm.reset();
+    
+                    if(response.result === "Login exist"){
+                        alert("Le login existe déjà");
+                    }
+                    else{
+                        // Rafraichissement du tableau des tickets
+                        getTickets();
+                    }
+                }
+            });
+        }
+    
+        // Récupère les tickets auprès du Servlet
+        function getTickets(){
+            fetch(`https://${ServerIP}:8443/SAE52/ListTicket`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
+            })
+            .then(response => response.json())
+            .then(createTicketTable);
+        }
+    
+        // Remplir le tableau contenant les tickets
+        function createTicketTable(response){
+            console.log(response)
+    
+            // Suppression du contenu du tableau
+            ticketList.innerHTML = '';
+    
+            c = 0;
+    
+            // Remplissage du tableau avec les informations des tickets
+            while(c < response.length){
+                const description = response[c].description;
+                const service = response[c].service;
+                const status = response[c].status;
+                const row = document.createElement('tr');
+                    
+                row.innerHTML = `
+                    <td>${description}</td>
+                    <td>${service}</td>
+                    <td>${status}</td>
+                    <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
+                        <button 
+                            style="background: url('trash.png') no-repeat center; 
+                                    background-size: contain; 
+                                    width: 25px; 
+                                    height: 25px; 
+                                    border: none; 
+                                    padding: 0; 
+                                    cursor: pointer;" 
+                            onClick="delTicket('${response[c].id}')">
+                        </button>
+                    </td>
+                `;
+                ticketList.appendChild(row);
+    
+                c = c + 1;
+            }
+        }
+    
+        // Suppression du ticket
+        function delTicket(ticketId){
+            var str = "Êtes-vous sûr de vouloir supprimer ce ticket ?";
+    
+            // Demande de confirmation
+            if (confirm(str)) {
+                console.log("suppression du ticket : ", ticketId);
+    
+                // Suppression ticket dans la BD
+                fetch(`https://${ServerIP}:8443/SAE52/DeleteTicket`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token: tokenGMAO, ticketId: ticketId, Test: false })
+                })
+                .then(response => response.json())
+                .then(CheckDeletion);
+    
+                function CheckDeletion(response){
+                    if(response.result === "Ticket doesn't exist"){
+                        alert("Le ticket n'existe pas");
+                    }                            
+                    else{
+                        // Actualisation du tableau des tickets
+                        getTickets();
+                    }
+                }
+            }
+        }
+    </script>
 </body>
-</html>
+</html>    
