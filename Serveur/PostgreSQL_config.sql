@@ -44,17 +44,6 @@ CREATE TABLE pc (
     other text
 );
 
-CREATE TABLE tickets (
-    ticket_id SERIAL PRIMARY KEY,
-    titre VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
-    utilisateur_secretaire_id INT NOT NULL,
-    utilisateur_admin_id INT,
-    statut VARCHAR(50) DEFAULT 'en attente',
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    date_resolution TIMESTAMP
-);
-
 
 -- table routeur
 CREATE TABLE router (
@@ -109,6 +98,14 @@ CREATE TABLE users (
     token text
 );
 
+-- table ticket
+CREATE TABLE ticket (
+    id SERIAL PRIMARY KEY,
+    description text,
+    service text,
+    status text
+);
+
 -- table pc
 CREATE TABLE pc (
     id SERIAL PRIMARY KEY,
@@ -154,13 +151,7 @@ CREATE TABLE cable (
     status text
 );
 
--- table ticket
-CREATE TABLE ticket (
-    id SERIAL PRIMARY KEY,
-    description text,
-    service text,
-    status text
-);
+
 
 --########################## FIN ##########################
 
