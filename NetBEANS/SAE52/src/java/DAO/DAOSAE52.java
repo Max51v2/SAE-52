@@ -1236,58 +1236,51 @@ public class DAOSAE52 {
         return NameExist;
     }
     
+
+    public void addTicket(String description, String service, String status, Boolean Test) {
+    String RequeteSQL = "INSERT INTO ticket (description, service, status) VALUES (?, ?, ?)";
     
-       public void addTicket(String description, String service, String status, Boolean Test){
-        String RequeteSQL="INSERT INTO users (description, service, status) VALUES (?, ?, ?, '')";
+    // Sélection de la BD
+    changeConnection(Test);
+    
+    try (Connection connection = DAOSAE52.getConnectionPostgres();
+         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
         
-        //Selection de la BD
-        changeConnection(Test);
+        // Remplacement des "?" par les variables d'entrée pour éviter les injections SQL
+        preparedStatement.setString(1, description);
+        preparedStatement.setString(2, service);
+        preparedStatement.setString(3, status);
         
-        //Connection BD en tant que postgres
-        try (Connection connection =
-            DAOSAE52.getConnectionPostgres();
-                
-            //Requête SQL
-            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
-            
-            //Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
-            preparedStatement.setString(1, description);
-            preparedStatement.setString(2, service);
-            preparedStatement.setString(3, status);
-            
-            // Exécution de la requête
-            int affectedRows = preparedStatement.executeUpdate();
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // Exécution de la requête
+        preparedStatement.executeUpdate();
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-     
+}
+
+    public boolean deleteTicket(int id, Boolean Test) {
+    String RequeteSQL = "DELETE FROM ticket WHERE id = ?";
     
-       public void deleteTicket(String description, Boolean Test){
-        String RequeteSQL="DELETE FROM ticket WHERE description = ?";
+    // Sélection de la BD
+    changeConnection(Test);
+    
+    try (Connection connection = DAOSAE52.getConnectionPostgres();
+         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
         
-        //Selection de la BD
-        changeConnection(Test);
+        // Remplacement de "?" par l'id
+        preparedStatement.setInt(1, id);
         
-        //Connection BD en tant que postgres
-        try (Connection connection =
-                DAOSAE52.getConnectionPostgres();
-                
-            //Requête SQL
-            PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
-            
-            //Remplacement de "?" par le login (pour éviter les injections SQL !!!)
-            preparedStatement.setString(1, description);
-            
-            // Exécution de la requête
-            int affectedRows = preparedStatement.executeUpdate();
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // Exécution de la requête
+        int affectedRows = preparedStatement.executeUpdate();
+        
+        return affectedRows > 0; // Indique si un ticket a bien été supprimé
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
     }
-    
+}
 
 
 }
