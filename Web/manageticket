@@ -224,6 +224,89 @@
         });
     </script>
 
+    <script>
+        // Récupère les tickets auprès du Servlet
+function getTickets() {
+    fetch(`https://${ServerIP}:8443/SAE52/ListTicket`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: tokenGMAO, Test: false })
+    })
+    .then(response => response.json())
+    .then(createTicketTable);
+    
+    // Remplir le tableau contenant les tickets
+    function createTicketTable(response) {
+        console.log(response);
+
+        // Suppression du contenu actuel du tableau des tickets
+        ticketList.innerHTML = '';
+
+        let c = 0;
+
+        // Remplissage du tableau avec les tickets
+        while (c < response.length) {
+            const description = response[c].description;
+            const service = response[c].service;
+            const status = response[c].status;
+            const ticketId = response[c].id;
+            const row = document.createElement('tr');
+                
+            row.innerHTML = `
+                <td>${description}</td>
+                <td>${service}</td>
+                <td>${status}</td>
+                <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
+                    <button 
+                        style="background: url('trash.png') no-repeat center; 
+                                background-size: contain; 
+                                width: 25px; 
+                                height: 25px; 
+                                border: none; 
+                                padding: 0; 
+                                cursor: pointer;" 
+                        onClick="delTicket('${ticketId}')">
+                    </button>
+                </td>
+            `;
+            ticketList.appendChild(row);
+            
+            c = c + 1;
+        }
+    }
+}
+
+// Supprimer Ticket
+function delTicket(ticketId) {
+    var str = "Êtes-vous sûr de vouloir supprimer ce ticket ?";
+
+    // Demande de confirmation
+    if (confirm(str)) {
+        console.log("Suppression ticket : ", ticketId);
+
+        // Suppression du ticket dans la base de données
+        fetch(`https://${ServerIP}:8443/SAE52/DeleteTicket`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: tokenGMAO, ticketId: ticketId, Test: false })
+        })
+        .then(response => response.json())
+        .then(CheckTicketDeletion);
+
+        // Vérification de la suppression du ticket
+        function CheckTicketDeletion(response) {
+            if (response.result === "Ticket doesn't exist") {
+                alert("Le ticket n'existe pas.");
+            } else {
+                // Actualisation du tableau des tickets
+                getTickets();
+            }
+        }
+    }
+}
+
+    </script>
+
 <script>
     //Auteurs JS : Maxime VALLET, Ishac HAMDANI, Valentin MILLOT
     //Version : 0.5
@@ -290,7 +373,7 @@
         document.getElementById(tabName).classList.add("active");
     }
     </script>
-    
+
        <script>
         // Auteur JS : HAMDANI Ishac
         // Version : 1.6
