@@ -94,7 +94,7 @@ public class AddSwitch extends HttpServlet {
 
         try { 
             //VERIF si nom en doublon
-            Boolean nameExist = DAO.doNameExist(name, TestBoolean);
+            Boolean nameExist = DAO.doNameExistSwitch(name, TestBoolean);
             
             if(nameExist == false){
                 //verif droits utilisateur demande

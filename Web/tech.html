@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GMAO - Gestion des équipements</title>
-    <link rel="icon" type="image/x-icon" href="/LogoVIM.png">
+    <link rel="icon" type="image/x-icon" href="./images/LogoVIM.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -146,14 +146,66 @@
     <div class="container">
         <div class="tabs">
             <button class="tab-button" onclick="openTab('techlist')">Liste des équipements</button>
-            <button class="tab-button" onclick="window.location.href='manageticket'">Gestion des tickets</button>
+            <button class="tab-button" onclick="window.location.href='manageticket.html'">Gestion des tickets</button>
 
         </div>
 <body>
     <div class="container">
         <!-- Section pour afficher la liste des équipements -->
-        <div id="techlist" class="tab-content">
-            <h2>Liste des équipements</h2>
+        <div>
+            <h2>Liste des Switch</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Débit</th>
+                        <th>AdresseMAC</th>
+                        <th>Vlan</th>
+                        <th>Nom</th>
+                        <th>Sn</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="switchListTab">
+                </tbody>
+            </table>
+        </div>
+        
+        <div>
+            <h2>Liste des Routeurs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombres de port</th>
+                        <th>AdresseMAC</th>
+                        <th>Vlan</th>
+                        <th>Nom</th>
+                        <th>Sn</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="routerListTab">
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <h2>Liste des Câbles</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Longueur</th>
+                        <th>Nom</th>
+                        <th>Sn</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="cableListTab">
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <h2>Liste des PC</h2>
             <table>
                 <thead>
                     <tr>
@@ -167,8 +219,7 @@
                         <th>Autres</th>
                     </tr>
                 </thead>
-                <tbody id="pcList">
-                    <!-- Les équipements seront ajoutés ici -->
+                <tbody id="PCListTab">
                 </tbody>
             </table>
         </div>
@@ -192,13 +243,22 @@
     </div>
 
     <script>
-        //Auteur JS : Valentin MILLOT
+        //Auteur JS : Valentin MILLOT, Maxime VALLET
         //Version : 0.1
 
+        //Listes contenant le matériel
+        const pcList = document.getElementById('PCListTab');
+        const switchList = document.getElementById('switchListTab');
+        const routerList = document.getElementById('routerListTab');
+        const cableList = document.getElementById('cableListTab');
+
+        
         window.onload = function() {
             // Code à exécuter lors du chargement de la page
             getPC();
-            const pcList = document.getElementById('pcList');
+            getCable();
+            getRouter();
+            getSwitch();
         };
 
         //Refresh la page quand on reviens en arrière sinon le script ne tourne pas
@@ -217,7 +277,6 @@
         let userRole = sessionStorage['userRole'];
 
         if(typeof tokenGMAO !== 'undefined'){
-            console.log("token : "+tokenGMAO)
             console.log("###### informatif !!! ######")
             console.log("login : "+userLogin)
             console.log("droits : "+userRole)
@@ -263,9 +322,6 @@
             document.getElementById(tabId).style.display = 'block';
         }
 
-        // Affiche la première section par défaut
-        openTab('techlist');
-
         
 
         //Récupère les pc auprès du Servlet
@@ -307,8 +363,52 @@
                             <td>${serial_number}</td>
                             <td>${status}</td>
                             <td>${other}</td>
-                        `;
+                            `;
                         pcList.appendChild(row);
+                        
+                        c = c+1;
+                        
+                    }
+                }
+        }
+
+
+        //Récupère les switchs auprès du Servlet
+        function getSwitch(){
+                fetch(`https://${ServerIP}:8443/SAE52/ListSwitch`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
+                })
+                .then(response => response.json())
+                .then(createTable);
+                //Rempli le tableau contenant les switch
+                function createTable(response){
+                    console.log(response)
+
+                    //Suppression du contenu du tableau
+                    switchList.innerHTML = '';
+
+                    c = 0;
+
+                    //Remplissage du tableau contenant les informations des pc
+                    while(c < response.length){
+                        const switch_speed = response[c].switchSpeed;
+                        const mac_address = response[c].macAddress;
+                        const vlan = response[c].VLAN;
+                        const name = response[c].name;
+                        const serial_number = response[c].serialNumber;
+                        const status = response[c].status;
+                        const row = document.createElement('tr');
+                            
+                        row.innerHTML = `
+                            <td>${switch_speed}</td>
+                            <td>${mac_address}</td>
+                            <td>${vlan}</td>
+                            <td>${name}</td>
+                            <td>${serial_number}</td>
+                            <td>${status}</td>`;
+                        switchList.appendChild(row);
                         
                         c = c+1;
                         
@@ -317,6 +417,91 @@
         }
     
 
+        //Récupère les routeurs auprès du Servlet
+        function getRouter(){
+                fetch(`https://${ServerIP}:8443/SAE52/ListRouter`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
+                })
+                .then(response => response.json())
+                .then(createTable);
+                //Rempli le tableau contenant les souteurs
+                function createTable(response){
+                    console.log(response)
+
+                    //Suppression du contenu du tableau
+                    routerList.innerHTML = '';
+
+                    c = 0;
+
+                    //Remplissage du tableau contenant les informations des pc
+                    while(c < response.length){
+                        const router_ports = response[c].routerPorts;
+                        const mac_address = response[c].macAddress;
+                        const vlan = response[c].VLAN;
+                        const name = response[c].name;
+                        const serial_number = response[c].serialNumber;
+                        const status = response[c].status;
+                        const row = document.createElement('tr');
+                            
+                        row.innerHTML = `
+                            <td>${router_ports}</td>
+                            <td>${mac_address}</td>
+                            <td>${vlan}</td>
+                            <td>${name}</td>
+                            <td>${serial_number}</td>
+                            <td>${status}</td>
+                        `;
+                        routerList.appendChild(row);
+                        
+                        c = c+1;
+                        
+                    }
+                }
+        }
+
+
+
+        //Récupère les câbles auprès du Servlet
+        function getCable(){
+                fetch(`https://${ServerIP}:8443/SAE52/ListCable`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token:tokenGMAO, Test: false })
+                })
+                .then(response => response.json())
+                .then(createTable);
+                //Rempli le tableau contenant les souteurs
+                function createTable(response){
+                    console.log(response)
+
+                    //Suppression du contenu du tableau
+                    cableList.innerHTML = '';
+
+                    c = 0;
+
+                    //Remplissage du tableau contenant les informations des pc
+                    while(c < response.length){
+                        const cable_lenght = response[c].cableLength;
+                        const name = response[c].name;
+                        const serial_number = response[c].serialNumber;
+                        const status = response[c].status;
+                        const row = document.createElement('tr');
+                            
+                        row.innerHTML = `
+                            <td>${cable_lenght}</td>
+                            <td>${name}</td>
+                            <td>${serial_number}</td>
+                            <td>${status}</td>
+                        `;
+                        cableList.appendChild(row);
+                        
+                        c = c+1;
+                        
+                    }
+                }
+        }
     </script>
 </body>
 </html>

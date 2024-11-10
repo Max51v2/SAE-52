@@ -82,7 +82,7 @@ public class AddCable extends HttpServlet {
         String jsonString = "";
 
         try {
-            Boolean nameExist = DAO.doNameExist(Cable.name, Boolean.valueOf(Cable.Test));
+            Boolean nameExist = DAO.doNameCableExist(name, TestBoolean);
 
             if (!nameExist) {
                 String userRights = DAO.getUserRightsFromToken(Cable.token, Boolean.valueOf(Cable.Test));

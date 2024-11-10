@@ -613,7 +613,7 @@ public class DAOSAE52 {
                     }
 
                     // Ajouter l'objet JSON
-                    JSONString += "{\"name\":\"" + name + "\", \"processor\":\"" + processor + "\", \"RAM\":\"" + RAM + "\", \"macAddress\":\"" + macAddress + "\", \"VLAN\":\"" + VLAN + "\", \"macAddress\":\"" + macAddress + "\", \"serialNumber\":\"" + serialNumber + "\", \"status\":\"" + status + "\", \"other\":\"" + other + "\"}";
+                    JSONString += "{\"name\":\"" + name + "\", \"processor\":\"" + processor + "\", \"RAM\":\"" + RAM + "\", \"macAddress\":\"" + macAddress + "\", \"VLAN\":\"" + VLAN + "\", \"serialNumber\":\"" + serialNumber + "\", \"status\":\"" + status + "\", \"other\":\"" + other + "\"}";
 
                     c += 1;
                 }

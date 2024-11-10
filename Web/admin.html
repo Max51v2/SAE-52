@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GMAO - Gestion des équipements</title>
-    <link rel="icon" type="image/x-icon" href="/LogoVIM.png">
+    <link rel="icon" type="image/x-icon" href="./images/LogoVIM.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -127,6 +127,9 @@
         .tab-content.active {
             display: block;
         }
+        .trashCol{
+            width: 10px;
+        }
     </style>
 </head>    
 <body>
@@ -217,7 +220,7 @@
                         <th>Nom</th>
                         <th>Sn</th>
                         <th>Status</th>
-                        <th id="trashCol"></th>
+                        <th class="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="switchList">
@@ -235,7 +238,7 @@
                         <th>Nom</th>
                         <th>Sn</th>
                         <th>Status</th>
-                        <th id="trashCol"></th>
+                        <th class="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="routerList">
@@ -252,7 +255,7 @@
                         <th>Nom</th>
                         <th>Sn</th>
                         <th>Status</th>
-                        <th id="trashCol"></th>
+                        <th class="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="cableList">
@@ -273,7 +276,7 @@
                         <th>Sn</th>
                         <th>Status</th>
                         <th>Autres</th>
-                        <th id="trashCol"></th>
+                        <th class="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="pcList">
@@ -313,7 +316,6 @@
         let userRole = sessionStorage['userRole'];
 
         if(typeof tokenGMAO !== 'undefined'){
-            console.log("token : "+tokenGMAO)
             console.log("###### informatif !!! ######")
             console.log("login : "+userLogin)
             console.log("droits : "+userRole)
@@ -507,7 +509,7 @@
                             <td>${other}</td>
                             <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
                                 <button 
-                                    style="background: url('trash.png') no-repeat center; 
+                                    style="background: url('./images/trash.png') no-repeat center; 
                                             background-size: contain; 
                                             width: 25px; 
                                             height: 25px; 
@@ -635,7 +637,7 @@
                             <td>${status}</td>
                             <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
                                 <button 
-                                    style="background: url('trash.png') no-repeat center; 
+                                    style="background: url('./images/trash.png') no-repeat center; 
                                             background-size: contain; 
                                             width: 25px; 
                                             height: 25px; 
@@ -762,7 +764,7 @@
                             <td>${status}</td>
                             <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
                                 <button 
-                                    style="background: url('trash.png') no-repeat center; 
+                                    style="background: url('./images/trash.png') no-repeat center; 
                                             background-size: contain; 
                                             width: 25px; 
                                             height: 25px; 
@@ -879,7 +881,7 @@
                             <td>${status}</td>
                             <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
                                 <button 
-                                    style="background: url('trash.png') no-repeat center; 
+                                    style="background: url('./images/trash.png') no-repeat center; 
                                             background-size: contain; 
                                             width: 25px; 
                                             height: 25px; 

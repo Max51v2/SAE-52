@@ -90,7 +90,7 @@ public class AddRouter extends HttpServlet {
         String jsonString = "";
 
         try {
-            Boolean nameExist = DAO.doNameExist(Router.name, Boolean.valueOf(Router.Test));
+            Boolean nameExist = DAO.doNameRouterExist(name, TestBoolean);
 
             if (!nameExist) {
                 String userRights = DAO.getUserRightsFromToken(Router.token, Boolean.valueOf(Router.Test));

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Liste les PC dans la BD
  * @author Maxime VALLET
  */
 @WebServlet(name = "ListPC", urlPatterns = {"/ListPC"})
@@ -23,7 +23,7 @@ public class ListPC extends HttpServlet {
         private String token;
         private String Test;
         
-        private pc(String token){
+        private pc(String token, String Test){
             this.token = token;
             this.Test = Test;
         }
@@ -70,7 +70,7 @@ public class ListPC extends HttpServlet {
             String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
             //Verification si l'utilisateur a les droits Admin
-            if(userRights.equals("Admin")){
+            if(userRights.equals("Admin") | userRights.equals("Technicien")){
                 //JSON renvoyé | récuppération des données
                 jsonString = DAO.getPC(TestBoolean);
             }

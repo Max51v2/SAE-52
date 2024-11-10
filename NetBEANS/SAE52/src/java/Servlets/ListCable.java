@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import DAO.DAOSAE52;
@@ -16,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Liste les câbles dans la BD
  * @author Valentin Millot
  */
 @WebServlet(name = "ListCable", urlPatterns = {"/ListCable"})
@@ -27,7 +23,7 @@ public class ListCable extends HttpServlet {
         private String token;
         private String Test;
         
-        private Cable(String token){
+        private Cable(String token, String Test){
             this.token = token;
             this.Test = Test;
         }
@@ -74,7 +70,7 @@ public class ListCable extends HttpServlet {
             String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
             //Verification si l'utilisateur a les droits Admin
-            if(userRights.equals("Admin")){
+            if(userRights.equals("Admin") | userRights.equals("Technicien")){
                 //JSON renvoyé | récuppération des données
                 jsonString = DAO.getCable(TestBoolean);
             }
