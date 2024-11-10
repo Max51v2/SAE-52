@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,19 +12,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet Récupération des tickets
- * 
- * @author [Ton Nom]
+ *
+ * @author root
  */
-@WebServlet(name = "ListTickets", urlPatterns = {"/ListTickets"})
+@WebServlet(name = "ListTicket", urlPatterns = {"/ListTicket"})
 public class ListTicket extends HttpServlet {
-    
+
     // Classe permettant de stocker le contenu du JSON de la requête
-    private class UserRequest {
+    private class Ticket {
         private String token;
         private String Test;
         
-        private UserRequest(String token, String Test){
+        private Ticket(String token){
             this.token = token;
             this.Test = Test;
         }
@@ -36,12 +34,12 @@ public class ListTicket extends HttpServlet {
      *
      * Variables à envoyer au servlet (POST)<br>
      * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
-     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
+     * String Test        &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
      * 
      * @param request       servlet request
      * @param response      servlet response
-     * @throws ServletException si une erreur spécifique du servlet survient
-     * @throws IOException si une erreur I/O survient
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -55,30 +53,27 @@ public class ListTicket extends HttpServlet {
         Gson gsonRequest = new Gson();
         
         // Conversion du JSON en objet Java
-        UserRequest userRequest = gsonRequest.fromJson(reader, UserRequest.class);
+        ListTicket.Ticket ticket = gsonRequest.fromJson(reader, ListTicket.Ticket.class);
         
         // Données
-        String token = userRequest.token;
-        Boolean TestBoolean = Boolean.valueOf(userRequest.Test);
+        String token = ticket.token;
+        Boolean TestBoolean = Boolean.valueOf(ticket.Test);
         
         // Création du JSON à renvoyer (vide)
         String jsonString = "";
         
         try {
-            // Vérification des droits de l'utilisateur
+            // Vérification des droits utilisateur
             String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
             // Vérification si l'utilisateur a les droits Admin
-           if(userRights.equals("Admin") || userRights.equals("Secretaire")) {
-    // Si l'utilisateur est un admin ou un secrétaire, il peut voir tous les tickets
-        jsonString = DAO.getTicket(TestBoolean);
-        } else {
-        jsonString = "{\"error\": \"Accès refusé. Droits insuffisants.\"}";
-                }
-
+            if(userRights.equals("Admin")){
+                // JSON renvoyé | Récupération des tickets
+                jsonString = DAO.getTicket(TestBoolean);
+            }
+            
         } catch (Exception e) {
             e.printStackTrace();
-            jsonString = "{\"error\": \"Erreur serveur\"}";
         }
         
         // Envoi des données
@@ -88,23 +83,43 @@ public class ListTicket extends HttpServlet {
         }
     }
 
-    // Méthode pour gérer les requêtes GET
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    // Méthode pour gérer les requêtes POST
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    // Description du servlet
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
-        return "Servlet pour récupérer les tickets selon les droits de l'utilisateur";
-    }
+        return "Renvoi la liste des tickets";
+    }// </editor-fold>
+
 }
