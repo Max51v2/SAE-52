@@ -1264,7 +1264,7 @@ public class DAOSAE52 {
     }
      
     
-       public void deleteTicket(String login, Boolean Test){
+       public void deleteTicket(String description, Boolean Test){
         String RequeteSQL="DELETE FROM ticket WHERE description = ?";
         
         //Selection de la BD
