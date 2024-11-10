@@ -1279,6 +1279,7 @@ public Boolean doTicketExist(int ticketId, Boolean Test) {
                 ticketExist = true;
             }
         }
+        
 
     } catch (SQLException e) {
         e.printStackTrace();
@@ -1366,7 +1367,7 @@ public void deleteTicket(String ticketId, Boolean Test) {
          PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
 
         // Remplacement des "?" par le ticketId
-        preparedStatement.setInt(1, ticketId);
+        preparedStatement.setString(1, ticketId);
 
         // Exécution de la requête
         preparedStatement.executeUpdate();
