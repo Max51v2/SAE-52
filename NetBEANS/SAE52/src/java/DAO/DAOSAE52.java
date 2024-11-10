@@ -1321,195 +1321,203 @@ public class DAOSAE52 {
     }
     
     public void addTicket(String description, String service, String status, Boolean Test) {
-    String RequeteSQL = "INSERT INTO ticket (description, service, status) VALUES (?, ?, ?)";
+        String RequeteSQL = "INSERT INTO ticket (description, service, status) VALUES (?, ?, ?)";
 
-    // Sélection de la BD
-    changeConnection(Test);
+        // Sélection de la BD
+        changeConnection(Test);
 
-    // Connexion à la BD en tant que postgres
-    try (Connection connection = DAOSAE52.getConnectionPostgres();
-         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+        // Connexion à la BD en tant que postgres
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
 
-        // Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
-        preparedStatement.setString(1, description);
-        preparedStatement.setString(2, service);
-        preparedStatement.setString(3, status);
+            // Remplacement des "?" par les variables d'entrée (pour éviter les injections SQL !!!)
+            preparedStatement.setString(1, description);
+            preparedStatement.setString(2, service);
+            preparedStatement.setString(3, status);
 
-        // Exécution de la requête
-        preparedStatement.executeUpdate();
+            // Exécution de la requête
+            preparedStatement.executeUpdate();
 
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-public Boolean doTicketExist(int ticketId, Boolean Test) {
-    String RequeteSQL = "SELECT * FROM ticket WHERE id = ?";
-    Boolean ticketExist = false;
-
-    // Sélection de la BD
-    changeConnection(Test);
-
-    // Connexion à la BD en tant que postgres
-    try (Connection connection = DAOSAE52.getConnectionPostgres();
-         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
-
-        // Remplacement des "?" par le ticketId
-        preparedStatement.setInt(1, ticketId);
-
-        // Exécution de la requête
-        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
-                ticketExist = true;
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        
-
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
 
-    return ticketExist;
-}
+    public Boolean doTicketExist(int ticketId, Boolean Test) {
+        String RequeteSQL = "SELECT * FROM ticket WHERE id = ?";
+        Boolean ticketExist = false;
 
-public String getTicket(Boolean Test) {
-    String RequeteSQL = "SELECT * FROM ticket ORDER BY id ASC";
-    String JSONString = "";
+        // Sélection de la BD
+        changeConnection(Test);
 
-    // Sélection de la BD
-    changeConnection(Test);
+        // Connexion à la BD en tant que postgres
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
 
-    // Connexion à la BD en tant que postgres
-    try (Connection connection = DAOSAE52.getConnectionPostgres();
-         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+            // Remplacement des "?" par le ticketId
+            preparedStatement.setInt(1, ticketId);
 
-        // Exécution de la requête
-        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-            Integer c = 1;
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    ticketExist = true;
+                }
+            }
 
-            // Ouvrir le tableau JSON
-            JSONString += "[";
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String description = resultSet.getString("description");
-                String service = resultSet.getString("service");
-                String status = resultSet.getString("status");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-                // Ajouter une virgule avant chaque entrée sauf la première
-                if (c > 1) {
-                    JSONString += ",";
+        return ticketExist;
+    }
+
+    
+    
+    
+    public String getTicket(Boolean Test) {
+        String RequeteSQL = "SELECT * FROM ticket ORDER BY id ASC";
+        String JSONString = "";
+
+        // Sélection de la BD
+        changeConnection(Test);
+
+        // Connexion à la BD en tant que postgres
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Integer c = 1;
+
+                // Ouvrir le tableau JSON
+                JSONString += "[";
+
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String description = resultSet.getString("description");
+                    String service = resultSet.getString("service");
+                    String status = resultSet.getString("status");
+
+                    // Ajouter une virgule avant chaque entrée sauf la première
+                    if (c > 1) {
+                        JSONString += ",";
+                    }
+
+                    // Ajouter l'objet JSON
+                    JSONString += "{\"id\":\"" + id + "\", \"description\":\"" + description + "\", \"service\":\"" + service + "\", \"status\":\"" + status + "\"}";
+
+                    c += 1;
                 }
 
-                // Ajouter l'objet JSON
-                JSONString += "{\"id\":\"" + id + "\", \"description\":\"" + description + "\", \"service\":\"" + service + "\", \"status\":\"" + status + "\"}";
+                // Fermer le tableau JSON
+                JSONString += "]";
 
-                c += 1;
             }
 
-            // Fermer le tableau JSON
-            JSONString += "]";
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return JSONString;
+    }
+    
+    
+    
+    
+    public void updateTicketStatus(int ticketId, String status, Boolean Test) {
+        String RequeteSQL = "UPDATE ticket SET status = ? WHERE id = ?";
+
+        // Sélection de la BD
+        changeConnection(Test);
+
+        // Connexion à la BD en tant que postgres
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+
+            // Remplacement des "?" par les variables d'entrée
+            preparedStatement.setString(1, status);
+            preparedStatement.setInt(2, ticketId);
+
+            // Exécution de la requête
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    return JSONString;
-}
-public void updateTicketStatus(int ticketId, String status, Boolean Test) {
-    String RequeteSQL = "UPDATE ticket SET status = ? WHERE id = ?";
+    public void deleteTicket(String ticketId, Boolean Test) {
+        String RequeteSQL = "DELETE FROM ticket WHERE id = ?";
 
-    // Sélection de la BD
-    changeConnection(Test);
+        // Sélection de la BD
+        changeConnection(Test);
 
-    // Connexion à la BD en tant que postgres
-    try (Connection connection = DAOSAE52.getConnectionPostgres();
-         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+        // Connexion à la BD en tant que postgres
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
 
-        // Remplacement des "?" par les variables d'entrée
-        preparedStatement.setString(1, status);
-        preparedStatement.setInt(2, ticketId);
+            // Remplacement des "?" par le ticketId
+            preparedStatement.setString(1, ticketId);
 
-        // Exécution de la requête
-        preparedStatement.executeUpdate();
+            // Exécution de la requête
+            preparedStatement.executeUpdate();
 
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-public void deleteTicket(String ticketId, Boolean Test) {
-    String RequeteSQL = "DELETE FROM ticket WHERE id = ?";
-
-    // Sélection de la BD
-    changeConnection(Test);
-
-    // Connexion à la BD en tant que postgres
-    try (Connection connection = DAOSAE52.getConnectionPostgres();
-         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
-
-        // Remplacement des "?" par le ticketId
-        preparedStatement.setString(1, ticketId);
-
-        // Exécution de la requête
-        preparedStatement.executeUpdate();
-
-    } catch (SQLException e) {
-        e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
-public String getUserTicket(String username, Boolean Test) {
-    String RequeteSQL = "SELECT * FROM ticket WHERE username = ? ORDER BY id ASC";
-    String JSONString = "";
+    public String getUserTicket(String username, Boolean Test) {
+        String RequeteSQL = "SELECT * FROM ticket WHERE username = ? ORDER BY id ASC";
+        String JSONString = "";
 
-    // Sélection de la BD
-    changeConnection(Test);
+        // Sélection de la BD
+        changeConnection(Test);
 
-    // Connexion à la BD en tant que postgres
-    try (Connection connection = DAOSAE52.getConnectionPostgres();
-         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+        // Connexion à la BD en tant que postgres
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
 
-        // Remplacer le "?" par le nom d'utilisateur
-        preparedStatement.setString(1, username);
+            // Remplacer le "?" par le nom d'utilisateur
+            preparedStatement.setString(1, username);
 
-        // Exécution de la requête
-        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-            Integer c = 1;
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Integer c = 1;
 
-            // Ouvrir le tableau JSON
-            JSONString += "[";
+                // Ouvrir le tableau JSON
+                JSONString += "[";
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String description = resultSet.getString("description");
-                String service = resultSet.getString("service");
-                String status = resultSet.getString("status");
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String description = resultSet.getString("description");
+                    String service = resultSet.getString("service");
+                    String status = resultSet.getString("status");
 
-                // Ajouter une virgule avant chaque entrée sauf la première
-                if (c > 1) {
-                    JSONString += ",";
+                    // Ajouter une virgule avant chaque entrée sauf la première
+                    if (c > 1) {
+                        JSONString += ",";
+                    }
+
+                    // Ajouter l'objet JSON
+                    JSONString += "{\"id\":\"" + id + "\", \"description\":\"" + description + "\", \"service\":\"" + service + "\", \"status\":\"" + status + "\"}";
+
+                    c += 1;
                 }
 
-                // Ajouter l'objet JSON
-                JSONString += "{\"id\":\"" + id + "\", \"description\":\"" + description + "\", \"service\":\"" + service + "\", \"status\":\"" + status + "\"}";
+                // Fermer le tableau JSON
+                JSONString += "]";
 
-                c += 1;
             }
 
-            // Fermer le tableau JSON
-            JSONString += "]";
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return JSONString;
     }
-
-    return JSONString;
-}
 
 
 }
