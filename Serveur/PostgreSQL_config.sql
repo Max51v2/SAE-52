@@ -98,13 +98,13 @@ CREATE TABLE users (
     token text
 );
 
--- table ticket
 CREATE TABLE ticket (
-    id SERIAL PRIMARY KEY,
-    description text,
-    service text,
-    status text
+    id SERIAL PRIMARY KEY,  -- id unique et auto-incrémenté
+    description TEXT NOT NULL,
+    service TEXT NOT NULL,
+    status TEXT DEFAULT 'En attente'  -- Valeur par défaut pour le statut
 );
+
 
 -- table pc
 CREATE TABLE pc (
