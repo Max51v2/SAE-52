@@ -17,3 +17,4 @@ Fait :
 -  ̶f̶a̶i̶r̶e̶ ̶l̶a̶ ̶p̶a̶g̶e̶ ̶p̶o̶u̶r̶ ̶l̶e̶ ̶p̶l̶a̶n̶n̶i̶n̶g̶   (Trop ambitieux, peur que l'on manque de temps => oui)
 - DAO : ajouter + lister + supprimer => SW + Routeur + cable + PC (suppression)
 - Servlet : ajouter + lister + supprimer => SW + Routeur + cable + PC
+ 
