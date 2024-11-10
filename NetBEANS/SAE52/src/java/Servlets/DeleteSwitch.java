@@ -40,7 +40,7 @@ public class DeleteSwitch extends HttpServlet {
      * Suppression d'un Switch à partir de son nom<br><br>
      *
      * Variables à envoyer au servlet (POST)<br>
-     * String name       &emsp;&emsp;        nom du PC à supprimer <br>
+     * String name       &emsp;&emsp;        nom du switch à supprimer <br>
      * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
      * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
      * 

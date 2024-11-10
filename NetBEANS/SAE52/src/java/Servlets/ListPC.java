@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import DAO.DAOSAE52;
@@ -17,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author root
+ * @author Maxime VALLET
  */
 @WebServlet(name = "ListPC", urlPatterns = {"/ListPC"})
 public class ListPC extends HttpServlet {

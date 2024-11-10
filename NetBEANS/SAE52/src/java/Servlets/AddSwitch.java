@@ -42,6 +42,31 @@ public class AddSwitch extends HttpServlet {
         }
     }
 
+    
+    
+    /**
+     * Ajout d'un switch<br><br>
+     *
+     * Variables à envoyer au servlet (POST)<br>
+     * 
+     * String switchSpeed       &emsp;&emsp;        vitesse du switch <br>
+     * String macAddress       &emsp;&emsp;        adresse MAC du switch <br>
+     * String VLAN       &emsp;&emsp;        VLANs configurés sur le switch<br>
+     * String name       &emsp;&emsp;        nom du switch<br>
+     * String serialNumber       &emsp;&emsp;        numéro de série du switch <br>
+     * String status       &emsp;&emsp;        status du switch <br>
+     * String token       &emsp;&emsp;     token de l'utilisateur connecté <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br><br>
+     * 
+     * Renvoi : <br>
+     * &emsp;   - "Fait" si OK
+     * &emsp;   - "Name exist" si le nom exite déjà dans la BD
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

@@ -38,15 +38,12 @@ public class AddTicket extends HttpServlet {
     
 
     /**
-     * Ajoute un utilisateur<br><br>
+     * Ajout d'un ticket<br><br>
      *
      * Variables à envoyer au servlet (POST)<br>
-     * String prenom       &emsp;&emsp;        prénom de l'utilisateur <br>
-     * String nom       &emsp;&emsp;       nom de l'utilisateur <br>
-     * String login       &emsp;&emsp;         login de l'utilisateur <br>
-     * String password       &emsp;&emsp;      MDP de l'utilisateur (clair) <br>
-     * String role       &emsp;&emsp;      droits de l'utilisateur <br>
-     * String token       &emsp;&emsp;     token de l'utilisateur connecté <br>
+     * String description       &emsp;&emsp;        description du ticket <br>
+     * String service       &emsp;&emsp;       type de service <br>
+     * String status       &emsp;&emsp;         statut du ticket <br>
      * String Test       &emsp;&emsp;      BD à utiliser (true : test | false : sae_52) <br>
      * 
      * @param request       servlet request
@@ -75,22 +72,22 @@ public class AddTicket extends HttpServlet {
         Boolean TestBoolean = Boolean.valueOf(ticket.Test);
         
 
-String jsonString;
+        String jsonString;
 
-    try {
-        // Ajouter le ticket dans la base de données
-        DAO.addTicket(description, service, status, TestBoolean);
-        jsonString = "{\"result\":\"Ticket ajouté avec succès\"}";
-    } catch (Exception e) {
-        e.printStackTrace();
-        jsonString = "{\"result\":\"Erreur lors de l'ajout du ticket\"}";
-    }
+            try {
+                // Ajouter le ticket dans la base de données
+                DAO.addTicket(description, service, status, TestBoolean);
+                jsonString = "{\"result\":\"Ticket ajouté avec succès\"}";
+            } catch (Exception e) {
+                e.printStackTrace();
+                jsonString = "{\"result\":\"Erreur lors de l'ajout du ticket\"}";
+            }
 
-    try (PrintWriter out = response.getWriter()) {
-        out.print(jsonString);
-        out.flush();
-    }
-}        
+            try (PrintWriter out = response.getWriter()) {
+                out.print(jsonString);
+                out.flush();
+            }
+        }        
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

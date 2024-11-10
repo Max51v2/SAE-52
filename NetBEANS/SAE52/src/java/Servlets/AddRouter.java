@@ -42,6 +42,31 @@ public class AddRouter extends HttpServlet {
         }
     }
 
+    
+    
+    /**
+     * Ajout d'un routeur<br><br>
+     *
+     * Variables à envoyer au servlet (POST)<br>
+     * 
+     * String routerPorts       &emsp;&emsp;        nombre de ports du routeur <br>
+     * String macAddress       &emsp;&emsp;        adresse MAC du routeur <br>
+     * String VLAN       &emsp;&emsp;        VLANs configurés sur le routeur <br>
+     * String name       &emsp;&emsp;        nom du routeur <br>
+     * String serialNumber       &emsp;&emsp;        numéro de série du routeur <br>
+     * String status       &emsp;&emsp;        status du routeur <br>
+     * String token       &emsp;&emsp;     token de l'utilisateur connecté <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br><br>
+     * 
+     * Renvoi : <br>
+     * &emsp;   - "Fait" si OK
+     * &emsp;   - "Name exist" si le nom exite déjà dans la BD
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");

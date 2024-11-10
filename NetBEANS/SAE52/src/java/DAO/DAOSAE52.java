@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 /**
  * DAO SAE52
  * 
- * @author Maxime VALLET
+ * @author Maxime VALLET, Valentin MILLOT
  */
 public class DAOSAE52 {
     //Info de connection à la BD PostgreSQL
@@ -44,6 +44,8 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
+    
     
     
     /**
@@ -124,6 +126,7 @@ public class DAOSAE52 {
         
         return rights;
     }
+    
     
     
     
@@ -277,6 +280,7 @@ public class DAOSAE52 {
     
     
     
+    
     /**
      * Ajout d'un utilisateur
      * 
@@ -314,6 +318,7 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
     
     
     
@@ -360,6 +365,7 @@ public class DAOSAE52 {
         
         return loginExist;
     }
+    
     
     
     
@@ -460,6 +466,7 @@ public class DAOSAE52 {
     
     
     
+    
     /**
      * Ajout d'un ordinateur
      * 
@@ -506,6 +513,7 @@ public class DAOSAE52 {
 
     
     
+    
     /**
      * Vérifie l'existance du nom du PC dans la base de données
      * 
@@ -549,6 +557,7 @@ public class DAOSAE52 {
         
         return nameExist;
     }
+    
     
     
     
@@ -622,6 +631,20 @@ public class DAOSAE52 {
         return JSONString;
     }
     
+    
+    
+    
+    /**
+     * Ajout d'un switch
+     * 
+     * @param switchSpeed        &emsp;&emsp;        vitesse des interfaces du switch
+     * @param macAddress         &emsp;&emsp;        adresse MAC du switch
+     * @param VLAN        &emsp;&emsp;        VLANs associés au switch
+     * @param name        &emsp;&emsp;        nom du switch
+     * @param serialNumber         &emsp;&emsp;        numéro de série du switch
+     * @param status         &emsp;&emsp;        état du fonctionnement du switch
+     * @param Test       &emsp;&emsp;        Utilisation de la BD test (true si test sinon false !!!)
+     */
     public void addSwitch(String switchSpeed, String macAddress, String VLAN, String name, String serialNumber, String status, Boolean Test) {
         String RequeteSQL = "INSERT INTO switch (switch_speed, mac_address, vlan, name, serial_number, status) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -648,6 +671,9 @@ public class DAOSAE52 {
         }
 
     }
+    
+    
+    
     
     /**
      * Renvoi les Switch contenu dans la BD
@@ -715,6 +741,10 @@ public class DAOSAE52 {
         return JSONString;
     }
     
+    
+    
+    
+    
     /**
      * Vérifie l'existance du nom d'un switch dans la base de données
      * 
@@ -760,6 +790,19 @@ public class DAOSAE52 {
     }
     
     
+    
+    
+    /**
+     * Ajout d'un routeur
+     * 
+     * @param routerPorts          &emsp;&emsp;        nombre de ports du routeur
+     * @param macAddress         &emsp;&emsp;        adresse MAC du routeur
+     * @param VLAN        &emsp;&emsp;        VLANs associés au routeur
+     * @param name        &emsp;&emsp;        nom du routeur
+     * @param serialNumber         &emsp;&emsp;        numéro de série du routeur
+     * @param status         &emsp;&emsp;        état du fonctionnement du routeur
+     * @param Test       &emsp;&emsp;        Utilisation de la BD test (true si test sinon false !!!)
+     */
     public void addRouter(String routerPorts, String macAddress, String VLAN, String name, String serialNumber, String status, Boolean Test) {
         String RequeteSQL = "INSERT INTO router (router_ports, mac_address, vlan, name, serial_number, status) VALUES (?, ?, ?, ?, ?, ?)";
     
@@ -785,6 +828,10 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
+    
+    
+    
     
     /**
      * Renvoi les Routeurs contenu dans la BD
@@ -852,6 +899,18 @@ public class DAOSAE52 {
         return JSONString;
     }
     
+    
+    
+    
+    /**
+     * Ajout d'un câble
+     * 
+     * @param cableLength          &emsp;&emsp;        longueur du câble
+     * @param name        &emsp;&emsp;        nom du câble
+     * @param serialNumber         &emsp;&emsp;        numéro de série du câble
+     * @param status         &emsp;&emsp;        état du fonctionnement du câble
+     * @param Test       &emsp;&emsp;        Utilisation de la BD test (true si test sinon false !!!)
+     */
     public void addCable(String cableLength, String name, String serialNumber, String status, Boolean Test) {
         String RequeteSQL = "INSERT INTO cable (cable_lenght, name, serial_number, status) VALUES (?, ?, ?, ?)";
     
@@ -875,6 +934,9 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     } 
+    
+    
+    
     
     /**
      * Renvoi les Câbles contenu dans la BD
@@ -938,6 +1000,9 @@ public class DAOSAE52 {
         return JSONString;
     }
     
+    
+    
+    
     /**
      * Suppression d'un PC
      * 
@@ -967,6 +1032,9 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
+    
+    
     
     /**
      * Vérifie l'existance du nom d'un PC dans la base de données
@@ -1012,6 +1080,9 @@ public class DAOSAE52 {
         return NameExist;
     }
     
+    
+    
+    
     /**
      * Suppression d'un Switch
      * 
@@ -1041,6 +1112,9 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
+    
+    
     
     /**
      * Vérifie l'existance du nom d'un Switch dans la base de données
@@ -1087,6 +1161,8 @@ public class DAOSAE52 {
     }
     
     
+    
+    
     /**
      * Suppression d'un Routeur
      * 
@@ -1116,6 +1192,8 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
+    
     
     
     /**
@@ -1162,6 +1240,9 @@ public class DAOSAE52 {
         return NameExist;
     }
     
+    
+    
+    
     /**
      * Suppression d'un Câble
      * 
@@ -1191,6 +1272,9 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
+    
+    
+    
     
     /**
      * Vérifie l'existance du nom d'un Câble dans la base de données
@@ -1237,50 +1321,68 @@ public class DAOSAE52 {
     }
     
 
+    
+    
+    /**
+     * Ajout d'un ticket
+     * 
+     * @param description      description du ticket
+     * @param service      type de service
+     * @param status       état du ticket
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
     public void addTicket(String description, String service, String status, Boolean Test) {
-    String RequeteSQL = "INSERT INTO ticket (description, service, status) VALUES (?, ?, ?)";
-    
-    // Sélection de la BD
-    changeConnection(Test);
-    
-    try (Connection connection = DAOSAE52.getConnectionPostgres();
-         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
-        
-        // Remplacement des "?" par les variables d'entrée pour éviter les injections SQL
-        preparedStatement.setString(1, description);
-        preparedStatement.setString(2, service);
-        preparedStatement.setString(3, status);
-        
-        // Exécution de la requête
-        preparedStatement.executeUpdate();
-        
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
+        String RequeteSQL = "INSERT INTO ticket (description, service, status) VALUES (?, ?, ?)";
 
-    public boolean deleteTicket(int id, Boolean Test) {
-    String RequeteSQL = "DELETE FROM ticket WHERE id = ?";
-    
-    // Sélection de la BD
-    changeConnection(Test);
-    
-    try (Connection connection = DAOSAE52.getConnectionPostgres();
-         PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
-        
-        // Remplacement de "?" par l'id
-        preparedStatement.setInt(1, id);
-        
-        // Exécution de la requête
-        int affectedRows = preparedStatement.executeUpdate();
-        
-        return affectedRows > 0; // Indique si un ticket a bien été supprimé
-        
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
+        // Sélection de la BD
+        changeConnection(Test);
+
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+
+            // Remplacement des "?" par les variables d'entrée pour éviter les injections SQL
+            preparedStatement.setString(1, description);
+            preparedStatement.setString(2, service);
+            preparedStatement.setString(3, status);
+
+            // Exécution de la requête
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
+
+    
+    
+    /**
+     * Suppression d'un ticket
+     * 
+     * @param id        id du ticket
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public boolean deleteTicket(int id, Boolean Test) {
+        String RequeteSQL = "DELETE FROM ticket WHERE id = ?";
+
+        // Sélection de la BD
+        changeConnection(Test);
+
+        try (Connection connection = DAOSAE52.getConnectionPostgres();
+             PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
+
+            // Remplacement de "?" par l'id
+            preparedStatement.setInt(1, id);
+
+            // Exécution de la requête
+            int affectedRows = preparedStatement.executeUpdate();
+
+            return affectedRows > 0; // Indique si un ticket a bien été supprimé
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 }
