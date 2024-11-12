@@ -188,6 +188,8 @@
         </div>
     </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
     //Auteurs JS : Maxime VALLET, Ishac HAMDANI, Valentin MILLOT
     //Version : 0.5
@@ -249,99 +251,40 @@
         }
         document.getElementById(tabName).classList.add("active");
     }
-    </script>
+    // Fonction pour ouvrir un onglet spécifique
+    function openTab(tabId) {
+        const contents = document.querySelectorAll('.tab-content');
+        contents.forEach(content => content.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
 
-       <script>
-        // Auteur JS : HAMDANI Ishac
-        // Version : 1.6
-    
-        // Refresh la page quand on revient en arrière sinon le script ne tourne pas
-        window.onunload = function(){reload()};
-    
-        // Adresse IP des serveurs (vu que l'adresse du serveur change et que les deux serveurs ont la même adresse, on récupère celle entrée pour accéder au serveur Apache)
-        // à utiliser lorsqu'il faut accéder au serveur Tomcat !!!
-        const currentUrl = window.location.href;
-        const url = new URL(currentUrl);
-        const ServerIP = url.hostname;
-    
-        // Données session
-        var tokenGMAO = sessionStorage['tokenGMAO'];
-        let userLogin = sessionStorage['userLogin'];
-        let userRole = sessionStorage['userRole'];
-    
-        if(typeof tokenGMAO !== 'undefined'){
-            console.log("token : "+tokenGMAO)
-            console.log("###### informatif !!! ######")
-            console.log("login : "+userLogin)
-            console.log("droits : "+userRole)
-            console.log("############################")
-    
-            // Vérification du token
-            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})})
-            .then(r => r.json())
-            .then(TokenCheck)
+        if (tabId === 'ticketManagement') {
+            fetchTicketsForAdmin();
         }
-        else{
-            console.log("no token")
-            // Redirection vers la page login si pas de token
-            window.location.href = 'login.html';
-        }
-    
-        // Vérification du token
-        function TokenCheck(r){
-            // JSON obtenu
-            console.log(r)
-    
-            // Redirection selon les droits
-            if(r["droits"] === 'Admin'){
-                // Affichage des tickets si droits admin
-                ShowData();
-            }
-            else if(r["droits"] === 'Technicien' || r["droits"] === 'Utilisateur'){
-                // Redirection vers la page principale pour le technicien
-                window.location.href = 'secretaire.html';
-            }
-            else{
-                // Redirection vers la page login si mauvais token ou pas de droits
-                window.location.href = 'login.html';
-            } 
-        }
-        // Fonction pour ouvrir un onglet spécifique
-        function openTab(tabId) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+    }
+    // Ajouter un nouvel équipement dans la gestion des stocks
+    document.getElementById('stockForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-            if (tabId === 'ticketManagement') {
-                fetchTicketsForAdmin();
-            }
-        }
-        // Ajouter un nouvel équipement dans la gestion des stocks
-        document.getElementById('stockForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+        const equipName = document.getElementById('equipName').value;
+        const equipModel = document.getElementById('equipModel').value;
+        const equipSerial = document.getElementById('equipSerial').value;
+        const equipVlan = document.getElementById('equipVlan').value;
 
-            const equipName = document.getElementById('equipName').value;
-            const equipModel = document.getElementById('equipModel').value;
-            const equipSerial = document.getElementById('equipSerial').value;
-            const equipVlan = document.getElementById('equipVlan').value;
-
-            // Vous pouvez envoyer ces données à votre API ici pour les enregistrer dans la base de données
-            console.log({
-                equipName,
-                equipModel,
-                equipSerial,
-                equipVlan
-            });
-
-            alert('Équipement ajouté avec succès');
-            // Réinitialiser le formulaire après ajout
-            document.getElementById('stockForm').reset();
+        // Vous pouvez envoyer ces données à votre API ici pour les enregistrer dans la base de données
+        console.log({
+            equipName,
+            equipModel,
+            equipSerial,
+            equipVlan
         });
-    </script>
 
-    <script>
-        // Récupère les tickets auprès du Servlet
-function getTickets() {
+        alert('Équipement ajouté avec succès');
+        // Réinitialiser le formulaire après ajout
+        document.getElementById('stockForm').reset();
+    });
+
+    // Récupère les tickets auprès du Servlet
+    function getTickets() {
     fetch(`https://${ServerIP}:8443/SAE52/ListTicket`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -419,6 +362,6 @@ function delTicket(ticketId) {
         }
     }
 }
-    </script>
+</script>
 </body>
 </html>    
