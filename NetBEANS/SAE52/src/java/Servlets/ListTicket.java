@@ -66,8 +66,11 @@ public class ListTicket extends HttpServlet {
             // Vérification des droits utilisateur
             String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
-            // Vérification si l'utilisateur a les droits Admin
-            if(userRights.equals("Admin")){
+            // Vérification si l'utilisateur des droits
+            if(userRights.equals("Aucun")){
+                
+            }
+            else{
                 // JSON renvoyé | Récupération des tickets
                 jsonString = DAO.getTicket(TestBoolean);
             }

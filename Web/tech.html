@@ -283,7 +283,7 @@
             console.log("############################")
 
             //Vérification du token
-            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
+            fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json; charset=UTF-8"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
         }
         else{
             console.log("no token")
@@ -328,7 +328,7 @@
         function getPC(){
                 fetch(`https://${ServerIP}:8443/SAE52/ListPC`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ token:tokenGMAO, Test: false })
                 })
                 .then(response => response.json())
@@ -377,7 +377,7 @@
         function getSwitch(){
                 fetch(`https://${ServerIP}:8443/SAE52/ListSwitch`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ token:tokenGMAO, Test: false })
                 })
                 .then(response => response.json())
@@ -421,7 +421,7 @@
         function getRouter(){
                 fetch(`https://${ServerIP}:8443/SAE52/ListRouter`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ token:tokenGMAO, Test: false })
                 })
                 .then(response => response.json())
@@ -467,7 +467,7 @@
         function getCable(){
                 fetch(`https://${ServerIP}:8443/SAE52/ListCable`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ token:tokenGMAO, Test: false })
                 })
                 .then(response => response.json())

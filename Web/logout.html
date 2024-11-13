@@ -59,7 +59,7 @@
                 //Suppression du token dans la BD
                 fetch(`https://${ServerIP}:8443/SAE52/DeleteToken`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json; charset=UTF-8" },
                     body: JSON.stringify({ token: tokenGMAO, Test: false })
                 })
                 .then(response => response.json())

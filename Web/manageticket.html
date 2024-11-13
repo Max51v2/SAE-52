@@ -145,7 +145,7 @@
     <div class="container">
         <div class="tabs">
             <button class="tab-button" onclick="window.location.href='tech.html'">Gestion des Stocks</button>
-            <button class="tab-button" onclick="window.location.href='manageticket'">Gestion des Tickets</button>
+            <button class="tab-button" onclick="window.location.href='manageticket.html'">Gestion des Tickets</button>
 
         </div>
         <!-- Contenu des onglets -->
@@ -178,7 +178,7 @@
                         <th>Problème</th>
                         <th>Catégorie</th>
                         <th>Statut</th>
-                        <th>Actions</th>
+                        <th id="trashCol"></th>
                     </tr>
                 </thead>
                 <tbody id="ticketList">
@@ -217,7 +217,7 @@
         console.log("############################")
 
         //Vérification du token
-        fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
+        fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json; charset=UTF-8"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
     }
     else{
         console.log("no token")
@@ -231,7 +231,8 @@
 
         //redirection selon les droits
         if(r["droits"] === 'Admin' | r["droits"] === 'Technicien'){
-            //Rien
+            //Récupération des tickets
+            getTickets();
         }
         else if(r["droits"] === 'Utilisateur'){
             window.location.href = 'secretaire.html'; // Redirection vers la page principale pour l'utilisateur
@@ -287,11 +288,12 @@
     function getTickets() {
     fetch(`https://${ServerIP}:8443/SAE52/ListTicket`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=UTF-8" },
         body: JSON.stringify({ token: tokenGMAO, Test: false })
     })
     .then(response => response.json())
     .then(createTicketTable);
+    }
     
     // Remplir le tableau contenant les tickets
     function createTicketTable(response) {
@@ -311,12 +313,13 @@
             const row = document.createElement('tr');
                 
             row.innerHTML = `
+                <td>${ticketId}</td>
                 <td>${description}</td>
                 <td>${service}</td>
                 <td>${status}</td>
                 <td style="text-align: center;"> <!-- Ajout de style de centrage à la cellule -->
                     <button 
-                        style="background: url('trash.png') no-repeat center; 
+                        style="background: url('/images/trash.png') no-repeat center; 
                                 background-size: contain; 
                                 width: 25px; 
                                 height: 25px; 
@@ -332,36 +335,36 @@
             c = c + 1;
         }
     }
-}
 
-// Supprimer Ticket
-function delTicket(ticketId) {
-    var str = "Êtes-vous sûr de vouloir supprimer ce ticket ?";
 
-    // Demande de confirmation
-    if (confirm(str)) {
-        console.log("Suppression ticket : ", ticketId);
+    // Supprimer Ticket
+    function delTicket(ticketId) {
+        var str = "Êtes-vous sûr de vouloir supprimer ce ticket ?";
 
-        // Suppression du ticket dans la base de données
-        fetch(`https://${ServerIP}:8443/SAE52/DeleteTicket`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: tokenGMAO, ticketId: ticketId, Test: false })
-        })
-        .then(response => response.json())
-        .then(CheckTicketDeletion);
+        // Demande de confirmation
+        if (confirm(str)) {
+            console.log("Suppression ticket : ", ticketId);
 
-        // Vérification de la suppression du ticket
-        function CheckTicketDeletion(response) {
-            if (response.result === "Ticket doesn't exist") {
-                alert("Le ticket n'existe pas.");
-            } else {
-                // Actualisation du tableau des tickets
-                getTickets();
+            // Suppression du ticket dans la base de données
+            fetch(`https://${ServerIP}:8443/SAE52/DeleteTicket`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
+                body: JSON.stringify({ token: tokenGMAO, ticketId: ticketId, Test: false })
+            })
+            .then(response => response.json())
+            .then(CheckTicketDeletion);
+
+            // Vérification de la suppression du ticket
+            function CheckTicketDeletion(response) {
+                if (response.result === "Ticket doesn't exist") {
+                    alert("Le ticket n'existe pas.");
+                } else {
+                    // Actualisation du tableau des tickets
+                    getTickets();
+                }
             }
         }
     }
-}
 </script>
 </body>
 </html>    

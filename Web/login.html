@@ -139,7 +139,7 @@
 
             fetch(`https://${ServerIP}:8443/SAE52/TokenCheck`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ token: tokenGMAO, Test: false })
             })
             .then(response => response.json())
@@ -174,7 +174,7 @@
 
             fetch(`https://${ServerIP}:8443/SAE52/PasswordCheck`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({ login: username, password: password, Test: false })
             })
             .then(response => response.json())

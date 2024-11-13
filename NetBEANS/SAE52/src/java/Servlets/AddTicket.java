@@ -85,9 +85,13 @@ public class AddTicket extends HttpServlet {
                 //verif droits utilisateur demande
                 String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
                 
-                //Verification si l'utilisateur a les droits Admin
-                if(userRights.equals("Admin")){
-                    DAO.addTicket(description, service, status, nameExist);
+                // Vérification si l'utilisateur des droits
+                if(userRights.equals("Aucun")){
+
+                }
+                else{
+                    // JSON renvoyé | Ajout du ticket
+                    DAO.addTicket(description, service, status, TestBoolean);
                 }
                 
                 //JSON renvoyé
