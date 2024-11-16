@@ -1,15 +1,17 @@
+Info : les retours à la ligne ne s'affichent pas correctement sur la page principale => ouvrez le fichier depuis le projet et séléctionnez "Raw"
+
 I) Présentation
-à faire
+ à faire
 
 II) Comment installer le projet ?
-1) Installation et configuration des programmes
-a) Utiliser la VM contenant tous les programmes configurés :
+ 1) Installation et configuration des programmes
+  a) Utiliser la VM contenant tous les programmes configurés :
     - Vous retrouverez les informations utiles dans la section "VM" du document situé ici : "/Serveur/README.txt"
     - Il est recommandé de procéder dans cet ordre : télécharger la VM > suivre les README donnés à chaque partie de l'installation > lire la partie "VM" du document suivant : "/Serveur/README.txt"
-b) Installer les programmes manuellement :
+  b) Installer les programmes manuellement :
     - Vous retrouverez les informations dans la section "VM" du document situé ici : "/Serveur/README.txt"
 
-2) Démarrer le projet
+ 3) Démarrer le projet
     - Lancez Start.sh puis saisissez "o" pour reconstruire la BD (à faire lors du premier démarrage ou à chaque commit) puis "o" pour lancer NetBeans
     - Lancez le projet Java ouvert dans NetBeans et saisissez les logins+MDP si besoin (voir doc "/Serveur/README.txt")
     - Ouvrir le navigateur de la VM ou le navigateur de l'OS hôte (nécéssite d'ajouter les certificats > voir doc "/Serveur/README.txt")
