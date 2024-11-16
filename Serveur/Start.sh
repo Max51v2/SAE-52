@@ -1,6 +1,6 @@
 #!/bin/bash
 # Auteur : Maxime VALLET
-# Version : 1.7
+# Version : 1.8
 
 
 #Récupperation de la version de Java (lancement NetBEANS)
@@ -60,23 +60,6 @@ fi
 #On recharge apache2 car le contenu du rep a changé
 sudo systemctl daemon-reload
 
-
-#Récupération du status du daemon tomcat
-#tomcat=`systemctl status tomcat | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-
-#Demarrage de tomcat si il est éteint
-#if [ "$tomcat" = "active" ]
-#then
-    #demarrage
-    #echo "demarrage de tomcat"
-    #sudo systemctl start tomcat
-
-    #echo
-#fi
-
-
-#Section reconstruction BD
-#Recupération option utilisateur
 clear
 
 echo "Souhaitez-vous reconstruire la Base de Données ? [O/N]
@@ -97,7 +80,7 @@ fi
 
 
 #Demande de lancement NetBEANS s'il n'est pas en train de tourner
-ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/openjdk-22.0.2" | head -n 1`
+ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/"$Java_version | head -n 1`
 
 #Démarrage NetBEANS
 if [ "$ProcNetBEANS" = "" ]
@@ -141,12 +124,6 @@ echo "Status apache2 : "$apache2
 
 echo
 
-#Récupération du status du daemon tomcat
-#tomcat=`systemctl status tomcat | grep -o -E "Active: [A-Za-z]+" | sed 's/.*: //'`
-#echo "Status tomcat : "$tomcat
-
-#echo
-
 #Statut DB
 if [ "$option" = "o" ] || [ "$option" = "O" ]
 then
@@ -155,7 +132,7 @@ then
 fi
 
 #Affichage status NetBEANS
-ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/openjdk-22.0.2" | head -n 1`
+ProcNetBEANS=`ps -ef | grep -v grep | grep -o -E "sudo netbeans --jdkhome /usr/java/"$Java_version | head -n 1`
 if [ "$ProcNetBEANS" = "" ]
 then
     echo "Status NetBEANS : inactive"

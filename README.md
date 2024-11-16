@@ -1,4 +1,28 @@
-ATTENTION : le servlet d'ajout des ticket ne vérifie pas la présence d'un token !!!
+I) Présentation
+à faire
+
+II) Comment installer le projet ?
+1) Installation et configuration des programmes
+a) Utiliser la VM contenant tous les programmes configurés :
+    - Vous retrouverez les informations utiles dans la section "VM" du document situé ici : "/Serveur/README.txt"
+    - Il est recommandé de procéder dans cet ordre : télécharger la VM > suivre les README donnés à chaque partie de l'installation > lire la partie "VM" du document suivant : "/Serveur/README.txt"
+b) Installer les programmes manuellement :
+    - Vous retrouverez les informations dans la section "VM" du document situé ici : "/Serveur/README.txt"
+
+2) Démarrer le projet
+    - Lancez Start.sh puis saisissez "o" pour reconstruire la BD (à faire lors du premier démarrage ou à chaque commit) puis "o" pour lancer NetBeans
+    - Lancez le projet Java ouvert dans NetBeans et saisissez les logins+MDP si besoin (voir doc "/Serveur/README.txt")
+    - Ouvrir le navigateur de la VM ou le navigateur de l'OS hôte (nécéssite d'ajouter les certificats > voir doc "/Serveur/README.txt")
+
+
+
+
+!!! SECTION À RETIRER AVANT LE RENDU !!!
+
+Checklist des choses à faire avant rendu :
+    - rajoutez votre nom là où vous avez contribué
+    - finir la doc
+
 
 A faire :
 - faire un menu déroulant (ça doit être mieux)
@@ -15,4 +39,3 @@ Fait :
 - DAO : ajouter + lister + supprimer => SW + Routeur + cable + PC (suppression)
 - Servlet : ajouter + lister + supprimer => SW + Routeur + cable + PC
 - tests DAO (pas les servlets car ça prendrait ENORMEMENT de temps au vu du nombre de servlets)
- 

@@ -64,7 +64,7 @@ Version : 2.1
 |    |
 |    +---------------------------------------------------------
 |
-|    +-------------------CONCLUSION A LIRE--------------------- 
+|    +-------------------CONCLUSION À LIRE--------------------- 
 |    |
 |    |   Pour lancer les daemons, actualiser les fichiers Web et reconstruire la DB, lancez Start.sh
 |    |   => /home/$USER/Bureau/SAE-52/Serveur/Start.sh
@@ -82,6 +82,7 @@ Version : 2.1
 |    |
 |    |   *Certificat de l'authorité de certification
 |    |   => *Même après ajout, le navigateur affiche toujours que la connexion n'est pas sécurisé car le certificat est auto-signé (mais ça marche)
+|    |   ==> Dans le cas où vous souhaitez accéder aux pages web du projet en dehors de la VM, il faut se rendre sur la page du projet ainsi que de l'int d'administration de Tomcat afin d'ajouter les certificats (sinon les requêtes seront bloquées) => voir liens à la fin de la section
 |    |
 |    |   Mis à part la partie Web (gérée par Start.sh), tous les autres fichiers sont placés correctement
 |    |   => Il n'a pas besoin de toucher au contenu du répertoire Github local et tout est sauvegardé en faisant un "commit and push"
@@ -241,7 +242,7 @@ Version : 2.1
 |    |   sudo chown -R tomcat webapps/ work/ temp/ logs/ conf/
 |    |   sudo chmod o+x /opt/tomcat/bin/
 |    |
-|    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/tomcat.service /etc/systemd/system/tomcat.service
+|    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/config/tomcat.service /etc/systemd/system/tomcat.service
 |    |   sudo nano /etc/systemd/system/tomcat.service
 |    |   *Modifier cette ligne "Environment=JAVA_HOME=/usr/java/[VERSION JDK]" en changeant "[VERSION JDK]"
 |    |   => vous pouvez trouver la version en tapant les commandes suivantes :
@@ -318,7 +319,7 @@ Version : 2.1
 |    |   sudo /usr/java/[version JDK]/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 |    |   => MDP keytool "administrateur"
 |    |
-|    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/server.xml /opt/tomcat/conf/server.xml
+|    |   sudo cp /home/$USER/Bureau/SAE-52/Serveur/config/server.xml /opt/tomcat/conf/server.xml
 |    |
 |    +---------------------------------------------------------
 |

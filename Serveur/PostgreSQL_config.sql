@@ -1,5 +1,5 @@
---Auteur : Maxime VALLET
---Version : 0.9
+--Auteur : Maxime VALLET, Valentin MILLOT
+--Version : 1.0
 
 
 --####################### BD sae_52 #######################
