@@ -9,10 +9,15 @@ II) Comment installer le projet ?
   b) Installer les programmes manuellement :
     - Vous retrouverez les informations dans la section "VM" du document situé ici : "/Serveur/README.txt"
 
- 3) Démarrer le projet
+ 2) Démarrer le projet
     - Lancez Start.sh puis saisissez "o" pour reconstruire la BD (à faire lors du premier démarrage ou à chaque commit) puis "o" pour lancer NetBeans
     - Lancez le projet Java ouvert dans NetBeans et saisissez les logins+MDP si besoin (voir doc "/Serveur/README.txt")
     - Ouvrir le navigateur de la VM ou le navigateur de l'OS hôte (nécéssite d'ajouter les certificats > voir doc "/Serveur/README.txt")
+
+III) Qui contacter en cas de question ?
+ - Serveurs, VM, Authentification et gestion des utilisateurs : Maxime VALLET
+ - HTML, CSS et tickets : Ishac HAMDANI
+ - JS et Gestion du matériel : Valentin MILLOT
 
 
 
