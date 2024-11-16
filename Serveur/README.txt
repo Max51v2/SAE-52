@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 2.0
+Version : 2.1
 
 
 +--------------------------VM-----------------------------
@@ -8,9 +8,6 @@ Version : 2.0
 |    |
 |    |   Lien VM : https://drive.google.com/drive/folders/1WY2FbuyUUOAIFGDxtMXPeEN3Un0cfutZ?usp=sharing
 |    |   MDP : leffe
-|    |
-|    |   *Demarrer les daemons + actualiser BD + Web
-|    |   /home/$USER/Bureau/SAE-52/Serveur/Start.sh
 |    |
 |    |   *Le copier-coller est suporté entre la VM et l'hôte et vise-versa
 |    |
@@ -54,14 +51,14 @@ Version : 2.0
 |    |
 |    |   *NetBEANS est lancé par Start.sh sur demande
 |    |
-|    |   *commande
+|    |   *démarrage manuel
 |    |   => sudo netbeans --jdkhome /usr/java/[version JDK]
 |    |   
 |    |   *Au lancement du projet, si la fenêtre requesting keyreing apparait mais que NetBEANS ne demande pas de MDP, il faut redémarrer NetBEANS
 |    |
 |    |   *MDP projet : "leffe"
 |    |
-|    |   *Interface administration (accessible depuis localhost uniquement)
+|    |   *Interface d'administration (demandé lors du déploiment du projet sur le serveur Tomcat)
 |    |   login : "admin"
 |    |   MDP : "leffe"
 |    |
@@ -69,17 +66,15 @@ Version : 2.0
 |
 |    +-------------------CONCLUSION A LIRE--------------------- 
 |    |
-|    |   Pour lancer les daemons, actualiser les fichiers Web et reconstruire la DB, lancez Start.sh (cf. section VM > Général)
-|    |   => les identifiants et MDP pour NetBEANS sont dispo dans VM > NetNEANS
+|    |   Pour lancer les daemons, actualiser les fichiers Web et reconstruire la DB, lancez Start.sh
+|    |   => /home/$USER/Bureau/SAE-52/Serveur/Start.sh
+|    |   ==> tous les identifiants et MDP sont disponibles dans les sections précédentes
 |    |
 |    |   Se connecter à GitHub dans VSCode :
 |    |   Cliquer sur l'onglet "Compte" (en bas à gauche) et sélectionner l'option pour se connecter à Github
 |    |
-|    |   Cloner un répertoire Github sur le BUREAU (obligatoire avant de commencer) :
+|    |   Cloner un répertoire GitHub sur le BUREAU (obligatoire avant de commencer) :
 |    |   Cliquer sur l'onglet "Explorer" (pages), cliquer sur "Clone repository" > "Clone from Github" > "Max51v2/SAE-52" > Bureau NetBEANS)
-|    |
-|    |   Remplacer le répertoire Github local par celui en ligne (si tu veux reset les modifs du projet)
-|    |   => icon source control (branche à gauche) > survoler menu déroulant "Source control graph" > cliquer sur l'icon pull
 |    |
 |    |   Pour sauvegarder le projet > VSCode
 |    |   => icon source control (branche à gauche) > survoler menu déroulant "Changes" > cliquer sur le + pour ajouter tous les fichiers (tt dans être dans "staged changes")
@@ -96,7 +91,7 @@ Version : 2.0
 |    |   Adresses serveurs (@IP VM peut être remplacé par "localhost" si connexion sur le navigateur de la VM) :
 |    |   => Apache : https://[@IP VM]/[NomPage]
 |    |   => Tomcat (administration) : http://[@IP VM]:8443
-|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/[NomServlet]    (IMPORTANT : pour accès servlet > voir exemple login.html)
+|    |   => Tomcat (servlets) : https://[@IP VM]:8443/SAE52/[NomServlet]
 |    |   => Javadoc : https://[@IP VM]/Javadoc/index.html
 |    |   ==> déjà enregistré dans les marques page sur la VM
 |    |
@@ -104,17 +99,8 @@ Version : 2.0
 |    |   => il y'a deux cartes réseaux : une en mode bridge et une en mode NAT
 |    |   => dans le cas ou la première fonctionne (enp0s3), les serveurs sont accessibles à partir de l'IP de l'OS hôte (donc accessible au réseau local)
 |    |   => dans le cas ou la deuxième est la seule qui fonctionne (enp0s8), les serveurs sont accessibles à partir de l'IP de la carte virtuelle VirtualBox (donc accessible à l'OS hôte uniquement)
-|    |   => aucune modif requise/ raison : impossible d'utiliser le mode bridge sur eduroam
+|    |   ==> aucune modif requise/ raison : impossible d'utiliser le mode bridge sur eduroam
 |    | 
-|    +---------------------------------------------------------
-|
-|    +------------------Modifications A LIRE-------------------
-|    |
-|    |   *une nouvelle VM a été publiée
-|    |   => retrait de programmes et plugin VSCode inutilisé
-|    |   => suppression de fichiers inutilisés
-|    |   => redirection en local et page par défaut
-|    |
 |    +---------------------------------------------------------
 |
 +---------------------------------------------------------
@@ -129,9 +115,6 @@ Version : 2.0
 |    |   sudo apt update
 |    |   sudo apt upgrade
 |    |   sudo apt-get install git
-|    |
-|    |   *Script de demarrage des daemons
-|    |   chmod u+x /home/$USER/Bureau/SAE-52/Serveur/Start.sh
 |    |   
 |    |   *Demarrage deamons (une fois installation terminée): voir section VM > Général
 |    |
