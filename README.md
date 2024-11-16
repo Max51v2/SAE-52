@@ -1,5 +1,3 @@
-Info : les retours à la ligne ne s'affichent pas correctement sur la page principale => ouvrez le fichier depuis le projet et séléctionnez "Raw"
-
 I) Présentation
  à faire
 
