@@ -1,6 +1,6 @@
 <!-- 
     Auteur : Ishac HAMDANI, Valentin MILLOT, Maxime VALLET
-    Version : 0.4
+    Version : 1.0
 -->
 
 
@@ -135,8 +135,6 @@
         let tokenGMAO = sessionStorage.getItem('tokenGMAO');
 
         if (tokenGMAO) {
-            console.log("token : " + tokenGMAO);
-
             fetch(`https://${ServerIP}:8443/SAE52/TokenCheck`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -149,8 +147,6 @@
         }
 
         function TokenCheck(response) {
-            console.log(response);
-
             //Enregistrement login + droits
             sessionStorage.setItem('userLogin',response.login);
             sessionStorage.setItem('userRole', response.droits);
@@ -182,8 +178,6 @@
         });
 
         function PasswordCheck(response) {
-            console.log(response);
-
             if (response.droits === 'Aucun') {
                 loginError.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
             } else {

@@ -1,6 +1,6 @@
 <!-- 
     Auteur : Ishac HAMDANI, Valentin MILLOT, Maxime VALLET
-    Version : 0.7
+    Version : 1.0
 -->
 
 
@@ -297,7 +297,7 @@
 
     <script>
         //Auteurs JS : Maxime VALLET, Ishac HAMDANI, Valentin MILLOT
-        //Version : 0.5
+        //Version : 1.0
 
 
         //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
@@ -316,11 +316,6 @@
         let userRole = sessionStorage['userRole'];
 
         if(typeof tokenGMAO !== 'undefined'){
-            console.log("###### informatif !!! ######")
-            console.log("login : "+userLogin)
-            console.log("droits : "+userRole)
-            console.log("############################")
-
             //Vérification du token
             fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
         }
@@ -331,9 +326,6 @@
         }
 
         function TokenCheck(r){
-            //JSON obtenu
-            console.log(r)
-
             //redirection selon les droits
             if(r["droits"] === 'Admin'){
                 //Rien
@@ -479,8 +471,6 @@
                 .then(createTable);
                 //Rempli le tableau contenant les pc
                 function createTable(response){
-                    console.log(response)
-
                     //Suppression du contenu du tableau
                     pcList.innerHTML = '';
 
@@ -533,8 +523,6 @@
 
             //Demande de confirmation
             if (confirm(str)) {
-                console.log("retrait : ",name);
-
                     //Suppression PC BD
                     fetch(`https://${ServerIP}:8443/SAE52/DeletePC`, {
                     method: "POST",
@@ -611,8 +599,6 @@
                 .then(createTable);
                 //Rempli le tableau contenant les switch
                 function createTable(response){
-                    console.log(response)
-
                     //Suppression du contenu du tableau
                     switchList.innerHTML = '';
 
@@ -662,8 +648,6 @@
 
             //Demande de confirmation
             if (confirm(str)) {
-                console.log("retrait : ",name);
-
                     //Suppression PC BD
                     fetch(`https://${ServerIP}:8443/SAE52/DeleteSwitch`, {
                     method: "POST",
@@ -738,8 +722,6 @@
                 .then(createTable);
                 //Rempli le tableau contenant les souteurs
                 function createTable(response){
-                    console.log(response)
-
                     //Suppression du contenu du tableau
                     routerList.innerHTML = '';
 
@@ -788,8 +770,6 @@
 
             //Demande de confirmation
             if (confirm(str)) {
-                console.log("retrait : ",name);
-
                     //Suppression PC BD
                     fetch(`https://${ServerIP}:8443/SAE52/DeleteRouter`, {
                     method: "POST",
@@ -859,8 +839,6 @@
                 .then(createTable);
                 //Rempli le tableau contenant les souteurs
                 function createTable(response){
-                    console.log(response)
-
                     //Suppression du contenu du tableau
                     cableList.innerHTML = '';
 
@@ -905,8 +883,6 @@
 
             //Demande de confirmation
             if (confirm(str)) {
-                console.log("retrait : ",name);
-
                     //Suppression PC BD
                     fetch(`https://${ServerIP}:8443/SAE52/DeleteCable`, {
                     method: "POST",

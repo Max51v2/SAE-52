@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 /**
  * DAO SAE52
  * 
- * @author Maxime VALLET, Valentin MILLOT
+ * @author Maxime VALLET, Valentin MILLOT, Ishac HAMDANI
  */
 public class DAOSAE52 {
     //Info de connection à la BD PostgreSQL
@@ -88,7 +88,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Récupération des droits de l'utilisateur à partir du login
      * 
@@ -126,7 +125,6 @@ public class DAOSAE52 {
         
         return rights;
     }
-    
     
     
     
@@ -170,7 +168,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Enregistrement du token
      * 
@@ -202,7 +199,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
-    
     
     
     
@@ -246,7 +242,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Supression du token
      * 
@@ -277,7 +272,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
-    
     
     
     
@@ -318,7 +312,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
-    
     
     
     
@@ -365,7 +358,6 @@ public class DAOSAE52 {
         
         return loginExist;
     }
-    
     
     
     
@@ -433,7 +425,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Suppression d'un utilisateur
      * 
@@ -463,7 +454,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
-    
     
     
     
@@ -513,7 +503,6 @@ public class DAOSAE52 {
 
     
     
-    
     /**
      * Vérifie l'existance du nom du PC dans la base de données
      * 
@@ -557,7 +546,6 @@ public class DAOSAE52 {
         
         return nameExist;
     }
-    
     
     
     
@@ -633,7 +621,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Ajout d'un switch
      * 
@@ -671,7 +658,6 @@ public class DAOSAE52 {
         }
 
     }
-    
     
     
     
@@ -743,8 +729,6 @@ public class DAOSAE52 {
     
     
     
-    
-    
     /**
      * Vérifie l'existance du nom d'un switch dans la base de données
      * 
@@ -791,7 +775,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Ajout d'un routeur
      * 
@@ -828,8 +811,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
-    
-    
     
     
     
@@ -901,7 +882,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Ajout d'un câble
      * 
@@ -934,7 +914,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     } 
-    
     
     
     
@@ -1002,7 +981,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Suppression d'un PC
      * 
@@ -1032,7 +1010,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
-    
     
     
     
@@ -1082,7 +1059,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Suppression d'un Switch
      * 
@@ -1112,7 +1088,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
-    
     
     
     
@@ -1162,7 +1137,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Suppression d'un Routeur
      * 
@@ -1192,7 +1166,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
-    
     
     
     
@@ -1242,7 +1215,6 @@ public class DAOSAE52 {
     
     
     
-    
     /**
      * Suppression d'un Câble
      * 
@@ -1272,7 +1244,6 @@ public class DAOSAE52 {
             e.printStackTrace();
         }
     }
-    
     
     
     
@@ -1320,6 +1291,16 @@ public class DAOSAE52 {
         return NameExist;
     }
     
+    
+    
+    /**
+     * Ajout d'un ticket
+     * 
+     * @param description     description du ticket
+     * @param service       type de ticket
+     * @param status        état du ticket
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
     public void addTicket(String description, String service, String status, Boolean Test) {
         String RequeteSQL = "INSERT INTO ticket (description, service, status) VALUES (?, ?, ?)";
 
@@ -1343,6 +1324,14 @@ public class DAOSAE52 {
         }
     }
 
+    
+    
+    /**
+     * Vérifie l'existance du ticket
+     * 
+     * @param ticketId     id du ticket
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
     public Boolean doTicketExist(int ticketId, Boolean Test) {
         String RequeteSQL = "SELECT * FROM ticket WHERE id = ?";
         Boolean ticketExist = false;
@@ -1374,7 +1363,11 @@ public class DAOSAE52 {
 
     
     
-    
+    /**
+     * Récupération d'un ticket
+     * 
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
     public String getTicket(Boolean Test) {
         String RequeteSQL = "SELECT * FROM ticket ORDER BY id ASC";
         String JSONString = "";
@@ -1424,7 +1417,13 @@ public class DAOSAE52 {
     
     
     
-    
+    /**
+     * Modification du statut d'un ticket
+     * 
+     * @param ticketId     id du ticket
+     * @param status        statut du ticket
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
     public void updateTicketStatus(int ticketId, String status, Boolean Test) {
         String RequeteSQL = "UPDATE ticket SET status = ? WHERE id = ?";
 
@@ -1447,7 +1446,15 @@ public class DAOSAE52 {
         }
     }
 
-    public void deleteTicket(String ticketId, Boolean Test) {
+    
+    
+    /**
+     * Suppression d'un ticket
+     * 
+     * @param ticketId     id du ticket
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
+    public void deleteTicket(int ticketId, Boolean Test) {
         String RequeteSQL = "DELETE FROM ticket WHERE id = ?";
 
         // Sélection de la BD
@@ -1458,7 +1465,7 @@ public class DAOSAE52 {
              PreparedStatement preparedStatement = connection.prepareStatement(RequeteSQL)) {
 
             // Remplacement des "?" par le ticketId
-            preparedStatement.setString(1, ticketId);
+            preparedStatement.setInt(1, ticketId);
 
             // Exécution de la requête
             preparedStatement.executeUpdate();
@@ -1468,7 +1475,14 @@ public class DAOSAE52 {
         }
     }
 
+    
 
+    /**
+     * Récupération des ticket d'un utilisateur
+     * 
+     * @param username      nom de l'utilisateur
+     * @param Test     Utilisation de la BD test (true si test sinon false !!!)
+     */
     public String getUserTicket(String username, Boolean Test) {
         String RequeteSQL = "SELECT * FROM ticket WHERE username = ? ORDER BY id ASC";
         String JSONString = "";
@@ -1518,9 +1532,4 @@ public class DAOSAE52 {
 
         return JSONString;
     }
-
-    
-    
-    
-
 }

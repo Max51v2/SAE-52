@@ -54,8 +54,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             //Vérification de l'existance du token
             if (tokenGMAO) {
-                console.log("token : " + tokenGMAO);
-
                 //Suppression du token dans la BD
                 fetch(`https://${ServerIP}:8443/SAE52/DeleteToken`, {
                     method: "POST",

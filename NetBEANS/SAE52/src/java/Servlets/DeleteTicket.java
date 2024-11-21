@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+/**
+ * Suppression d'un ticket à partir de son id
+ * @author ?
+ */
 @WebServlet(name = "DeleteTicket", urlPatterns = {"/DeleteTicket"})
 public class DeleteTicket extends HttpServlet {
 
@@ -26,6 +31,20 @@ public class DeleteTicket extends HttpServlet {
         }
     }
 
+    
+    /**
+     * Suppression d'un ticket à partir de son id<br><br>
+     *
+     * Variables à envoyer au servlet (POST)<br>
+     * String id       &emsp;&emsp;        id du ticket à supprimer <br>
+     * String token       &emsp;&emsp;        token de l'utilisateur connecté <br>
+     * String Test       &emsp;&emsp;        BD à utiliser (true : test | false : sae_52) <br>
+     * 
+     * @param request       servlet request
+     * @param response      servlet response
+     * @throws      ServletException if a servlet-specific error occurs
+     * @throws      IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Type de la réponse
@@ -53,8 +72,8 @@ public class DeleteTicket extends HttpServlet {
             String userRights = DAO.getUserRightsFromToken(token, TestBoolean);
             
             // Vérification si l'utilisateur a les droits Admin
-            if(userRights.equals("Admin")) {
-                DAO.deleteTicket(id, TestBoolean);
+            if(userRights.equals("Admin") | userRights.equals("Technicien")) {
+                DAO.deleteTicket(Integer.valueOf(id), TestBoolean);
                 jsonString = "{\"result\":\"Ticket supprimé avec succès\"}";
             } else {
                 jsonString = "{\"result\":\"Droits insuffisants\"}";

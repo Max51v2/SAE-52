@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author root
+ * Renvoi la liste des tickets dans la DB au format JSON
+ * @author ?
  */
 @WebServlet(name = "ListTicket", urlPatterns = {"/ListTicket"})
 public class ListTicket extends HttpServlet {
@@ -28,6 +28,7 @@ public class ListTicket extends HttpServlet {
             this.Test = Test;
         }
     }
+    
     
     /**
      * Renvoi la liste des tickets dans la DB au format JSON<br><br>

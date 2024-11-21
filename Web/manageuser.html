@@ -1,6 +1,6 @@
 <!-- 
     Auteur : Ishac HAMDANI
-    Version : 0.2
+    Version : 1.0
 -->
 
 
@@ -214,11 +214,6 @@
         let userRole = sessionStorage['userRole'];
 
         if(typeof tokenGMAO !== 'undefined'){
-            console.log("###### informatif !!! ######")
-            console.log("login : "+userLogin)
-            console.log("droits : "+userRole)
-            console.log("############################")
-
             //Vérification du token
             fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json; charset=UTF-8"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
         }
@@ -231,9 +226,6 @@
 
         //Vérification du token
         function TokenCheck(r){
-            //JSON obtenu
-            console.log(r)
-
             //redirection selon les droits
             if(r["droits"] === 'Admin'){
                 //Affichage des données utilisateur si droits admin
@@ -312,8 +304,6 @@
 
         //Rempli le tableau contenant les utilisateurs
         function createTable(response){
-            console.log(response)
-
             //Suppression du contenu du tableau
             userList.innerHTML = '';
 
@@ -365,8 +355,6 @@
                     alert("Vous ne pouvez pas supprimer votre compte");
                 }
                 else{
-                    console.log("retrait : ",login);
-
                     //Suppression utilisateur BD
                     fetch(`https://${ServerIP}:8443/SAE52/DeleteUser`, {
                     method: "POST",

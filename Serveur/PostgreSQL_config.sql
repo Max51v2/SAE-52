@@ -1,4 +1,4 @@
---Auteur : Maxime VALLET, Valentin MILLOT
+--Auteur : Maxime VALLET, Valentin MILLOT, Ishac HAMDANI
 --Version : 1.0
 
 

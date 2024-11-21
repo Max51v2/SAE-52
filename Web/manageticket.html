@@ -1,6 +1,6 @@
 <!-- 
     Auteur : Ishac HAMDANI
-    Version : 0.2
+    Version : 1.0
 -->
 
 <!DOCTYPE html>
@@ -192,7 +192,7 @@
 
 <script>
     //Auteurs JS : Maxime VALLET, Ishac HAMDANI, Valentin MILLOT
-    //Version : 0.5
+    //Version : 1.0
 
 
     //Refresh la page quand on reviens en arrière sinon le script ne tourne pas (à inclure dans toutes les pages)
@@ -211,11 +211,6 @@
     let userRole = sessionStorage['userRole'];
 
     if(typeof tokenGMAO !== 'undefined'){
-        console.log("###### informatif !!! ######")
-        console.log("login : "+userLogin)
-        console.log("droits : "+userRole)
-        console.log("############################")
-
         //Vérification du token
         fetch("https://"+ServerIP+":8443/SAE52/TokenCheck", {method: "POST", headers: {"Content-Type": "application/json; charset=UTF-8"}, body: JSON.stringify({ token: tokenGMAO, Test: false})}).then(r => r.json()).then(TokenCheck)
     }
@@ -226,9 +221,6 @@
     }
 
     function TokenCheck(r){
-        //JSON obtenu
-        console.log(r)
-
         //redirection selon les droits
         if(r["droits"] === 'Admin' | r["droits"] === 'Technicien'){
             //Récupération des tickets
@@ -271,14 +263,6 @@
         const equipSerial = document.getElementById('equipSerial').value;
         const equipVlan = document.getElementById('equipVlan').value;
 
-        // Vous pouvez envoyer ces données à votre API ici pour les enregistrer dans la base de données
-        console.log({
-            equipName,
-            equipModel,
-            equipSerial,
-            equipVlan
-        });
-
         alert('Équipement ajouté avec succès');
         // Réinitialiser le formulaire après ajout
         document.getElementById('stockForm').reset();
@@ -297,8 +281,6 @@
     
     // Remplir le tableau contenant les tickets
     function createTicketTable(response) {
-        console.log(response);
-
         // Suppression du contenu actuel du tableau des tickets
         ticketList.innerHTML = '';
 
@@ -343,13 +325,12 @@
 
         // Demande de confirmation
         if (confirm(str)) {
-            console.log("Suppression ticket : ", ticketId);
-
+            console.log("rip")
             // Suppression du ticket dans la base de données
             fetch(`https://${ServerIP}:8443/SAE52/DeleteTicket`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json; charset=UTF-8" },
-                body: JSON.stringify({ token: tokenGMAO, ticketId: ticketId, Test: false })
+                body: JSON.stringify({ token: tokenGMAO, id: ticketId, Test: false })
             })
             .then(response => response.json())
             .then(CheckTicketDeletion);
