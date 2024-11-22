@@ -1,5 +1,5 @@
 Auteur : Maxime VALLET
-Version : 2.1
+Version : 2.2
 
 
 +--------------------------VM-----------------------------
@@ -119,6 +119,10 @@ Version : 2.1
 |    |   
 |    |   *Demarrage deamons (une fois installation terminée): voir section VM > Général
 |    |
+|    |   !!! En cas d'utilisation en dehors du cadre de ce projet, remplacez les MDP !!!
+|    |
+|    |   !!! Les liens de téléchargement sont amenés à changer, merci de les vérifier !!!
+|    |
 |    +--------------------------------------------------------
 |
 |    +-------------------------VSCode-------------------------  
@@ -129,8 +133,6 @@ Version : 2.1
 |    +--------------------------------------------------------
 |
 |    +-----------------------PostgreSQL-----------------------  
-|    |
-|    |   !!! En cas d'utilisation en dehors du cadre de ce projet, remplacez les MDP !!!
 |    |
 |    |   Installation (ubuntu):
 |    |   sudo apt install postgresql
