@@ -73,3 +73,6 @@ clear
 #Déploiement du .war sur le serveur Tomcat
 
 ##############################################
+
+#Mise à jour du répertoire GitHub
+git pull "https://github.com/Max51v2/SAE-52.git"
