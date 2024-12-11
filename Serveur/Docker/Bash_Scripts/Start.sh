@@ -66,13 +66,10 @@ sudo systemctl daemon-reload
 
 clear
 
-################# à rajouter #################
-
-#Build du projet java (.war)
-
-#Déploiement du .war sur le serveur Tomcat
-
-##############################################
-
 #Mise à jour du répertoire GitHub
 git pull "https://github.com/Max51v2/SAE-52.git"
+
+clear
+
+#Déploiement du .war sur le serveur Tomcat
+curl -u admin:leffe -T /home/sae-52/Bureau/SAE-52/NetBEANS/SAE52/dist/SAE52.war "http://localhost:8080/manager/text/deploy?path=/SAE52&update=true"

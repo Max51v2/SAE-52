@@ -9,6 +9,9 @@
 # à modifier : clés SSL ?
 #   => si tu host avec accès à internet, essaye d'utiliser Let's encrypt (sinon faudra valider les clés SSL sur le site comme dab)
 
+su adminuser
+#cpt j'ai ff
+$USER=adminuser
 
 sudo clear
 
