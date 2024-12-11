@@ -5,13 +5,8 @@
 #Rajouté pour la SAE-52 du groupe : valentin, zian, ishac
 #port serveur Apache : 50000
 #port serveur Tomcat : 8080 (HTTP) / 8443 (HTTPS)
-#sudo ici inutile mais je les laisses au cas ou le script serait utilisé hors docker
 # à modifier : clés SSL ?
 #   => si tu host avec accès à internet, essaye d'utiliser Let's encrypt (sinon faudra valider les clés SSL sur le site comme dab)
-
-su adminuser
-#cpt j'ai ff
-$USER=adminuser
 
 sudo clear
 
@@ -65,8 +60,8 @@ clear
 cd /etc/postgresql/
 postgreSQLVersion=`ls | head -n 1`
 cd /etc/postgresql/$postgreSQLVersion/main/
-sudo cp /home/$USER/Bureau/SAE-52/Serveur/Docker/Config/postgresql.conf /etc/postgresql/$postgreSQLVersion/main/postgresql.conf
-sudo cp /home/$USER/Bureau/SAE-52/Serveur/Docker/Config/pg_hba.conf /etc/postgresql/$postgreSQLVersion/main/pg_hba.conf
+sudo cp /home/adminuser/Bureau/SAE-52/Serveur/Docker/Config/postgresql.conf /etc/postgresql/$postgreSQLVersion/main/postgresql.conf
+sudo cp /home/adminuser/Bureau/SAE-52/Serveur/Docker/Config/pg_hba.conf /etc/postgresql/$postgreSQLVersion/main/pg_hba.conf
 sudo systemctl disable postgresql
 sudo systemctl restart postgresql.service
 sudo apt install -y postgresql-client
@@ -88,11 +83,11 @@ sudo apt install -y apache2
 sudo ufw allow 'Apache'
 sudo mkdir /var/www/gmao
 cd /etc/apache2/sites-available/
-sudo cp /home/$USER/Bureau/SAE-52/Serveur/Docker/Config/gmao.conf gmao.conf
+sudo cp /home/adminuser/Bureau/SAE-52/Serveur/Docker/Config/gmao.conf gmao.conf
 sudo a2ensite gmao.conf
 sudo a2enmod headers
 sudo a2dissite 000-default.conf
-systemctl daemon-reload
+sudo systemctl daemon-reload
 sudo systemctl restart apache2
 sudo ufw allow 50000
 
@@ -118,17 +113,17 @@ sudo chown -R tomcat: tomcat
 cd ./tomcat
 sudo chown -R tomcat webapps/ work/ temp/ logs/ conf/
 sudo chmod o+x /opt/tomcat/bin/
-sudo cp /home/$USER/Bureau/SAE-52/Serveur/Docker/Config/tomcat.service /etc/systemd/system/tomcat.service
-sed -i 's/\[VERSION JDK\]/'$Java_version'/g' /etc/systemd/system/tomcat.service
+sudo cp /home/adminuser/Bureau/SAE-52/Serveur/Docker/Config/tomcat.service /etc/systemd/system/tomcat.service
+sudo sed -i 's/\[VERSION JDK\]/'$Java_version'/g' /etc/systemd/system/tomcat.service
 sudo ufw allow 8080
 sudo ufw allow 8443
-sudo cp /home/$USER/Bureau/SAE-52/Serveur/Docker/Config/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
+sudo cp /home/adminuser/Bureau/SAE-52/Serveur/Docker/Config/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
 cd /certs
 clear
 sudo openssl pkcs12 -export -in SAE52.crt -inkey SAE52.key -out SAE52.p12 -name tomcat -passout pass:leffe
 cd /certs
 sudo /usr/java/$Java_version/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
-sudo cp /home/$USER/Bureau/SAE-52/Serveur/Docker/Config/Tomcat.xml /opt/tomcat/conf/server.xml
+sudo cp /home/adminuser/Bureau/SAE-52/Serveur/Docker/Config/Tomcat.xml /opt/tomcat/conf/server.xml
 sudo systemctl daemon-reload
 sudo systemctl disable tomcat 
 sudo systemctl stop tomcat 
@@ -136,20 +131,18 @@ sudo systemctl stop tomcat
 clear
 
 #Création de la BD
-psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_52;" -f "/home/"$USER"/Bureau/SAE-52/Serveur/PostgreSQL_config.sql"
-psql -h localhost -U postgres -d template1 -c "ALTER USER postgres with encrypted password 'leffe';"
+sudo psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_52;" -f "/home/adminuser/Bureau/SAE-52/Serveur/PostgreSQL_config.sql"
+sudo psql -h localhost -U postgres -d template1 -c "ALTER USER postgres with encrypted password 'leffe';"
 
 #Lancement de start.sh au démarrage
-echo "[Unit]
+sudo echo "[Unit]
 Description=Exécution de Start.sh au démarrage
 After=network.target
 
 [Service]
-ExecStart=/bin/bash /home/$USER/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/Start.sh
+ExecStart=/bin/bash /home/adminuser/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/Start.sh
 Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/Startsh.service
 sudo systemctl enable Startsh.service
-
-sudo reboot

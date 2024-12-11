@@ -25,5 +25,4 @@ RUN sudo apt install -y git && \
     sudo mkdir -p Téléchargements && \
     sudo git clone https://github.com/Max51v2/SAE-52.git /home/adminuser/Bureau/SAE-52 && \
     sudo chmod 777 /home/adminuser/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/AutoInstall.sh && \
-    su adminuser && \
     sudo /home/adminuser/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/AutoInstall.sh
