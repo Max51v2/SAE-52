@@ -88,6 +88,7 @@ sudo a2ensite gmao.conf
 sudo a2enmod headers
 sudo a2dissite 000-default.conf
 sudo systemctl daemon-reload
+sudo service apache2 reload
 sudo systemctl restart apache2
 sudo ufw allow 50000
 
@@ -131,8 +132,8 @@ sudo systemctl stop tomcat
 clear
 
 #Création de la BD
-sudo psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_52;" -f "/home/adminuser/Bureau/SAE-52/Serveur/PostgreSQL_config.sql"
-sudo psql -h localhost -U postgres -d template1 -c "ALTER USER postgres with encrypted password 'leffe';"
+PGPASSWORD='leffe' psql -h localhost -U postgres -d template1 -c "ALTER USER postgres WITH ENCRYPTED PASSWORD 'leffe';"
+PGPASSWORD='leffe' sudo psql -h localhost -U postgres -d template1 -c "DROP DATABASE sae_52;" -f "/home/adminuser/Bureau/SAE-52/Serveur/PostgreSQL_config.sql"
 
 #Lancement de start.sh au démarrage
 sudo echo "[Unit]
