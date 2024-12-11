@@ -9,7 +9,8 @@ RUN apt update && apt upgrade && \
     apt install -y sudo && \
     useradd -m -s /bin/bash adminuser && \
     usermod -aG sudo adminuser && \
-    echo "adminuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    echo "adminuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    sudo passwd -d adminuser
 USER adminuser
 WORKDIR /home/adminuser
 
