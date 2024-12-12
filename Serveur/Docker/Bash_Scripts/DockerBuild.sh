@@ -4,8 +4,13 @@
 
 clear
 
+#Installation de docker
+sudo apt install -y docker-compose docker-buildx
+
+clear
+
 #Arrêt et suppression des conteneurs
-sudo /home/$USER/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/DockerStop.sh "$USER"
+sudo /home/$1/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 
 #SSL
 sudo apt install -y docker-compose docker-buildx openssl
@@ -38,8 +43,8 @@ docker build -t apache /home/$1/Bureau/SAE-52/Serveur/Docker/Apache
 
 rm -rf $DockerFilePath/Web
 rm $DockerFilePath/gmao.conf
-#rm $DockerFilePath/SAE52.crt
-#rm $DockerFilePath/SAE52.key
+rm $DockerFilePath/SAE52.crt
+rm $DockerFilePath/SAE52.key
 
 
 #PostgreSQL
@@ -62,7 +67,34 @@ rm $DockerFilePath/init.sh
 rm $DockerFilePath/PostgreSQL_config.sql
 
 
+#Tomcat
 clear
+echo "Tomcat"
+
+DockerFilePath="/home/$1/Bureau/SAE-52/Serveur/Docker/Tomcat"
+cd $DockerFilePath
+
+sudo cp /certs/SAE52.crt $DockerFilePath/SAE52.crt
+sudo cp /certs/SAE52.key $DockerFilePath/SAE52.key
+sudo cp /certs/SAE52.p12 $DockerFilePath/SAE52.p12
+sudo cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/Tomcat.sh $DockerFilePath/Tomcat.sh
+sudo cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/Tomcat.xml $DockerFilePath/Tomcat.xml
+sudo cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/tomcat-users.xml $DockerFilePath/tomcat-users.xml
+sudo cp /home/$1/Bureau/SAE-52/NetBEANS/SAE52/dist/SAE52.war $DockerFilePath/SAE52.war
+
+docker build -t tomcat /home/$1/Bureau/SAE-52/Serveur/Docker/Tomcat
+
+rm $DockerFilePath/SAE52.crt
+rm $DockerFilePath/SAE52.key
+rm $DockerFilePath/SAE52.p12
+rm $DockerFilePath/Tomcat.sh
+rm $DockerFilePath/Tomcat.xml
+rm $DockerFilePath/tomcat-users.xml
+rm $DockerFilePath/SAE52.war
+
+
 
 #Conteneurs
+echo "Conteneurs existants :"
 docker ps -a
+echo

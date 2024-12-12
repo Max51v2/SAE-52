@@ -2,7 +2,7 @@ FROM debian:12
 
 LABEL maintainer="max.vallet@outlook.fr"
 
-#Installation de PostgreSQL v15 et du client psql
+#MAJ OS et installation de PostgreSQL v15 et du client psql
 RUN apt update && apt upgrade && apt install -y postgresql-15 postgresql-client postgresql-common && apt-get clean
 
 #Copie des fichiers de configuration
@@ -18,4 +18,5 @@ COPY init.sh /docker-entrypoint-initdb.d/init.sh
 RUN chmod +x /docker-entrypoint-initdb.d/init.sh
 
 #Commande de démarrage du serveur PostgreSQL
+USER postgres
 CMD ["/usr/lib/postgresql/15/bin/postgres", "-D", "/var/lib/postgresql/data", "-c", "listen_addresses='*'", "-c", "port=5432", "-c", "unix_socket_directories='/var/run/postgresql'"]
