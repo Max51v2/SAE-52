@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgresql
+    container_name: postrgesql
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+
+  backend:
+    image: tomcat
+    container_name: tomcat
+    ports:
+      - 8443:8443
+    restart: unless-stopped
+
+  web:
+    image: apache
+    container_name: apache
+    ports:
+      - 50000:443
+    restart: unless-stopped

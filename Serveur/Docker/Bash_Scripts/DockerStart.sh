@@ -8,7 +8,7 @@ clear
 sudo /home/$1/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 
 #Démarrage des conteneurs
-sudo docker run -d -p 5432:5432 postgresql & sudo docker run -d -p 50000:443 apache & sudo docker run -d -p 8443:8443 tomcat
+sudo -u $1 docker compose -f /home/sae-52/Bureau/SAE-52/Serveur/Docker/Dockercompose.yml up -d
 
 
 

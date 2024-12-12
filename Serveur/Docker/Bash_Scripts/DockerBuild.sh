@@ -5,7 +5,7 @@
 clear
 
 #Installation de docker
-sudo apt install -y docker-compose docker-buildx
+sudo apt install -y docker-compose docker-buildx docker-compose-v2
 
 clear
 
@@ -56,14 +56,16 @@ cd $DockerFilePath
 
 cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/postgresql.conf $DockerFilePath/postgresql.conf
 cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/pg_hba.conf $DockerFilePath/pg_hba.conf
-cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/init.sh $DockerFilePath/init.sh
+cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/docker-entrypoint.sh $DockerFilePath/docker-entrypoint.sh
+cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/docker-ensure-initdb.sh $DockerFilePath/docker-ensure-initdb.sh
 cp /home/$1/Bureau/SAE-52/Serveur/PostgreSQL_config.sql $DockerFilePath/PostgreSQL_config.sql
 
 docker build -t postgresql /home/$1/Bureau/SAE-52/Serveur/Docker/PostgreSQL
 
 rm $DockerFilePath/pg_hba.conf
 rm $DockerFilePath/postgresql.conf
-rm $DockerFilePath/init.sh
+rm $DockerFilePath/docker-entrypoint.sh
+rm $DockerFilePath/docker-ensure-initdb.sh
 rm $DockerFilePath/PostgreSQL_config.sql
 
 
