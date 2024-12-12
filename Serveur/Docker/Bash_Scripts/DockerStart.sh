@@ -8,9 +8,7 @@ clear
 sudo /home/$1/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 
 #Démarrage des conteneurs
-sudo -u $1 docker compose -f /home/sae-52/Bureau/SAE-52/Serveur/Docker/Dockercompose.yml up -d
-
-
+sudo -u $1 docker compose -f /home/$1/Bureau/SAE-52/Serveur/Docker/Dockercompose.yml up -d
 
 #Conteneurs
 echo "Conteneurs existants :"

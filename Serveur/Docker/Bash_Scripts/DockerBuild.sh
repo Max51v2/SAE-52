@@ -5,7 +5,11 @@
 clear
 
 #Installation de docker
-sudo apt install -y docker-compose docker-buildx docker-compose-v2
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+apt-cache policy docker-ce
+sudo apt install -y docker-ce
 
 clear
 
@@ -13,7 +17,7 @@ clear
 sudo /home/$1/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 
 #SSL
-sudo apt install -y docker-compose docker-buildx openssl
+cd /certs
 if [ -e /certs/SAE52.crt ]; then
     echo "SSL ok"
 else

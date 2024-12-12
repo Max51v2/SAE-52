@@ -21,6 +21,7 @@ Merci de rediriger les ports qui suivent sur la machine : 8443(Tomcat) et 50000 
 => sudo ufw allow 50000
 => sudo ufw allow 8443
 !!! Si les ports sont déjà utilisés, il y'aura une erreur !!!
+Taper la commande puis déconnectez/reconnectez-vous: sudo usermod -aG docker $USER
 
 
 Créer les conteneurs Docker :

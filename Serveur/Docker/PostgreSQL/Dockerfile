@@ -1,4 +1,4 @@
-FROM debian:12
+FROM debian:latest
 
 LABEL maintainer="max.vallet@outlook.fr"
 
@@ -8,12 +8,13 @@ RUN apt update && apt upgrade -y \
     && apt-get clean
 
 # Variables d'environnement
-ENV PG_MAJOR 15
-ENV PGDATA /var/lib/postgresql/data
-ENV PATH $PATH:/usr/lib/postgresql/$PG_MAJOR/bin
+ENV PG_MAJOR=15
+ENV PGDATA=/var/lib/postgresql/data
+ENV PATH=$PATH:/usr/lib/postgresql/$PG_MAJOR/bin
 
 # Copie des fichiers de configuration
 COPY postgresql.conf /etc/postgresql/15/main/postgresql.conf
+COPY postgresql.conf /var/lib/postgresql/data/postgresql.conf
 COPY pg_hba.conf /etc/postgresql/15/main/pg_hba.conf
 COPY PostgreSQL_config.sql /conf/PostgreSQL_config.sql
 COPY docker-entrypoint.sh docker-ensure-initdb.sh /usr/local/bin/
@@ -36,4 +37,4 @@ EXPOSE 5432
 
 # Commande par défaut
 USER postgres
-CMD ["postgres"]
+CMD ["postgres", "-c", "listen_addresses=*"]
