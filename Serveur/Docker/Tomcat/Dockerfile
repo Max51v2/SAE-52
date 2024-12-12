@@ -18,16 +18,18 @@ COPY SAE52.p12 /certs/SAE52.p12
 
 #Copie du script de configuration de JDK et Tomcat et données de conf
 COPY Tomcat.sh /conf/Tomcat.sh
+COPY StartTomcat.sh /conf/StartTomcat.sh
 COPY Tomcat.xml /conf/Tomcat.xml
 COPY tomcat-users.xml /conf/tomcat-users.xml
 COPY SAE52.war /conf/SAE52.war
 
 #VAR env
-ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 
 #Execution du script de config
 RUN chmod 777 /conf/Tomcat.sh && \
-    /conf/Tomcat.sh
+    /conf/Tomcat.sh && \
+    chmod 777 /conf/StartTomcat.sh
 
 #Commande par défaut
-CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+CMD ["/conf/StartTomcat.sh"]

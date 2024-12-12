@@ -19,12 +19,5 @@ chown -R tomcat webapps/ work/ temp/ logs/ conf/
 chmod o+x /opt/tomcat/bin/
 cp /conf/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
 cd /certs
-/usr/java/$Java_version/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
+/usr/lib/jvm/java-21-openjdk-amd64/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 cp /conf/Tomcat.xml /opt/tomcat/conf/server.xml
-
-#Déploiement du .war sur le serveur Tomcat
-export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
-export CATALINA_HOME=/opt/tomcat
-$CATALINA_HOME/bin/catalina.sh run &
-sleep 5
-curl -u admin:leffe -T /conf/SAE52.war "http://localhost:8080/manager/text/deploy?path=/SAE52&update=true"

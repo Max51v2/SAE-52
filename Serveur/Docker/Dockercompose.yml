@@ -1,9 +1,15 @@
+version: "3.8"
 services:
   db:
-    image: postgresql
-    container_name: postrgesql
+    image: postgres:15
+    container_name: postgresql
+    environment:
+      POSTGRES_PASSWORD: leffe
+      POSTGRES_USER: postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
+    networks:
+      - my_network
     restart: unless-stopped
 
   backend:
@@ -11,6 +17,8 @@ services:
     container_name: tomcat
     ports:
       - 8443:8443
+    networks:
+      - my_network
     restart: unless-stopped
 
   web:
@@ -18,4 +26,10 @@ services:
     container_name: apache
     ports:
       - 50000:443
+    networks:
+      - my_network
     restart: unless-stopped
+
+networks:
+  my_network:
+    driver: bridge

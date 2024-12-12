@@ -5,11 +5,17 @@
 clear
 
 #Installation de docker
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+clear
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+clear
+sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+clear
 apt-cache policy docker-ce
+clear
 sudo apt install -y docker-ce
+clear
+docker network create my_network
 
 clear
 
@@ -62,6 +68,7 @@ cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/postgresql.conf $DockerFilePath/
 cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/pg_hba.conf $DockerFilePath/pg_hba.conf
 cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/docker-entrypoint.sh $DockerFilePath/docker-entrypoint.sh
 cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/docker-ensure-initdb.sh $DockerFilePath/docker-ensure-initdb.sh
+cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/StartPSQL.sh $DockerFilePath/StartPSQL.sh
 cp /home/$1/Bureau/SAE-52/Serveur/PostgreSQL_config.sql $DockerFilePath/PostgreSQL_config.sql
 
 docker build -t postgresql /home/$1/Bureau/SAE-52/Serveur/Docker/PostgreSQL
@@ -71,6 +78,7 @@ rm $DockerFilePath/postgresql.conf
 rm $DockerFilePath/docker-entrypoint.sh
 rm $DockerFilePath/docker-ensure-initdb.sh
 rm $DockerFilePath/PostgreSQL_config.sql
+rm $DockerFilePath/StartPSQL.sh
 
 
 #Tomcat
@@ -84,6 +92,7 @@ sudo cp /certs/SAE52.crt $DockerFilePath/SAE52.crt
 sudo cp /certs/SAE52.key $DockerFilePath/SAE52.key
 sudo cp /certs/SAE52.p12 $DockerFilePath/SAE52.p12
 sudo cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/Tomcat.sh $DockerFilePath/Tomcat.sh
+sudo cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/Tomcat.sh $DockerFilePath/StartTomcat.sh
 sudo cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/Tomcat.xml $DockerFilePath/Tomcat.xml
 sudo cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/tomcat-users.xml $DockerFilePath/tomcat-users.xml
 sudo cp /home/$1/Bureau/SAE-52/NetBEANS/SAE52/dist/SAE52.war $DockerFilePath/SAE52.war
@@ -94,6 +103,7 @@ rm $DockerFilePath/SAE52.crt
 rm $DockerFilePath/SAE52.key
 rm $DockerFilePath/SAE52.p12
 rm $DockerFilePath/Tomcat.sh
+rm $DockerFilePath/StartTomcat.sh
 rm $DockerFilePath/Tomcat.xml
 rm $DockerFilePath/tomcat-users.xml
 rm $DockerFilePath/SAE52.war
