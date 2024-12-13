@@ -1,6 +1,6 @@
 #!/bin/bash
 #Auteur : Maxime VALLET
-#Version 0.1
+#Version 1.0
 
 
 #Déploiement du .war sur le serveur Tomcat

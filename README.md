@@ -1,5 +1,7 @@
 En cas de problèmes d'affichage, merci d'ouvrir la doc depuis le projet et de séléctionner l'affichage de type "Raw"
 
+Information : ajouté après la remise du projet => intégralité du contenu du dossier "Docker" (/Serveur/Docker)
+
 I) Présentation
  Ce projet consiste à la réalisation d'une GMAO (Gestion de Maintenance Assistée par Ordinateur) hébergée sur un serveur Web.
  Il émane d'un projet réalisé au cours de notre 3e année de BUT Réseaux et Télécommunications.

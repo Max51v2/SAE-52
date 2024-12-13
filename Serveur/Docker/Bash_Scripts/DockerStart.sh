@@ -1,6 +1,6 @@
 #!/bin/bash
 #Auteur : Maxime VALLET
-#Version 0.1
+#Version 1.0
 
 clear
 
@@ -8,7 +8,8 @@ clear
 sudo /home/$1/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 
 #Démarrage des conteneurs
-sudo -u $1 docker compose -f /home/$1/Bureau/SAE-52/Serveur/Docker/Dockercompose.yml up -d
+cd /home/$1/Bureau/SAE-52/Serveur/Docker
+sudo -u $1 docker compose -f ./Dockercompose.yml up -d
 
 #Conteneurs
 echo "Conteneurs existants :"

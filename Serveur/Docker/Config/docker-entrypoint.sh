@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#Source : https://github.com/docker-library/postgres
+
 set -Eeo pipefail
 # TODO swap to -Eeuo pipefail above (after handling all potentially-unset variables)
 

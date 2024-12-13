@@ -1,6 +1,6 @@
 #!/bin/bash
 #Auteur : Maxime VALLET
-#Version 0.1
+#Version 1.0
 
 clear
 
@@ -15,7 +15,12 @@ apt-cache policy docker-ce
 clear
 sudo apt install -y docker-ce
 clear
+
+#Réseau docker
 docker network create my_network
+docker network connect my_network psql
+docker network connect my_network tomcat
+docker network connect my_network apache
 
 clear
 
@@ -71,7 +76,7 @@ cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/docker-ensure-initdb.sh $DockerF
 cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/StartPSQL.sh $DockerFilePath/StartPSQL.sh
 cp /home/$1/Bureau/SAE-52/Serveur/PostgreSQL_config.sql $DockerFilePath/PostgreSQL_config.sql
 
-docker build -t postgresql /home/$1/Bureau/SAE-52/Serveur/Docker/PostgreSQL
+docker build -t psql /home/$1/Bureau/SAE-52/Serveur/Docker/PostgreSQL
 
 rm $DockerFilePath/pg_hba.conf
 rm $DockerFilePath/postgresql.conf

@@ -1,4 +1,6 @@
 #!/bin/bash
+#Auteur : Maxime VALLET
+#Version 1.0
 
 if [ -e restart ]; then
     # Copie des fichiers de config (pour une raison obscure ils sont reset après le build de l'image)
@@ -8,6 +10,5 @@ if [ -e restart ]; then
 
     pg_ctl restart
 else
-
     postgres
 fi

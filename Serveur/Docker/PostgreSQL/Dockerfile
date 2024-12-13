@@ -39,26 +39,24 @@ RUN mkdir -p /var/lib/postgresql/data && \
 #Initialiser la base de données
 RUN su - postgres -c "/usr/lib/postgresql/$PG_MAJOR/bin/initdb -D $PGDATA"
 
-#Démarrer PostgreSQL temporairement et exécuter les commandes SQL
-RUN gosu postgres /usr/lib/postgresql/$PG_MAJOR/bin/pg_ctl start -D $PGDATA && \
-    psql -U postgres -d template1 -c "ALTER USER postgres WITH ENCRYPTED PASSWORD 'leffe';" && \
-    PGPASSWORD='leffe' psql -U postgres -d template1 -f "/conf/PostgreSQL_config.sql" && \
-    gosu postgres /usr/lib/postgresql/$PG_MAJOR/bin/pg_ctl stop -D $PGDATA
-
 #Changement des droits des scripts
 RUN chmod 777 /usr/local/bin/docker-entrypoint.sh && \
     chmod 777 /usr/local/bin/docker-ensure-initdb.sh && \
     chmod 777 /conf/StartPSQL.sh && \
     ln -s /usr/local/bin/docker-entrypoint.sh /
 
-RUN  usermod -aG sudo postgres
+RUN  usermod -aG sudo postgres && \
+    touch /conf/restart && \
+    echo "postgres:leffe" | chpasswd
+
+#Démarrer PostgreSQL temporairement et exécuter les commandes SQL
+RUN gosu postgres /usr/lib/postgresql/$PG_MAJOR/bin/pg_ctl start -D $PGDATA && \
+    psql -U postgres -d template1 -c "ALTER USER postgres WITH ENCRYPTED PASSWORD 'leffe';" && \
+    PGPASSWORD='leffe' psql -U postgres -d template1 -c "DROP DATABASE sae_52;" -f "/conf/PostgreSQL_config.sql" && \
+    gosu postgres /usr/lib/postgresql/$PG_MAJOR/bin/pg_ctl stop -D $PGDATA
 
 #Exposer le port PostgreSQL
 EXPOSE 5432
-
-ENV PASSWORD=leffe
-RUN touch /conf/restart && \
-    echo "postgres:$PASSWORD" | chpasswd
 
 #Commande par défaut
 USER postgres
