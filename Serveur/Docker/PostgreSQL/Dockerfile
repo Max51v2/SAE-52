@@ -1,5 +1,4 @@
 #Fait en aléatoire par : Maxime VALLET
-#J'ai Hacksmisth des bouts de la config du projet et le rep officiel contenant le dockerfile de postgres
 
 #OS
 FROM debian:latest
@@ -18,11 +17,11 @@ ENV PATH=$PATH:/usr/lib/postgresql/$PG_MAJOR/bin
 
 #Copie des fichiers de configuration
 COPY postgresql.conf /etc/postgresql/15/main/postgresql.conf
+COPY postgresql.conf /var/lib/postgresql/data/postgresql.conf
 COPY postgresql.conf /conf/postgresql.conf
-COPY pg_hba.conf /etc/postgresql/15/main/pg_hba.conf
+COPY pg_hba.conf /var/lib/postgresql/data/pg_hba.conf
 COPY pg_hba.conf /conf/pg_hba.conf
 COPY PostgreSQL_config.sql /conf/PostgreSQL_config.sql
-COPY docker-entrypoint.sh docker-ensure-initdb.sh /usr/local/bin/
 COPY StartPSQL.sh /conf/StartPSQL.sh
 
 #Supprimer le répertoire de données s'il existe déjà
@@ -40,13 +39,10 @@ RUN mkdir -p /var/lib/postgresql/data && \
 RUN su - postgres -c "/usr/lib/postgresql/$PG_MAJOR/bin/initdb -D $PGDATA"
 
 #Changement des droits des scripts
-RUN chmod 777 /usr/local/bin/docker-entrypoint.sh && \
-    chmod 777 /usr/local/bin/docker-ensure-initdb.sh && \
-    chmod 777 /conf/StartPSQL.sh && \
-    ln -s /usr/local/bin/docker-entrypoint.sh /
+RUN chmod 777 /conf/StartPSQL.sh
 
+#Ajout de postgres au groupe sudo + MDP
 RUN  usermod -aG sudo postgres && \
-    touch /conf/restart && \
     echo "postgres:leffe" | chpasswd
 
 #Démarrer PostgreSQL temporairement et exécuter les commandes SQL

@@ -5,22 +5,20 @@
 clear
 
 #Installation de docker
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+echo "Installation des dépendances (apt-transport-https / curl / ca-certificates / software-properties-common)"
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common > /tmp/DockerBuildLogs.txt
 clear
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+echo "Ajout des clés du répertoire de docker"
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - >> /tmp/DockerBuildLogs.txt
 clear
-sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+echo "Ajout du répertoire de Docker"
+sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" >> /tmp/DockerBuildLogs.txt
 clear
-apt-cache policy docker-ce
+apt-cache policy docker-ce >> /tmp/DockerBuildLogs.txt
 clear
-sudo apt install -y docker-ce
+echo "Installation de docker-ce"
+sudo apt install -y docker-ce >> /tmp/DockerBuildLogs.txt
 clear
-
-#Réseau docker
-docker network create my_network
-docker network connect my_network psql
-docker network connect my_network tomcat
-docker network connect my_network apache
 
 clear
 
