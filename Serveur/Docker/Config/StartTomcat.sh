@@ -9,4 +9,7 @@ sleep 5
 curl -u admin:leffe -T /conf/SAE52.war "http://localhost:8080/manager/text/deploy?path=/SAE52&update=true"
 
 #Boucle infinie pour garder le conteneur actif
-tail -f /opt/tomcat/logs/catalina.out
+while true
+do
+sleep 5
+done
