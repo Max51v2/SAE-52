@@ -6,7 +6,10 @@ FROM ubuntu:latest
 LABEL maintainer="max.vallet@outlook.fr"
 
 #MAJ OS, installation wget et curl
-RUN apt update && apt upgrade && apt install -y wget curl openjdk-21-jdk && apt-get clean
+RUN apt update && apt upgrade && apt install -y wget curl libapr1 libapr1-dev libssl-dev libtcnative-1 && apt-get clean
+
+RUN rm -f /etc/localtime && \
+    ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
 
 #Copie des clés SSL
 COPY SAE52.key /certs/SAE52.key
@@ -23,6 +26,7 @@ COPY SAE52.war /conf/SAE52.war
 #VAR env
 ENV JAVA_HOME=/usr/lib/jvm/openjdk
 ENV CATALINA_HOME=/opt/tomcat
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 #Execution du script de config
 RUN chmod 777 /conf/Tomcat.sh && \
@@ -33,8 +37,6 @@ RUN chmod 777 /conf/Tomcat.sh && \
 RUN chmod 777 /opt/tomcat && \
     chown 777 /conf && \
     chown 777 /certs
-
-RUN /usr/lib/jvm/java-21-openjdk-amd64/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore /certs/SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 
 #Ports
 EXPOSE 8443

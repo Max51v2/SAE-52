@@ -7,7 +7,7 @@ LABEL maintainer="max.vallet@outlook.fr"
 
 #MAJ OS et installation de PostgreSQL v15 et du client psql
 RUN apt update && apt upgrade -y && \
-    apt install -y postgresql-15 postgresql-client postgresql-common gosu sudo && \
+    apt install -y postgresql-15 postgresql-common gosu sudo && \
     apt-get clean
 
 #Variables d'environnement

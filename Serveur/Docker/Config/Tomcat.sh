@@ -2,6 +2,8 @@
 #Auteur : Maxime VALLET
 #Version 1.0
 
+#Info : Faites ATTENTION à l'emplacement de l'installation du JDK car tomcat vérifie la validité de celui-ci selon le chemin où il se situe (c'est débile.......)
+#utilisé ici : emplacement où apt installe openjdk
 mkdir /usr/lib/jvm/
 cd /usr/lib/jvm/
 mkdir ./openjdk
@@ -24,5 +26,6 @@ chown -R tomcat: tomcat
 cd ./tomcat
 chown -R tomcat webapps/ work/ temp/ logs/ conf/
 chmod o+x /opt/tomcat/bin/
+/usr/lib/jvm/openjdk/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore /certs/SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 cp /conf/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
 cp /conf/Tomcat.xml /opt/tomcat/conf/server.xml
