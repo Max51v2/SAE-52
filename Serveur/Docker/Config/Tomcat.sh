@@ -2,6 +2,13 @@
 #Auteur : Maxime VALLET
 #Version 1.0
 
+mkdir /usr/lib/jvm/
+cd /usr/lib/jvm/
+mkdir ./openjdk
+JDK="openjdk-22.0.2_linux-x64_bin.tar.gz"
+wget -c https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/$JDK
+tar xzvf ./$JDK -C ./openjdk --strip-components=1
+rm $JDK
 
 #Tomcat
 groupadd tomcat
@@ -18,6 +25,4 @@ cd ./tomcat
 chown -R tomcat webapps/ work/ temp/ logs/ conf/
 chmod o+x /opt/tomcat/bin/
 cp /conf/tomcat-users.xml /opt/tomcat/conf/tomcat-users.xml
-cd /certs
-/usr/lib/jvm/java-21-openjdk-amd64/bin/keytool -importkeystore -deststorepass administrateur -destkeystore /opt/tomcat/conf/tomcat.keystore -srckeystore SAE52.p12 -srcstoretype PKCS12 -srcstorepass leffe -alias tomcat
 cp /conf/Tomcat.xml /opt/tomcat/conf/server.xml

@@ -42,7 +42,7 @@ RUN su - postgres -c "/usr/lib/postgresql/$PG_MAJOR/bin/initdb -D $PGDATA"
 RUN chmod 777 /conf/StartPSQL.sh
 
 #Ajout de postgres au groupe sudo + MDP
-RUN  usermod -aG sudo postgres && \
+RUN usermod -aG sudo postgres && \
     echo "postgres:leffe" | chpasswd
 
 #Démarrer PostgreSQL temporairement et exécuter les commandes SQL

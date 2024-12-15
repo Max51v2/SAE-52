@@ -4,6 +4,9 @@
 
 
 #Déploiement du .war sur le serveur Tomcat
-sudo /opt/tomcat/bin/catalina.sh run &
-sleep 2
-sudo curl -u admin:leffe -T /conf/SAE52.war "http://localhost:8080/manager/text/deploy?path=/SAE52&update=true"
+/opt/tomcat/bin/catalina.sh run &
+sleep 5
+curl -u admin:leffe -T /conf/SAE52.war "http://localhost:8080/manager/text/deploy?path=/SAE52&update=true"
+
+#Boucle infinie pour garder le conteneur actif
+tail -f /opt/tomcat/logs/catalina.out

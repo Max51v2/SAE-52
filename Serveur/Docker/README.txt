@@ -2,7 +2,7 @@
 #Version : 1.5
 
 # à faire : Monter le contenu de la BD PostgreSQL sur un volume partagé afin qu'il ne soit pas effacé à chaque fois que le conteneur est recréé
-
+# !!! Le contenu de ce dossier a été ajouté après la date de remis du projet !!!
 
 I) Installer Docker :
 Debian : 
