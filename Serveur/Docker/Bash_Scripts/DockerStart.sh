@@ -1,6 +1,6 @@
 #!/bin/bash
 #Auteur : Maxime VALLET
-#Version 1.0
+#Version 1.2
 
 clear
 
@@ -10,14 +10,6 @@ sudo /home/$1/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 #Démarrage des conteneurs
 cd /home/$1/Bureau/SAE-52/Serveur/Docker
 sudo -u $1 docker compose -f ./Dockercompose.yml up -d
-
-clear 
-
-#Réseau docker
-docker network create my_network
-docker network connect my_network psql
-docker network connect my_network tomcat
-docker network connect my_network apache
 
 clear
 
