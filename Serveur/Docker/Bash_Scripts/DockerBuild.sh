@@ -4,24 +4,6 @@
 
 clear
 
-#Installation de docker
-echo "Installation des dépendances (apt-transport-https / curl / ca-certificates / software-properties-common)"
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common > /tmp/DockerBuildLogs.txt
-clear
-echo "Ajout des clés du répertoire de docker"
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - >> /tmp/DockerBuildLogs.txt
-clear
-echo "Ajout du répertoire de Docker"
-sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" >> /tmp/DockerBuildLogs.txt
-clear
-apt-cache policy docker-ce >> /tmp/DockerBuildLogs.txt
-clear
-echo "Installation de docker-ce"
-sudo apt install -y docker-ce >> /tmp/DockerBuildLogs.txt
-clear
-
-clear
-
 #Arrêt et suppression des conteneurs
 sudo /home/$1/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 
@@ -48,7 +30,9 @@ DockerFilePath="/home/$1/Bureau/SAE-52/Serveur/Docker/Apache"
 cd $DockerFilePath
 
 mkdir -p $DockerFilePath/Web
+mkdir -p $DockerFilePath/Web/Javadoc
 sudo cp -r /home/$1/Bureau/SAE-52/Web/* $DockerFilePath/Web
+sudo cp -r "/home/"$1"/Bureau/SAE-52/NetBEANS/SAE52/dist/javadoc/"* $DockerFilePath"/Web/Javadoc"
 sudo cp /home/$1/Bureau/SAE-52/Serveur/Docker/Config/gmao.conf $DockerFilePath/gmao.conf
 sudo cp /certs/SAE52.crt $DockerFilePath/SAE52.crt
 sudo cp /certs/SAE52.key $DockerFilePath/SAE52.key
@@ -107,10 +91,3 @@ sudo rm $DockerFilePath/StartTomcat.sh
 sudo rm $DockerFilePath/Tomcat.xml
 sudo rm $DockerFilePath/tomcat-users.xml
 sudo rm $DockerFilePath/SAE52.war
-
-
-
-#Conteneurs
-echo "Conteneurs existants :"
-docker ps -a
-echo
