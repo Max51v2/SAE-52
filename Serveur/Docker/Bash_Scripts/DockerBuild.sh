@@ -26,6 +26,7 @@ clear
 sudo /home/$1/Bureau/SAE-52/Serveur/Docker/Bash_Scripts/DockerStop.sh "$1"
 
 #SSL
+mkdir /certs
 cd /certs
 if [ -e /certs/SAE52.crt ]; then
     echo "SSL ok"
