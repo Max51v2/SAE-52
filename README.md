@@ -1,5 +1,7 @@
 En cas de problèmes d'affichage, merci d'ouvrir la doc depuis le projet et de séléctionner l'affichage de type "Raw"
 
+Analyse VirusTotal : https://www.virustotal.com/gui/file/b82dea1a59f12be6300c6264adade4edd8b7c80989a88063ea871c30c4207283/detection
+
 Information : ajouté après la remise du projet => intégralité du contenu du dossier "Docker" (/Serveur/Docker)
 
 I) Présentation
